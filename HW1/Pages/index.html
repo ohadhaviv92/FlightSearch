@@ -1,0 +1,199 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <link href="css.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script src="../Scripts/autoComplte.js"></script>
+    <script src="../Scripts/ajaxCalls.js"></script>
+    <script>
+        countryCodes = [];
+        Myflightsarr = [];
+        dataArr = {} //Store the current search arr
+        $(document).ready(function () {
+            $("#srcBTN").click(searchFlights)
+            $("#MyFlights").click(MyFlights)
+            autocomplete(document.getElementById("fromTB"), countryCodes);
+            autocomplete(document.getElementById("toTB"), countryCodes);
+            $("#fromDate").min = new Date().toISOString().split("T")[0];
+            url = "https://api.skypicker.com/locations?type=dump&locale=en-US&location_types=airport&limit=4000&active_only=true&sort=name";
+            $.get(url).done(successCB);
+            $.get(url).fail(errorCB);
+        });
+
+        $(document).on("click", ".addBTN", function () {
+            console.log(dataArr['data'][$(this).attr('id')])
+            let from = dataArr['data'][$(this).attr('id')]['cityFrom']
+            let to = dataArr['data'][$(this).attr('id')]['cityTo']
+            let price = dataArr['data'][$(this).attr('id')]['price']
+            let depTime = dataArr['data'][$(this).attr('id')]['dTime']
+            let aTime = dataArr['data'][$(this).attr('id')]['aTime']
+            let airline = dataArr['data'][$(this).attr('id')]['route'][0]['airline']
+            stops=[]
+            for (i = 0; i < dataArr['data'][$(this).attr('id')]['route'].length; i++) {
+            stops.push(dataArr['data'][$(this).attr('id')]['route'][i]['cityTo'])
+            }
+            flight = { From: from, To: to, Price: price, DepTime: depTime, ArriveTime: aTime, Stops: stops, AirlineName: airline }
+            ajaxCall('POST',"../api/flight", JSON.stringify(flight), postSuccess, posterr)
+        });
+
+
+        function MyFlights() {
+            ajaxCall("GET", "../api/flight", "", successMyFlights, errMyFlights)
+        }
+
+        function successMyFlights(data) {
+            i=1
+            str = "<table class='table table-striped'><thead><tr><th scope='col'>#</th><th scope='col'>From</th><th scope='col'>To</th><th scope='col'>Departure time</th><th scope='col'>Arrival time</th><th scope='col'>Stops</th><th scope='col'>Airline name</th><th scope='col'>Price</th></tr></thead><tbody>"
+            for (flight in data) {
+                let depTime = new Date(0);
+                let arrTime = new Date(0);
+                depTime.setUTCSeconds(data[flight]['DepTime'])
+                arrTime.setUTCSeconds(data[flight]['ArriveTime'])
+                str += "<tr><th scope='row'>" + i + "</th>"
+                str += "<td>" + data[flight]['From'] + "</td>"
+                str += "<td>" + data[flight]['To'] + "</td>"
+                str += "<td>" + dateToFulldate(depTime) + "</td>"
+                str += "<td>" + dateToFulldate(arrTime) + "</td>"
+                if (data[flight]['Stops'].length > 1) {
+                    str += "<td>"
+                    for (j = 0; j < data[flight]['Stops'].length-1; j++) {
+                        str += data[flight]['Stops'][j]+", "
+                    }
+                    str += "(" + j + " Connections)</td>"
+                }
+                else {
+                    str += "<td> No Stops</td>"
+                }
+                str += "<td>" + data[flight]['AirlineName'] + "</td>"
+                str += "<td>" + data[flight]['Price'] + " Euro</td>"
+                i++
+            }
+            str += "</tbody></table>"
+            document.getElementById('ph').innerHTML = str;
+        }
+        function errMyFlights(err) {
+            console.log(errMyFlights)
+        }
+
+        function searchFlights() {
+            let from = $("#fromTB").val()
+            let to = $("#toTB").val()
+            let dep = $("#fromDate").val()
+            let arrive = $("#toDate").val()
+            let url = "https://api.skypicker.com/flights?flyFrom=" + from + "&to=" + to + "&dateFrom=" + fixDate(dep) + "&dateTo=" + fixDate(arrive) + "&partner=picky"
+            let api = ajaxCall("GET", url, "", successAPICB, errorAPICB)
+        }
+        function successAPICB(data) {
+            i = 0;
+            console.log(data);
+            dataArr = data 
+            str = "<table class='table table-striped'><thead><tr><th scope='col'>#</th><th scope='col'>From</th><th scope='col'>To</th><th scope='col'>Departure time</th><th scope='col'>Arrival time</th><th scope='col'>Stops</th><th scope='col'>Airline name</th><th scope='col'>Price</th><th scope='col'>Store Flight?</th></tr></thead><tbody>"
+            for (flight in data['data']) {
+                let depTime = new Date(0);
+                let arrTime = new Date(0);
+                depTime.setUTCSeconds(data['data'][flight]['dTime'])
+                arrTime.setUTCSeconds(data['data'][flight]['aTime'])
+                str += "<tr><th scope='row'>" + (i+1) + "</th>"
+                str += "<td>" + data['data'][flight]['cityFrom'] + ", " + data['data'][flight]['countryFrom']['name'] + "</td>"
+                str += "<td>" + data['data'][flight]['cityTo'] + ", " + data['data'][flight]['countryTo']['name'] + "</td>"
+                str += "<td>" + dateToFulldate(depTime) + "</td>"
+                str += "<td>" + dateToFulldate(arrTime) + "</td>"
+                if (data['data'][flight]['route'].length > 1) {
+                    str += "<td>"
+                    connectionsArr = []
+                    getConnections(data['data'][flight]['route'])
+                    for (var j = 0; j < connectionsArr.length - 1; j++) {
+                        str += connectionsArr[j] + ", "
+                    }
+                    str += "(" + j + " Connections)</td>"
+                }
+                else {
+                    str += "<td> No Stops</td>"
+                }
+                str += "<td>" + data['data'][flight]['route'][0]['airline'] + "</td>"
+                str += "<td>" + data['data'][flight]['price'] + " Euro</td>"
+                str += "<td><button type='button' class='btn btn-primary addBTN' id="+(i)+">Add</button></td></tr>"
+                i++
+                
+
+            }
+            str += "</tbody></table>"
+            document.getElementById('ph').innerHTML = str;
+        }
+
+        function getConnections(connectionsList) {
+            for (var j = 0; j < connectionsList.length; j++) {
+                connectionsArr.push(connectionsList[j]['cityTo'])
+            }
+
+        }
+
+        function postSuccess() {
+            console.log('Flight added')
+        }
+        function posterr(err) {
+            console.log(err)
+        }
+
+        function dateToFulldate(d) {
+            let min = d.getMinutes()
+            if (min < 10)  
+                return d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + "<br>" + (d.getHours()) + ":" + (d.getMinutes() + "0");
+            else
+                return d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + "<br>" + (d.getHours()) + ":" + (d.getMinutes())
+        }
+        function errorAPICB(err) {
+            console.log(err);
+        }
+
+        function fixDate(date) {
+            dateArr = date.split("-");
+            return dateArr[2] + "/" + dateArr[1] + "/" + dateArr[0];
+        }
+
+        function successCB(data) {
+
+            for (i in data['locations'])
+                countryCodes.push(data['locations'][i]['id'])
+        }
+        function errorCB(err) {
+            console.log(err);
+        }
+
+
+
+    </script>
+</head>
+<body>
+    <div class="container-fluid">
+        <img src="../images/banner.jpg" class="img-fluid" alt="Responsive image">
+        <form autocomplete="off" action="/action_page.php">
+            <table>
+                <tr><td><b>Flight from:</b></td></tr>
+                <tr class="autocomplete"><td><input type="text" id="fromTB" /></td><td><input type="date" id="fromDate" /></td></tr>
+                <tr><td><b>To:</b></td></tr>
+                <tr class="autocomplete"><td><input type="text" id="toTB" /></td><td><input type="date" id="toDate" /></td></tr>
+                <tr>
+                    <td><button class="btn btn-primary" type="button" id="srcBTN">Find Flights!</button></td>
+                </tr>
+                <tr>
+                    <td><button id="MyFlights" type="button" class="btn btn-primary">My Flights</button></td>
+                </tr>
+            </table>
+        </form>
+        <div id="ph"></div>
+    </div>
+</body>
+</html>
