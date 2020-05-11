@@ -28,18 +28,22 @@
             autocomplete(document.getElementById("toTB"), countryCodes);
             $("#fromDate").min = new Date().toISOString().split("T")[0];
             url = "https://api.skypicker.com/locations?type=dump&locale=en-US&location_types=airport&limit=4000&active_only=true&sort=name";
-            $.get(url).done(successCB);
-            $.get(url).fail(errorCB);
+            $('#GetAirports').click(loadAirports);
+            
 
             var now = new Date(),
                 // minimum date the user can choose, in this case now and in the future
                 minDate = now.toISOString().substring(0, 10);
 
-            $('#fromDate').prop('min', minDate);
+            $('#fromDate').prop('min', minDate);//Cant fly backwards
 
             $('#toDate').prop('min', minDate); //Cant fly backwards
         });
 
+        function loadAirports() { // Load the airports to the DB, Only Once!
+            $.get(url).done(successCB);
+            $.get(url).fail(errorCB);
+        }
         $(document).on("click", ".addBTN", function () {
             console.log(dataArr['data'][$(this).attr('id')])
             let from = dataArr['data'][$(this).attr('id')]['cityFrom']
@@ -173,8 +177,10 @@
 
         function successCB(data) {
 
-            for (i in data['locations'])
+            for (i in data['locations']) {
                 countryCodes.push(data['locations'][i]['id'])
+
+            }
         }
         function errorCB(err) {
             console.log(err);
@@ -198,9 +204,12 @@
                     
                 </tr>
                 <tr>
-                    <td><button id="MyFlights" type="submit" class="btn btn-primary">My Flights</button></td><!--Type should be submit!-->
+                    <td><button id="MyFlights" type="button" class="btn btn-primary">My Flights</button></td><!--Type should be submit!-->
                 </tr>
             </table>
+        </form>
+        <form>
+            <button id="GetAirports" type="button" class="btn btn-primary">Get Airports</button>
         </form>
         <div id="ph"></div>
         

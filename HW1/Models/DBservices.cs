@@ -41,7 +41,7 @@ namespace HW1.Models
         //--------------------------------------------------------------------------------------------------
         // This method inserts a car to the cars table 
         //--------------------------------------------------------------------------------------------------
-        public int insert(Flight car)
+        public int insert(Airport airport)
         {
 
             SqlConnection con;
@@ -57,7 +57,7 @@ namespace HW1.Models
                 throw (ex);
             }
 
-            String cStr = BuildInsertCommand(car);      // helper method to build the insert string
+            String cStr = BuildInsertCommand(airport);      // helper method to build the insert string
 
             cmd = CreateCommand(cStr, con);             // create the command
 
@@ -87,17 +87,28 @@ namespace HW1.Models
         //--------------------------------------------------------------------
         // Build the Insert command String
         //--------------------------------------------------------------------
-        private String BuildInsertCommand(Flight car)
+        //private String BuildInsertCommand(Flight car)
+        //{
+        //    String command;
+
+        //    StringBuilder sb = new StringBuilder();
+        //    // use a string builder to create the dynamic string
+        //    //sb.AppendFormat("Values('{0}', '{1}' ,{2}, {3})", car.Model, car.Manufacturer, car.Year.ToString(), car.Price.ToString());
+        //    //String prefix = "INSERT INTO Cars_CS " + "(model, manufacturer, year, price) ";
+        //    //command = prefix + sb.ToString();
+
+        //    command = "tesdt";//need to remove!!!!! 
+        //    return command;
+        //}
+        private String BuildInsertCommand(Airport airport)
         {
             String command;
 
             StringBuilder sb = new StringBuilder();
-            // use a string builder to create the dynamic string
-            //sb.AppendFormat("Values('{0}', '{1}' ,{2}, {3})", car.Model, car.Manufacturer, car.Year.ToString(), car.Price.ToString());
-            //String prefix = "INSERT INTO Cars_CS " + "(model, manufacturer, year, price) ";
-            //command = prefix + sb.ToString();
-
-            command = "tesdt";//need to remove!!!!! 
+            //use a string builder to create the dynamic string
+            sb.AppendFormat("Values('{0}', '{1}' ,{2}, {3}, {4}, {5})", airport.Airportcode, airport.Airportname, airport.Longitude, airport.Latitudes,airport.City,airport.Coutry);
+            String prefix = "INSERT INTO Airports_CS " + "(AirportCode, airportname, long, lat, airportcity, airportCountry) ";
+            command = prefix + sb.ToString();
             return command;
         }
         //---------------------------------------------------------------------------------
