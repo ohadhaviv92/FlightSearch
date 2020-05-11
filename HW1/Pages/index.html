@@ -30,6 +30,14 @@
             url = "https://api.skypicker.com/locations?type=dump&locale=en-US&location_types=airport&limit=4000&active_only=true&sort=name";
             $.get(url).done(successCB);
             $.get(url).fail(errorCB);
+
+            var now = new Date(),
+                // minimum date the user can choose, in this case now and in the future
+                minDate = now.toISOString().substring(0, 10);
+
+            $('#fromDate').prop('min', minDate);
+
+            $('#toDate').prop('min', minDate); //Cant fly backwards
         });
 
         $(document).on("click", ".addBTN", function () {
@@ -182,14 +190,15 @@
         <form autocomplete="off" action="/action_page.php">
             <table>
                 <tr><td><b>Flight from:</b></td></tr>
-                <tr class="autocomplete"><td><input type="text" id="fromTB" /></td><td><input type="date" id="fromDate" /></td></tr>
+                <tr class="autocomplete"><td><input required="required" type="text" id="fromTB" /></td><td><input required="required" type="date" id="fromDate" /></td></tr>
                 <tr><td><b>To:</b></td></tr>
-                <tr class="autocomplete"><td><input type="text" id="toTB" /></td><td><input type="date" id="toDate" /></td></tr>
+                <tr class="autocomplete"><td><input required="required" type="text" id="toTB" /></td><td><input required="required" type="date" id="toDate" /></td></tr>
                 <tr>
-                    <td><button class="btn btn-primary" type="button" id="srcBTN">Find Flights!</button></td>
+                    <td><button class="btn btn-primary" type="button" id="srcBTN">Find Flights!</button></td> <!--Type should be submit!-->
+                    
                 </tr>
                 <tr>
-                    <td><button id="MyFlights" type="button" class="btn btn-primary">My Flights</button></td>
+                    <td><button id="MyFlights" type="submit" class="btn btn-primary">My Flights</button></td><!--Type should be submit!-->
                 </tr>
             </table>
         </form>

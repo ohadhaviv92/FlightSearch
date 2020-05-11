@@ -6,113 +6,117 @@ using System.Data.SqlClient;
 using System.Web.Configuration;
 using System.Data;
 using System.Text;
-using WebApplication1.Models;
+
 
 /// <summary>
 /// DBServices is a class created by me to provides some DataBase Services
 /// </summary>
-public class DBservices
+namespace HW1.Models
 {
-    public SqlDataAdapter da;
-    public DataTable dt;
-
-    public DBservices()
+    public class DBservices
     {
-        //
-        // TODO: Add constructor logic here
-        //
-    }
+        public SqlDataAdapter da;
+        public DataTable dt;
 
-    //--------------------------------------------------------------------------------------------------
-    // This method creates a connection to the database according to the connectionString name in the web.config 
-    //--------------------------------------------------------------------------------------------------
-    public SqlConnection connect(String conString)
-    {
-
-        // read the connection string from the configuration file
-        string cStr = WebConfigurationManager.ConnectionStrings[conString].ConnectionString;
-        SqlConnection con = new SqlConnection(cStr);
-        con.Open();
-        return con;
-    }
-
-    //--------------------------------------------------------------------------------------------------
-    // This method inserts a car to the cars table 
-    //--------------------------------------------------------------------------------------------------
-    public int insert(Car car)
-    {
-
-        SqlConnection con;
-        SqlCommand cmd;
-
-        try
+        public DBservices()
         {
-            con = connect("DBConnectionString"); // create the connection
-        }
-        catch (Exception ex)
-        {
-            // write to log
-            throw (ex);
+            //
+            // TODO: Add constructor logic here
+            //
         }
 
-        String cStr = BuildInsertCommand(car);      // helper method to build the insert string
-
-        cmd = CreateCommand(cStr, con);             // create the command
-
-        try
+        //--------------------------------------------------------------------------------------------------
+        // This method creates a connection to the database according to the connectionString name in the web.config 
+        //--------------------------------------------------------------------------------------------------
+        public SqlConnection connect(String conString)
         {
-            int numEffected = cmd.ExecuteNonQuery(); // execute the command
-            return numEffected;
-        }
-        catch (Exception ex)
-        {
-            return 0;
-            // write to log
-            throw (ex);
+
+            // read the connection string from the configuration file
+            string cStr = WebConfigurationManager.ConnectionStrings[conString].ConnectionString;
+            SqlConnection con = new SqlConnection(cStr);
+            con.Open();
+            return con;
         }
 
-        finally
+        //--------------------------------------------------------------------------------------------------
+        // This method inserts a car to the cars table 
+        //--------------------------------------------------------------------------------------------------
+        public int insert(Flight car)
         {
-            if (con != null)
+
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
             {
-                // close the db connection
-                con.Close();
+                con = connect("DBConnectionString"); // create the connection
             }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+
+            String cStr = BuildInsertCommand(car);      // helper method to build the insert string
+
+            cmd = CreateCommand(cStr, con);             // create the command
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                return 0;
+                // write to log
+                throw (ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+
         }
 
-    }
+        //--------------------------------------------------------------------
+        // Build the Insert command String
+        //--------------------------------------------------------------------
+        private String BuildInsertCommand(Flight car)
+        {
+            String command;
 
-    //--------------------------------------------------------------------
-    // Build the Insert command String
-    //--------------------------------------------------------------------
-    private String BuildInsertCommand(Car car)
-    {
-        String command;
+            StringBuilder sb = new StringBuilder();
+            // use a string builder to create the dynamic string
+            //sb.AppendFormat("Values('{0}', '{1}' ,{2}, {3})", car.Model, car.Manufacturer, car.Year.ToString(), car.Price.ToString());
+            //String prefix = "INSERT INTO Cars_CS " + "(model, manufacturer, year, price) ";
+            //command = prefix + sb.ToString();
 
-        StringBuilder sb = new StringBuilder();
-        // use a string builder to create the dynamic string
-        sb.AppendFormat("Values('{0}', '{1}' ,{2}, {3})", car.Model, car.Manufacturer, car.Year.ToString(), car.Price.ToString());
-        String prefix = "INSERT INTO Cars_CS " + "(model, manufacturer, year, price) ";
-        command = prefix + sb.ToString();
+            command = "tesdt";//need to remove!!!!! 
+            return command;
+        }
+        //---------------------------------------------------------------------------------
+        // Create the SqlCommand
+        //---------------------------------------------------------------------------------
+        private SqlCommand CreateCommand(String CommandSTR, SqlConnection con)
+        {
 
-        return command;
-    }
-    //---------------------------------------------------------------------------------
-    // Create the SqlCommand
-    //---------------------------------------------------------------------------------
-    private SqlCommand CreateCommand(String CommandSTR, SqlConnection con)
-    {
+            SqlCommand cmd = new SqlCommand(); // create the command object
 
-        SqlCommand cmd = new SqlCommand(); // create the command object
+            cmd.Connection = con;              // assign the connection to the command object
 
-        cmd.Connection = con;              // assign the connection to the command object
+            cmd.CommandText = CommandSTR;      // can be Select, Insert, Update, Delete 
 
-        cmd.CommandText = CommandSTR;      // can be Select, Insert, Update, Delete 
+            cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
 
-        cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
+            cmd.CommandType = System.Data.CommandType.Text; // the type of the command, can also be stored procedure
 
-        cmd.CommandType = System.Data.CommandType.Text; // the type of the command, can also be stored procedure
-
-        return cmd;
+            return cmd;
+        }
     }
 }
