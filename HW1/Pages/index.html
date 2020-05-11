@@ -6,7 +6,7 @@
     <link href="css.css" rel="stylesheet" />
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-
+    
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
@@ -17,6 +17,8 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     <script src="../Scripts/autoComplte.js"></script>
     <script src="../Scripts/ajaxCalls.js"></script>
+    <script type="text/javascript" src="../Scripts/airlines.json"></script>
+
     <script>
         countryCodes = [];
         Myflightsarr = [];
@@ -30,6 +32,7 @@
             url = "https://api.skypicker.com/locations?type=dump&locale=en-US&location_types=airport&limit=4000&active_only=true&sort=name";
             $('#GetAirports').click(loadAirports);
             
+             $('#GetAirLines').click(loadAirLines);
 
             var now = new Date(),
                 // minimum date the user can choose, in this case now and in the future
@@ -40,10 +43,21 @@
             $('#toDate').prop('min', minDate); //Cant fly backwards
         });
 
+        function loadAirLines() {
+            console.log(airLines);
+            //$.get(url).done(successLoadAirlines);
+            //$.get(url).fail(errorCB);
+        }
+
         function loadAirports() { // Load the airports to the DB, Only Once!
+
+
             $.get(url).done(successCB);
             $.get(url).fail(errorCB);
         }
+
+
+
         $(document).on("click", ".addBTN", function () {
             console.log(dataArr['data'][$(this).attr('id')])
             let from = dataArr['data'][$(this).attr('id')]['cityFrom']
@@ -186,6 +200,10 @@
             console.log(err);
         }
 
+       function successLoadAirlines(data) {
+
+
+        }
 
 
     </script>
@@ -210,6 +228,7 @@
         </form>
         <form>
             <button id="GetAirports" type="button" class="btn btn-primary">Get Airports</button>
+            <button id="GetAirLines" type="button" class="btn btn-primary">Get AirLines</button>
         </form>
         <div id="ph"></div>
         
