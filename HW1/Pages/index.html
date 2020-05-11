@@ -27,8 +27,9 @@
             autocomplete(document.getElementById("fromTB"), countryCodes);
             autocomplete(document.getElementById("toTB"), countryCodes);
             $("#fromDate").min = new Date().toISOString().split("T")[0];
-            url = "https://api.skypicker.com/locations?type=dump&locale=en-US&location_types=airport&limit=4000&active_only=true&sort=name";
+            url = "https://api.skypicker.com/locations?type=dump&locale=en-US&location_types=airport&limit=2000&active_only=true&sort=name";
             $('#GetAirports').click(loadAirports);
+
             
 
             var now = new Date(),
@@ -40,9 +41,10 @@
             $('#toDate').prop('min', minDate); //Cant fly backwards
         });
 
-        function loadAirports() { // Load the airports to the DB, Only Once!
+        function loadAirports() {
             $.get(url).done(successCB);
-            $.get(url).fail(errorCB);
+            $.get(url).fail(errorCB);// Load the airports to the DB, Only Once!
+           
         }
         $(document).on("click", ".addBTN", function () {
             console.log(dataArr['data'][$(this).attr('id')])
@@ -179,6 +181,16 @@
 
             for (i in data['locations']) {
                 countryCodes.push(data['locations'][i]['id'])
+                airport = { // Note that the name of the fields must be identical to the names of the properties of the object in the server
+                    AirportCode: data['locations'][i]['code'],
+                    Airportname: data['locations'][i]['name'],
+                    Longitude: data['locations'][i]['location']['lon'],
+                    Latitudes: data['locations'][i]['location']['lat'],
+                    City: data['locations'][i]['city']['name'],
+                    Coutry: data['locations'][i]['city']['country']['name']
+                    
+                };
+                ajaxCall("POST", "../api/Airport", JSON.stringify(airport), postSuccess, errorCB)
 
             }
         }
@@ -208,9 +220,9 @@
                 </tr>
             </table>
         </form>
-        <form>
+
             <button id="GetAirports" type="button" class="btn btn-primary">Get Airports</button>
-        </form>
+
         <div id="ph"></div>
         
     </div>
