@@ -41,6 +41,52 @@ namespace HW1.Models
         //--------------------------------------------------------------------------------------------------
         // This method inserts a car to the cars table 
         //--------------------------------------------------------------------------------------------------
+
+        public int insert(Airline airline)
+        {
+
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+
+            String cStr = BuildInsertCommand(airline);      // helper method to build the insert string
+
+            cmd = CreateCommand(cStr, con);             // create the command
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                return 0;
+                // write to log
+                throw (ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+
+        }
+
+
+
         public int insert(Airport airport)
         {
 
@@ -100,6 +146,18 @@ namespace HW1.Models
         //    command = "tesdt";//need to remove!!!!! 
         //    return command;
         //}
+
+        private String BuildInsertCommand(Airline airline)
+        {
+            String command;
+
+            StringBuilder sb = new StringBuilder();
+            //use a string builder to create the dynamic string
+            sb.AppendFormat("Values('{0}', '{1}')", airline.AirlineCode, airline.AirlineName);
+            String prefix = "INSERT INTO Airlines_CS " + "(AirlineCode, AirlineName) ";
+            command = prefix + sb.ToString();
+            return command;
+        }
         private String BuildInsertCommand(Airport airport)
         {
             String command;
@@ -123,7 +181,7 @@ namespace HW1.Models
 
             cmd.CommandText = CommandSTR;      // can be Select, Insert, Update, Delete 
 
-            cmd.CommandTimeout = 10;           // Time to wait for the execution' The default is 30 seconds
+            cmd.CommandTimeout = 100;           // Time to wait for the execution' The default is 30 seconds
 
             cmd.CommandType = System.Data.CommandType.Text; // the type of the command, can also be stored procedure
 

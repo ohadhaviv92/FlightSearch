@@ -1,4 +1,4 @@
-airLines=[
+airlinesJSON=[
 {"id":"1","name":"Private flight","alias":"\\N","iata":"-","icao":"N/A","callsign":"","country":"","active":"Y"}
 ,
 {"id":"2","name":"135 Airways","alias":"\\N","iata":"","icao":"GNL","callsign":"GENERAL","country":"United States","active":"N"}
