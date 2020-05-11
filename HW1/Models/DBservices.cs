@@ -106,8 +106,8 @@ namespace HW1.Models
 
             StringBuilder sb = new StringBuilder();
             //use a string builder to create the dynamic string
-            sb.AppendFormat("Values('{0}', '{1}' ,{2}, {3}, {4}, {5})", airport.Airportcode, airport.Airportname, airport.Longitude, airport.Latitudes,airport.City,airport.Coutry);
-            String prefix = "INSERT INTO Airports_CS " + "(AirportCode, airportname, long, lat, airportcity, airportCountry) ";
+            sb.AppendFormat("Values('{0}', '{1}' ,'{2}', '{3}', '{4}', '{5}')", airport.Airportcode, airport.Airportname, airport.Longitude, airport.Latitudes,airport.City,airport.Coutry);
+            String prefix = "INSERT INTO Airports_CS " + "(AirportCode, Airportname, Longitude, Latitudes, City, Country) ";
             command = prefix + sb.ToString();
             return command;
         }

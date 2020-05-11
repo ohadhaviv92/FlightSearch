@@ -7,14 +7,14 @@ namespace HW1.Models
 {
     public class Airport
     {
-        int airportcode;
+        string airportcode;
         string airportname;
-        int longitude;
-        int latitudes;
+        string longitude;
+        string latitudes;
         string city;
         string coutry;
 
-        public Airport(int airportcode, string airportname, int longitude, int latitudes, string city, string coutry)
+        public Airport(string airportcode, string airportname, string longitude, string latitudes, string city, string coutry)
         {
             Airportcode = airportcode;
             Airportname = airportname;
@@ -24,10 +24,10 @@ namespace HW1.Models
             Coutry = coutry;
         }
 
-        public int Airportcode { get => airportcode; set => airportcode = value; }
+        public string Airportcode { get => airportcode; set => airportcode = value; }
         public string Airportname { get => airportname; set => airportname = value; }
-        public int Longitude { get => longitude; set => longitude = value; }
-        public int Latitudes { get => latitudes; set => latitudes = value; }
+        public string Longitude { get => longitude; set => longitude = value; }
+        public string Latitudes { get => latitudes; set => latitudes = value; }
         public string City { get => city; set => city = value; }
         public string Coutry { get => coutry; set => coutry = value; }
 
