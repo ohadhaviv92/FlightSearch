@@ -58,6 +58,24 @@
         
         }
 
+        function successCB(data) {
+
+            for (i in data['locations']) {
+                countryCodes.push(data['locations'][i]['id'])
+                airport = { // Note that the name of the fields must be identical to the names of the properties of the object in the server
+                    AirportCode: data['locations'][i]['code'],
+                    Airportname: data['locations'][i]['name'],
+                    Longitude: data['locations'][i]['location']['lon'],
+                    Latitudes: data['locations'][i]['location']['lat'],
+                    City: data['locations'][i]['city']['name'],
+                    Coutry: data['locations'][i]['city']['country']['name']
+
+                };
+                ajaxCall("POST", "../api/Airport", JSON.stringify(airport), postSuccess, errorCB)
+
+            }
+        }
+
         function loadAirports() { // Load the airports to the DB, Only Once!
 
 
@@ -198,23 +216,7 @@
             return dateArr[2] + "/" + dateArr[1] + "/" + dateArr[0];
         }
 
-        function successCB(data) {
 
-            for (i in data['locations']) {
-                countryCodes.push(data['locations'][i]['id'])
-                airport = { // Note that the name of the fields must be identical to the names of the properties of the object in the server
-                    AirportCode: data['locations'][i]['code'],
-                    Airportname: data['locations'][i]['name'],
-                    Longitude: data['locations'][i]['location']['lon'],
-                    Latitudes: data['locations'][i]['location']['lat'],
-                    City: data['locations'][i]['city']['name'],
-                    Coutry: data['locations'][i]['city']['country']['name']
-
-                };
-                ajaxCall("POST", "../api/Airport", JSON.stringify(airport), postSuccess, errorCB)
-
-            }
-        }
 
 
         function errorCB(err) {
