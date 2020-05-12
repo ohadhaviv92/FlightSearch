@@ -169,6 +169,18 @@ namespace HW1.Models
             command = prefix + sb.ToString();
             return command;
         }
+
+        private String BuildInsertCommand(Flight flight)
+        {
+            String command;
+
+            StringBuilder sb = new StringBuilder();
+            //use a string builder to create the dynamic string
+            sb.AppendFormat("Values('{0}', '{1}' ,'{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}')", flight.FlightPath1, flight.AirportFrom1, flight.AirportTo1, flight.DepTime1, flight.ArriveTime1, flight.Duration1, flight.Price, flight.LegsNumber1);
+            String prefix = "INSERT INTO Airports_CS " + "(FlightPath, AirportFrom, AirportTo, DepTime, ArriveTime, Duration, Price, LegsNumber) ";
+            command = prefix + sb.ToString();
+            return command;
+        }
         //---------------------------------------------------------------------------------
         // Create the SqlCommand
         //---------------------------------------------------------------------------------
