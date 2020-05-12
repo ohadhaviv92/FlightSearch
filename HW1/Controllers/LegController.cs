@@ -25,7 +25,7 @@ namespace HW1.Controllers
         // POST api/<controller>
         public void Post([FromBody]Leg l)
         {
-            l.insert();
+            //l.insert();
         }
 
         // PUT api/<controller>/5

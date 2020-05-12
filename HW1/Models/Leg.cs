@@ -43,11 +43,12 @@ namespace HW1.Models
         public string ArriveTime1 { get => ArriveTime; set => ArriveTime = value; }
         public string Duration1 { get => Duration; set => Duration = value; }
 
-        public int insert()
-        {
-
-            return 1;
-        }
+        //public int insert()
+        //{
+        //    DBservices db = new DBservices();
+        //    db.insert(this);
+        //    return 0;
+        //}
     }
 
 
