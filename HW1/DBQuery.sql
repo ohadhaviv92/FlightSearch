@@ -31,6 +31,8 @@ create table MyFlights_CS(
 )
 
 
+
+
 create table Airports_CS(
 AirportCode nvarchar(30) primary key,
 Airportname nvarchar(40),

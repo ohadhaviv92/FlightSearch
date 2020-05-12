@@ -36,6 +36,8 @@ namespace HW1.Models
         public string AirlineName { get => airlineName; set => airlineName = value; }
         public List<string> Stops { get => stops; set => stops = value; }
 
+
+   
         public int insert()
         {
             flightList.Add(this);

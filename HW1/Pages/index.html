@@ -23,6 +23,7 @@
     <script>
         countryCodes = [];
         Myflightsarr = [];
+        flag = 0;
         dataArr = {} //Store the current search arr
         $(document).ready(function () {
             $("#srcBTN").submit(searchFlights);
@@ -69,23 +70,31 @@
 
         function successCB(data) {
             var options = "";
+            ajaxCall("GET", "../api/Airport", "", SCGetAirportTable, errMyFlights);
+            
             for (i in data['locations']) {
                  options += '<option value="'+data['locations'][i]['id']+'" >'+data['locations'][i]['name']+'</option>';
-                
-                //airport = { // Note that the name of the fields must be identical to the names of the properties of the object in the server
-                //    AirportCode: data['locations'][i]['code'],
-                //    Airportname: data['locations'][i]['name'],
-                //    Longitude: data['locations'][i]['location']['lon'],
-                //    Latitudes: data['locations'][i]['location']['lat'],
-                //    City: data['locations'][i]['city']['name'],
-                //    Coutry: data['locations'][i]['city']['country']['name']
+                if (flag == 0) {
+                    airport = { // Note that the name of the fields must be identical to the names of the properties of the object in the server
+                        AirportCode: data['locations'][i]['code'],
+                        Airportname: data['locations'][i]['name'],
+                        Longitude: data['locations'][i]['location']['lon'],
+                        Latitudes: data['locations'][i]['location']['lat'],
+                        City: data['locations'][i]['city']['name'],
+                        Coutry: data['locations'][i]['city']['country']['name']
 
-                //};
-                //ajaxCall("POST", "../api/Airport", JSON.stringify(airport), postSuccess, errorCB)
-
+                    };
+                    ajaxCall("POST", "../api/Airport", JSON.stringify(airport), postSuccess, errorCB)
+                 }
             }
             document.getElementById('airportFrom').innerHTML = options;
             document.getElementById('airportTo').innerHTML = options;
+        }
+
+        function SCGetAirportTable(data) {
+            if (data != "" && data != null) {
+                flag = 1;
+            }
         }
 
         function loadAirports() { // Load the airports to the DB, Only Once!
@@ -151,8 +160,8 @@
         }
 
         function searchFlights() {
-            let from = $("#fromTB").val()
-            let to = $("#toTB").val()
+            let from = $("#airportFrom").val()
+            let to = $("#airportTo").val()
             let dep = $("#fromDate").val()
             let arrive = $("#toDate").val()
             let url = "https://api.skypicker.com/flights?flyFrom=" + from + "&to=" + to + "&dateFrom=" + fixDate(dep) + "&dateTo=" + fixDate(arrive) + "&partner=picky"

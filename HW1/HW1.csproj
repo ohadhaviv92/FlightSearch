@@ -167,6 +167,7 @@
     <Compile Include="Models\Airport.cs" />
     <Compile Include="Models\DBservices.cs" />
     <Compile Include="Models\Flight.cs" />
+    <Compile Include="Models\Leg.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
