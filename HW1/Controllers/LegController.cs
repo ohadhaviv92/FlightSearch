@@ -1,19 +1,19 @@
-﻿using System;
+﻿using HW1.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using HW1.Models;
 
 namespace HW1.Controllers
 {
-    public class FlightController : ApiController
+    public class LegController : ApiController
     {
         // GET api/<controller>
-        public IEnumerable<Flight> Get()
+        public IEnumerable<string> Get()
         {
-            return Flight.FlightList;
+            return new string[] { "value1", "value2" };
         }
 
         // GET api/<controller>/5
@@ -23,9 +23,9 @@ namespace HW1.Controllers
         }
 
         // POST api/<controller>
-        public void Post([FromBody]Flight flight)
+        public void Post([FromBody]Leg l)
         {
-            flight.insert();
+            //l.insert();
         }
 
         // PUT api/<controller>/5

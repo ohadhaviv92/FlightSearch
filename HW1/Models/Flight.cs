@@ -7,41 +7,48 @@ namespace HW1.Models
 {
     public class Flight
     {
-        static public List<Flight> flightList = new List<Flight>();
-        string from;
-        string to;
-        double price;
-        string depTime;
-        string arriveTime;
-        List<string> stops = new List<string>();
-        string airlineName;
+        private static List<Flight> flightList = new List<Flight>();
+        string FlightPath;
+        string AirportFrom;
+        string AirportTo;
+        string DepTime;
+        string ArriveTime;
+        string Duration;
+        float price;
+        int LegsNumber;
+        List<Leg> stops = new List<Leg>();
 
-        public Flight(string from, string to, double price, string depTime, string arriveTime, List<string> stops, string airlineName)
+        public Flight(string flightPath1, string airportFrom1, string airportTo1, string depTime1, string arriveTime1, string duration1, float price, int legsNumber1, List<Leg> stops)
         {
-            this.from = from;
-            this.to = to;
-            this.price = price;
-            this.depTime = depTime;
-            this.arriveTime = arriveTime;
-            this.Stops = stops;
-            this.airlineName = airlineName;
+            FlightPath1 = flightPath1;
+            AirportFrom1 = airportFrom1;
+            AirportTo1 = airportTo1;
+            DepTime1 = depTime1;
+            ArriveTime1 = arriveTime1;
+            Duration1 = duration1;
+            Price = price;
+            LegsNumber1 = legsNumber1;
+            Stops = stops;
         }
 
-        public string From { get => from; set => from = value; }
-        public string To { get => to; set => to = value; }
-        public double Price { get => price; set => price = value; }
-        public string DepTime { get => depTime; set => depTime = value; }
-        public string ArriveTime { get => arriveTime; set => arriveTime = value; }
-       
-        public string AirlineName { get => airlineName; set => airlineName = value; }
-        public List<string> Stops { get => stops; set => stops = value; }
+        public static List<Flight> FlightList { get => flightList; set => flightList = value; }
+        public string FlightPath1 { get => FlightPath; set => FlightPath = value; }
+        public string AirportFrom1 { get => AirportFrom; set => AirportFrom = value; }
+        public string AirportTo1 { get => AirportTo; set => AirportTo = value; }
+        public string DepTime1 { get => DepTime; set => DepTime = value; }
+        public string ArriveTime1 { get => ArriveTime; set => ArriveTime = value; }
+        public string Duration1 { get => Duration; set => Duration = value; }
+        public float Price { get => price; set => price = value; }
+        public int LegsNumber1 { get => LegsNumber; set => LegsNumber = value; }
+        public List<Leg> Stops { get => stops; set => stops = value; }
 
 
    
         public int insert()
         {
-            flightList.Add(this);
-            return 1;
+            DBservices db = new DBservices();
+            db.insert(this);
+            return 0;
         }   
     }
 
