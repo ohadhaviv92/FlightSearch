@@ -103,10 +103,15 @@
             let depTime = dataArr['data'][$(this).attr('id')]['dTime']
             let aTime = dataArr['data'][$(this).attr('id')]['aTime']
             let airline = dataArr['data'][$(this).attr('id')]['route'][0]['airline']
-            stops = []
+            legs = [dataArr['data'][$(this).attr('id')]['route'].length]
             for (i = 0; i < dataArr['data'][$(this).attr('id')]['route'].length; i++) {
-                stops.push(dataArr['data'][$(this).attr('id')]['route'][i]['cityTo'])
+                legs.push(dataArr['data'][$(this).attr('id')]['route'][i]['cityTo']) ///////need to add the legs here!!!!!!!!!!!!!!!!!!!!
+                l = {
+                    id: dataArr['data'][$(this).attr('id')]['route'][i]['id'], fullpathid: dataArr['data'][$(this).attr('id')]['id'], legnumber: (i + 1), flight_no: dataArr['data'][$(this).attr('id')]['route'][i]['flight_no'], fromairport: dataArr['data'][$(this).attr('id')]['route'][i]['flyFrom'], toairport: dataArr['data'][$(this).attr('id')]['route'][i]['flyTo'], airlinecode: dataArr['data'][$(this).attr('id')]['route'][i]['airline'], DepTime: dataArr['data'][$(this).attr('id')]['route'][i]['dTime'], ArriveTime: dataArr['data'][$(this).attr('id')]['route'][i]['aTime'], Duration: "fix this"
+                }
+                legs.push(l) ///////need to add the legs here!!!!!!!!!!!!!!!!!!!!
             }
+
             flight = { From: from, To: to, Price: price, DepTime: depTime, ArriveTime: aTime, Stops: stops, AirlineName: airline }
             ajaxCall('POST', "../api/flight", JSON.stringify(flight), postSuccess, posterr)
         });
