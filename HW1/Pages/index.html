@@ -23,6 +23,7 @@
     <script>
         countryCodes = [];
         Myflightsarr = [];
+        data2 = {};
         flag = 0;
         dataArr = {} //Store the current search arr
         $(document).ready(function () {
@@ -69,19 +70,26 @@
         }
 
         function successCB(data) {
-            var options = "";
+            data2 = data;
             ajaxCall("GET", "../api/Airport", "", SCGetAirportTable, errMyFlights);
-            
-            for (i in data['locations']) {
-                 options += '<option value="'+data['locations'][i]['id']+'" >'+data['locations'][i]['name']+'</option>';
+        
+        }
+
+        function SCGetAirportTable(data) {
+            if (data != "" && data != null) {
+                flag = 1;
+            }
+                var options = "";
+            for (i in data2['locations']) {
+                 options += '<option value="'+data2['locations'][i]['id']+'" >'+data2['locations'][i]['name']+'</option>';
                 if (flag == 0) {
                     airport = { // Note that the name of the fields must be identical to the names of the properties of the object in the server
-                        AirportCode: data['locations'][i]['code'],
-                        Airportname: data['locations'][i]['name'],
-                        Longitude: data['locations'][i]['location']['lon'],
-                        Latitudes: data['locations'][i]['location']['lat'],
-                        City: data['locations'][i]['city']['name'],
-                        Coutry: data['locations'][i]['city']['country']['name']
+                        AirportCode: data2['locations'][i]['code'],
+                        Airportname: data2['locations'][i]['name'],
+                        Longitude: data2['locations'][i]['location']['lon'],
+                        Latitudes: data2['locations'][i]['location']['lat'],
+                        City: data2['locations'][i]['city']['name'],
+                        Coutry: data2['locations'][i]['city']['country']['name']
 
                     };
                     ajaxCall("POST", "../api/Airport", JSON.stringify(airport), postSuccess, errorCB)
@@ -89,12 +97,6 @@
             }
             document.getElementById('airportFrom').innerHTML = options;
             document.getElementById('airportTo').innerHTML = options;
-        }
-
-        function SCGetAirportTable(data) {
-            if (data != "" && data != null) {
-                flag = 1;
-            }
         }
 
         function loadAirports() { // Load the airports to the DB, Only Once!
@@ -167,12 +169,12 @@
             document.getElementById('ph').innerHTML = str;
         }
         function errMyFlights(err) {
-            console.log(errMyFlights)
+            console.log(1);
         }
 
         function searchFlights() {
-            let from = $("#airportFrom").val()
-            let to = $("#airportTo").val()
+            let from = $(".airportFrom").val()
+            let to = $(".airportTo").val()
             let dep = $("#fromDate").val()
             let arrive = $("#toDate").val()
             let url = "https://api.skypicker.com/flights?flyFrom=" + from + "&to=" + to + "&dateFrom=" + fixDate(dep) + "&dateTo=" + fixDate(arrive) + "&partner=picky"
@@ -266,9 +268,9 @@
         <form autocomplete="off" action="" id="srcBTN">
             <table>
                 <tr><td><b>Flight from:</b></td></tr>
-                <tr><td>  <input name="airPort" list="airportFrom" required/>  <datalist id="airportFrom"></datalist></td><td><input required="required" type="date" id="fromDate" /></td></tr>
+                <tr><td>  <input name="airPort" list="airportFrom" class="airportFrom" required/>  <datalist id="airportFrom"></datalist></td><td><input required="required" type="date" id="fromDate" /></td></tr>
                 <tr><td><b>To:</b></td></tr>
-                <tr ><td><input name="airPort" list="airportTo" required/>  <datalist id="airportTo"></datalist></td><td><input required="required" type="date" id="toDate" /></td></tr>
+                <tr ><td><input name="airPort" list="airportTo" class="airportTo" required/>  <datalist id="airportTo"></datalist></td><td><input required="required" type="date" id="toDate" /></td></tr>
                 <tr>
                     <td><button class="btn btn-primary" type="submit" >Find Flights!</button></td> <!--Type should be submit!-->
                 </tr>
