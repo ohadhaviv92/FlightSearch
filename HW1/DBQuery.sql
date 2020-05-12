@@ -29,3 +29,13 @@ create table MyFlights_CS(
  FOREIGN KEY (AirportFrom) REFERENCES Airports_CS(AirportCode),
   FOREIGN KEY (AirportTo) REFERENCES Airports_CS(AirportCode)
 )
+
+
+create table Airports_CS(
+AirportCode nvarchar(30) primary key,
+Airportname nvarchar(40),
+Longitude nvarchar(15),
+Latitudes nvarchar(15),
+City nvarchar(30),
+Country nvarchar(40),
+)
