@@ -16,9 +16,8 @@ namespace HW1.Models
         string Duration;
         float price;
         int LegsNumber;
-        List<Leg> stops = new List<Leg>();
 
-        public Flight(string flightPath1, string airportFrom1, string airportTo1, string depTime1, string arriveTime1, string duration1, float price, int legsNumber1, List<Leg> stops)
+        public Flight(string flightPath1, string airportFrom1, string airportTo1, string depTime1, string arriveTime1, string duration1, float price, int legsNumber1)
         {
             FlightPath1 = flightPath1;
             AirportFrom1 = airportFrom1;
@@ -28,7 +27,7 @@ namespace HW1.Models
             Duration1 = duration1;
             Price = price;
             LegsNumber1 = legsNumber1;
-            Stops = stops;
+            
         }
 
         public static List<Flight> FlightList { get => flightList; set => flightList = value; }
@@ -40,7 +39,6 @@ namespace HW1.Models
         public string Duration1 { get => Duration; set => Duration = value; }
         public float Price { get => price; set => price = value; }
         public int LegsNumber1 { get => LegsNumber; set => LegsNumber = value; }
-        public List<Leg> Stops { get => stops; set => stops = value; }
 
 
    

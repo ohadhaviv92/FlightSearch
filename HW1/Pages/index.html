@@ -105,6 +105,7 @@
 
 
         $(document).on("click", ".addBTN", function () {
+            counter = 0;
             console.log(dataArr['data'][$(this).attr('id')])
             let from = dataArr['data'][$(this).attr('id')]['cityFrom']
             let to = dataArr['data'][$(this).attr('id')]['cityTo']
@@ -113,16 +114,21 @@
             let aTime = dataArr['data'][$(this).attr('id')]['aTime']
             let airline = dataArr['data'][$(this).attr('id')]['route'][0]['airline']
             legs = [dataArr['data'][$(this).attr('id')]['route'].length]
-            for (i = 0; i < dataArr['data'][$(this).attr('id')]['route'].length; i++) {
-                legs.push(dataArr['data'][$(this).attr('id')]['route'][i]['cityTo']) ///////need to add the legs here!!!!!!!!!!!!!!!!!!!!
-                l = {
-                    id: dataArr['data'][$(this).attr('id')]['route'][i]['id'], fullpathid: dataArr['data'][$(this).attr('id')]['id'], legnumber: (i + 1), flight_no: dataArr['data'][$(this).attr('id')]['route'][i]['flight_no'], fromairport: dataArr['data'][$(this).attr('id')]['route'][i]['flyFrom'], toairport: dataArr['data'][$(this).attr('id')]['route'][i]['flyTo'], airlinecode: dataArr['data'][$(this).attr('id')]['route'][i]['airline'], DepTime: dataArr['data'][$(this).attr('id')]['route'][i]['dTime'], ArriveTime: dataArr['data'][$(this).attr('id')]['route'][i]['aTime'], Duration: "fix this"
-                }
-                legs.push(l) ///////need to add the legs here!!!!!!!!!!!!!!!!!!!!
+            for (var i = 0; i < dataArr['data'][$(this).attr('id')]['route'].length; i++) {
+                counter++;
             }
 
-            flight = { From: from, To: to, Price: price, DepTime: depTime, ArriveTime: aTime, Stops: stops, AirlineName: airline }
+
+            flight = { FlightPath1: dataArr['data'][$(this).attr('id')]['id'], AirportFrom1: dataArr['data'][$(this).attr('id')]['flyFrom'], AirportTo1: dataArr['data'][$(this).attr('id')]['flyTo'], DepTime1: dataArr['data'][$(this).attr('id')]['dTime'], ArriveTime1: dataArr['data'][$(this).attr('id')]['aTime'], Duration1: dataArr['data'][$(this).attr('id')]['duration']['total'], price: parseFloat(dataArr['data'][$(this).attr('id')]['price']), LegsNumber1:counter}
             ajaxCall('POST', "../api/flight", JSON.stringify(flight), postSuccess, posterr)
+            for (i = 0; i < counter; i++) {
+                legs.push(dataArr['data'][$(this).attr('id')]['route'][i]['cityTo']) ///////need to add the legs here!!!!!!!!!!!!!!!!!!!!
+                l = {
+                    id: dataArr['data'][$(this).attr('id')]['route'][i]['id'], fullpathid: dataArr['data'][$(this).attr('id')]['id'], legnumber: (i + 1), flight_no: dataArr['data'][$(this).attr('id')]['route'][i]['flight_no'], fromairport: dataArr['data'][$(this).attr('id')]['route'][i]['flyFrom'], toairport: dataArr['data'][$(this).attr('id')]['route'][i]['flyTo'], airlinecode: dataArr['data'][$(this).attr('id')]['route'][i]['airline'], DepTime1: dataArr['data'][$(this).attr('id')]['route'][i]['dTime'], ArriveTime1: dataArr['data'][$(this).attr('id')]['route'][i]['aTime'], Duration1: "fix this"
+                }
+                legs.push(l) ///////need to add the legs here!!!!!!!!!!!!!!!!!!!!
+                ajaxCall('POST', "../api/Leg", JSON.stringify(l), postSuccess, posterr)
+            }
         });
 
 

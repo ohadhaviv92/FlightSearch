@@ -219,6 +219,49 @@ namespace HW1.Models
 
         }
 
+        public int insert(Leg l)
+        {
+
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+
+            String cStr = BuildInsertCommand(l);      // helper method to build the insert string
+
+            cmd = CreateCommand(cStr, con);             // create the command
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                return 0;
+                // write to log
+                throw (ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+
+        }
+
         //--------------------------------------------------------------------
         // Build the Insert command String
         //--------------------------------------------------------------------
@@ -265,23 +308,23 @@ namespace HW1.Models
 
             StringBuilder sb = new StringBuilder();
             //use a string builder to create the dynamic string
-            sb.AppendFormat("Values('{0}', '{1}' ,'{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}')", flight.FlightPath1, flight.AirportFrom1, flight.AirportTo1, flight.DepTime1, flight.ArriveTime1, flight.Duration1, flight.Price, flight.LegsNumber1);
-            String prefix = "INSERT INTO Airports_CS " + "(FlightPath, AirportFrom, AirportTo, DepTime, ArriveTime, Duration, Price, LegsNumber) ";
+            sb.AppendFormat("Values('{0}', '{1}' ,'{2}', '{3}', '{4}', '{5}', '{6}', '{7}')", flight.FlightPath1, flight.AirportFrom1, flight.AirportTo1, flight.DepTime1, flight.ArriveTime1, flight.Duration1, flight.Price, flight.LegsNumber1);
+            String prefix = "INSERT INTO MyFlights_CS " + "(FlightPath, AirportFrom, AirportTo, DepTime, ArriveTime, Duration, Price, LegsNumber) ";
             command = prefix + sb.ToString();
             return command;
         }
 
-        //private String BuildInsertCommand(Leg l)
-        //{
-        //    String command;
+        private String BuildInsertCommand(Leg l)
+        {
+            String command;
 
-        //    StringBuilder sb = new StringBuilder();
-        //    //use a string builder to create the dynamic string
-        //    sb.AppendFormat("Values('{0}', '{1}' ,'{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}')", flight.FlightPath1, flight.AirportFrom1, flight.AirportTo1, flight.DepTime1, flight.ArriveTime1, flight.Duration1, flight.Price, flight.LegsNumber1);
-        //    String prefix = "INSERT INTO Airports_CS " + "(FlightPath, AirportFrom, AirportTo, DepTime, ArriveTime, Duration, Price, LegsNumber) ";
-        //    command = prefix + sb.ToString();
-        //    return command;
-        //}
+            StringBuilder sb = new StringBuilder();
+            //use a string builder to create the dynamic string
+            sb.AppendFormat("Values('{0}', '{1}' ,'{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}','{9}')", l.Id, l.Fullpathid, l.Legnumber, l.Flight_no, l.Fromairport, l.Toairport,l.Airlinecode, l.DepTime1, l.ArriveTime1,l.Duration1);
+            String prefix = "INSERT INTO Legs_CS " + "(id, fullpathid, legnumber, flight_no, fromairport, toairport, airlinecode, DepTime, ArriveTime, Duration) ";
+            command = prefix + sb.ToString();
+            return command;
+        }
         //---------------------------------------------------------------------------------
         // Create the SqlCommand
         //---------------------------------------------------------------------------------
