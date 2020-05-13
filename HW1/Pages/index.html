@@ -31,12 +31,11 @@
         flag = 0;
         dataArr = {} //Store the current search arr
         $(document).ready(function () {
-            $("#srcBTN").submit(searchFlights);
-            //$("#srcBTN").click(searchFlights)
+            $("#srcBTN").submit(loadFlights);
+           
             $("#MyFlights").click(MyFlights)
 
             $("#fromDate").min = new Date().toISOString().split("T")[0];
-            url = "https://api.skypicker.com/locations?type=dump&locale=en-US&location_types=airport&limit=4000&active_only=true&sort=name";
             $('#GetAirports').click(loadAirports);
             $('#GetAirLines').click(loadAirLines);
 
@@ -51,9 +50,43 @@
 
         });
 
-        function loadAirLines() {
-            ajaxCall("GET", "../api/Airline", "", SCGetAirlineTable, errMyFlights);
+
+        // API call ---------------------------------------------------------------
+
+        function loadAirports() { // Load the airports to the DB, Only Once!
+
+            url = "https://api.skypicker.com/locations?type=dump&locale=en-US&location_types=airport&limit=4000&active_only=true&sort=name";
+
+            $.get(url).done(successCB);
+            $.get(url).fail(errorCB);
         }
+
+          function loadFlights() { 
+            let url = "https://api.skypicker.com/flights?flyFrom=" + $(".airportFrom").val() + "&to=" + $(".airportTo").val() + "&dateFrom=" + fixDate($("#fromDate").val()) + "&dateTo=" + fixDate($("#toDate").val()) + "&partner=picky"
+            ajaxCall("GET", url, "", successAPICB, errorAPICB)
+            return false;
+        }
+
+
+
+             function loadAirLines() {
+                 ajaxCall("GET", "../api/Airline", "", function (data) {
+                        if (data == null) {
+                        url = "https://api.skypicker.com/airlines";
+                        $.get(url).done(successLoadAirLines);
+                        $.get(url).fail(errorCB);
+                    }
+                    else {
+                          swal("All Airline has been loaded!", "", "success");
+                    }
+
+
+                 }, errMyFlights);
+        }
+
+        // end API call -------------------------------------------------------------------------
+
+   
         
         $(document).on("click", ".addBTN", function () {
             counter = 0;
@@ -84,15 +117,7 @@
         }
         
 
-                function searchFlights() { 
-            let from = $(".airportFrom").val()
-            let to = $(".airportTo").val()
-            let dep = $("#fromDate").val()
-            let arrive = $("#toDate").val()
-            let url = "https://api.skypicker.com/flights?flyFrom=" + from + "&to=" + to + "&dateFrom=" + fixDate(dep) + "&dateTo=" + fixDate(arrive) + "&partner=picky"
-            ajaxCall("GET", url, "", successAPICB, errorAPICB)
-            return false;
-        }
+
 
 
         function getConnections(connectionsList) {
@@ -117,19 +142,13 @@
 
                 }
 
+
             }
             ajaxCall("POST", "../api/Airline", JSON.stringify(airlines), postSuccess, errorCB);
             swal("All Airline has been loaded!", "", "success");
         }
 
-        function SCGetAirlineTable(data) {
-            if (data == null) {
-                url = "https://api.skypicker.com/airlines";
-                $.get(url).done(successLoadAirLines);
-                $.get(url).fail(errorCB);
-            }
 
-        }
 
         function successCB(data) {
             airportList = data;
@@ -163,10 +182,7 @@
             document.getElementById('airportTo').innerHTML = options;
         }
 
-        function loadAirports() { // Load the airports to the DB, Only Once!
-            $.get(url).done(successCB);
-            $.get(url).fail(errorCB);
-        }
+
 
 
 
