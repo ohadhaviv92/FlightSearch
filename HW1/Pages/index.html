@@ -66,6 +66,7 @@
 
             }
             ajaxCall("POST", "../api/Airline", JSON.stringify(airlines), postSuccess, errorCB);
+            swal("All Airline has been loaded!", "", "success");
         }
 
 
@@ -105,6 +106,7 @@
                  }
             }
             ajaxCall("POST", "../api/Airport", JSON.stringify(airports), postSuccess, errorCB)
+            swal("All Airports has been loaded!", "", "success");
             document.getElementById('airportFrom').innerHTML = options;
             document.getElementById('airportTo').innerHTML = options;
         }
@@ -139,6 +141,7 @@
                 }
                
                 ajaxCall('POST', "../api/Leg", JSON.stringify(l), postSuccess, posterr)
+                swal("Flight added", "", "success");
             }
         });
 
@@ -225,7 +228,7 @@
             }
             str += "</tbody></table>"
             document.getElementById('ph').innerHTML = str;
-            swal("Added Successfuly!", "Great Job", "success");
+            swal("Search Done!", "", "success");
             
         }
 
