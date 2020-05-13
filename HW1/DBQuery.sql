@@ -1,28 +1,15 @@
-﻿--create table Airports_CS(
---AirportCode nvarchar(40) primary key,
---Airportname nvarchar(40),
---Longitude nvarchar(15),
---Latitudes nvarchar(15),
---City nvarchar(30),
---Country nvarchar(40),
---)
-
---INSERT INTO Airports_CS (AirportCode, Airportname, Longitude, Latitudes, City, Country) Values('LCG', 'A Coruña' ,-8.377222, 43.302222, 'A Coruña', 'Spain')
-
-DROP TABLE Airlines_CS
-
-
-CREATE table Airlines_CS(
-AirlineCode nvarchar(40) primary key,
-AirlineName nvarchar(40)
+﻿CREATE table Airlines_CS(
+AirlineCode nvarchar(90) primary key,
+AirlineName nvarchar(90)
 )
+
 
 create table MyFlights_CS(
  FlightPath nvarchar(500) primary key,
- AirportFrom  nvarchar(30), 
- AirportTo nvarchar(30), 
- DepTime nvarchar(40), 
- ArriveTime nvarchar(40), 
+ AirportFrom nvarchar(90), 
+ AirportTo nvarchar(90), 
+ DepTime datetime, 
+ ArriveTime datetime, 
  Duration nvarchar(20),
  Price float ,
  LegsNumber int ,
@@ -34,12 +21,12 @@ create table MyFlights_CS(
 --select top(1) * from Airports_CS
 
 create table Airports_CS(
-AirportCode nvarchar(30) primary key,
-Airportname nvarchar(40),
+AirportCode nvarchar(90) primary key,
+Airportname nvarchar(100),
 Longitude nvarchar(15),
 Latitudes nvarchar(15),
-City nvarchar(30),
-Country nvarchar(40),
+City nvarchar(80),
+Country nvarchar(50),
 )
 
 Create Table Legs_CS
@@ -48,13 +35,18 @@ id nvarchar(50) primary key,
 fullpathid nvarchar(500),
 legnumber int,
 flight_no nvarchar(10),
-fromairport nvarchar(30) REFERENCES Airports_CS(AirportCode),
-toairport nvarchar(30) REFERENCES Airports_CS(AirportCode),
-airlinecode nvarchar (40),
-DepTime nvarchar(40),
-ArriveTime nvarchar(40),
+fromairport nvarchar(90) REFERENCES Airports_CS(AirportCode),
+toairport nvarchar(90) REFERENCES Airports_CS(AirportCode),
+airlinecode nvarchar (90),
+DepTime datetime,
+ArriveTime datetime,
 Duration nvarchar(20),
 FOREIGN KEY (fullpathid) REFERENCES MyFlights_CS(FlightPath),
 FOREIGN KEY (airlinecode) REFERENCES Airlines_CS(AirlineCode),
 
 )
+
+select * from Airlines_CS
+select * from Airports_CS
+select * from MyFlights_CS
+select * from Legs_CS

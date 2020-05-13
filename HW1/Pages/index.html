@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <title></title>
+    
     <link href="css.css" rel="stylesheet" />
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
@@ -17,7 +18,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     <script src="../Scripts/autoComplte.js"></script>
     <script src="../Scripts/ajaxCalls.js"></script>
-    
+
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
     <script>
@@ -33,7 +34,7 @@
             $("#srcBTN").submit(searchFlights);
             //$("#srcBTN").click(searchFlights)
             $("#MyFlights").click(MyFlights)
-            
+
             $("#fromDate").min = new Date().toISOString().split("T")[0];
             url = "https://api.skypicker.com/locations?type=dump&locale=en-US&location_types=airport&limit=4000&active_only=true&sort=name";
             $('#GetAirports').click(loadAirports);
@@ -47,11 +48,11 @@
 
             $('#toDate').prop('min', minDate); //Cant fly backwards
 
-            
+
         });
 
         function loadAirLines() {
-                        ajaxCall("GET", "../api/Airline", "", SCGetAirlineTable, errMyFlights);
+            ajaxCall("GET", "../api/Airline", "", SCGetAirlineTable, errMyFlights);
         }
         
         $(document).on("click", ".addBTN", function () {
@@ -107,21 +108,22 @@
 
         function successLoadAirLines(data) {
             for (i in data) {
-                 if (data[i]['type'] == "airline") {
-                airline = { // Note that the name of the fields must be identical to the names of the properties of the object in the server
-                    AirlineCode: data[i]['id'],
-                    AirlineName: data[i]['name'],
-                     };
-                     airlines.push(airline)
-                     
-              }
+                if (data[i]['type'] == "airline") {
+                    airline = { // Note that the name of the fields must be identical to the names of the properties of the object in the server
+                        AirlineCode: data[i]['id'],
+                        AirlineName: data[i]['name'],
+                    };
+                    airlines.push(airline)
+
+                }
 
             }
             ajaxCall("POST", "../api/Airline", JSON.stringify(airlines), postSuccess, errorCB);
+            swal("All Airline has been loaded!", "", "success");
         }
 
         function SCGetAirlineTable(data) {
-            if (data ==null) {
+            if (data == null) {
                 url = "https://api.skypicker.com/airlines";
                 $.get(url).done(successLoadAirLines);
                 $.get(url).fail(errorCB);
@@ -132,16 +134,16 @@
         function successCB(data) {
             airportList = data;
             ajaxCall("GET", "../api/Airport", "", SCGetAirportTable, errMyFlights);
-        
+
         }
 
         function SCGetAirportTable(data) {
-            if (data!= null) {
+            if (data != null) {
                 flag = 1;
             }
-                var options = "";
+            var options = "";
             for (i in airportList['locations']) {
-                 options += '<option value="'+airportList['locations'][i]['id']+'" >'+airportList['locations'][i]['name']+'</option>';
+                options += '<option value="' + airportList['locations'][i]['id'] + '" >' + airportList['locations'][i]['name'] + '</option>';
                 if (flag == 0) {
                     airport = { // Note that the name of the fields must be identical to the names of the properties of the object in the server
                         AirportCode: airportList['locations'][i]['code'],
@@ -150,12 +152,13 @@
                         Latitudes: airportList['locations'][i]['location']['lat'],
                         City: airportList['locations'][i]['city']['name'],
                         Coutry: airportList['locations'][i]['city']['country']['name']
-                        
+
                     };
                     airports.push(airport)
-                 }
+                }
             }
             ajaxCall("POST", "../api/Airport", JSON.stringify(airports), postSuccess, errorCB)
+            swal("All Airports has been loaded!", "", "success");
             document.getElementById('airportFrom').innerHTML = options;
             document.getElementById('airportTo').innerHTML = options;
         }
@@ -236,8 +239,8 @@
             }
             str += "</tbody></table>"
             document.getElementById('ph').innerHTML = str;
-            swal("Added Successfuly!", "Great Job", "success");
-            
+            swal("Search Done!", "", "success");
+
         }
 
                 function postSuccess() {
@@ -281,9 +284,9 @@
 
     </script>
 </head>
-<body>
-    <div class="container-fluid">
-        <img src="../images/banner.jpg" class="img-fluid" alt="Responsive image">
+<body id="booking">
+    <div class="container-fluid" >
+       
         <form autocomplete="off" action="" id="srcBTN">
             <table>
                 <tr><td><b>Flight from:</b></td></tr>
@@ -294,7 +297,6 @@
                     <td><button class="btn btn-primary" type="submit" >Find Flights!</button></td> <!--Type should be submit!-->
                 </tr>
                 <tr>
-                
                 </tr>
             </table>
 
