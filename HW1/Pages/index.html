@@ -24,7 +24,6 @@
         countryCodes = [];
         Myflightsarr = [];
         airportList = {};
-        var airports = new Array();
         airlinesList = {};
         flag = 0;
         dataArr = {} //Store the current search arr
@@ -102,13 +101,11 @@
                         Latitudes: airportList['locations'][i]['location']['lat'],
                         City: airportList['locations'][i]['city']['name'],
                         Coutry: airportList['locations'][i]['city']['country']['name']
-                        
+
                     };
-                    airports.push(airport)
-                    //ajaxCall("POST", "../api/Airport", JSON.stringify(airport), postSuccess, errorCB)
+                    ajaxCall("POST", "../api/Airport", JSON.stringify(airport), postSuccess, errorCB)
                  }
             }
-            ajaxCall("POST", "../api/Airport", JSON.stringify(airports), postSuccess, errorCB)
             document.getElementById('airportFrom').innerHTML = options;
             document.getElementById('airportTo').innerHTML = options;
         }
