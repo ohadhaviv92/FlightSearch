@@ -25,6 +25,7 @@
         Myflightsarr = [];
         airportList = {};
         var airports = new Array();
+        var airlines = new Array();
         airlinesList = {};
         flag = 0;
         dataArr = {} //Store the current search arr
@@ -58,11 +59,13 @@
                 airline = { // Note that the name of the fields must be identical to the names of the properties of the object in the server
                     AirlineCode: data[i]['id'],
                     AirlineName: data[i]['name'],
-                };
-                     ajaxCall("POST", "../api/Airline", JSON.stringify(airline), postSuccess, errorCB);
+                     };
+                     airlines.push(airline)
+                     
               }
 
             }
+            ajaxCall("POST", "../api/Airline", JSON.stringify(airlines), postSuccess, errorCB);
         }
 
 

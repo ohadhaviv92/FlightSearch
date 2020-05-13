@@ -21,10 +21,10 @@ namespace HW1.Models
         public string AirlineName { get => airlineName; set => airlineName = value; }
 
 
-        public int insert()
+        public static int insert(Airline[] airline)
         {
             DBservices db = new DBservices();
-            db.insert(this);
+            db.insert(airline);
             return 0;
         }
 

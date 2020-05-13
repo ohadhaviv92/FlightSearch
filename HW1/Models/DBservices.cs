@@ -88,9 +88,9 @@ namespace HW1.Models
 
 
 
-        public int insert(Airline airline)
+        public int insert(Airline[] airline)
         {
-
+            int numEffected = 0;
             SqlConnection con;
             SqlCommand cmd;
 
@@ -103,31 +103,31 @@ namespace HW1.Models
                 // write to log
                 throw (ex);
             }
-
-            String cStr = BuildInsertCommand(airline);      // helper method to build the insert string
-
-            cmd = CreateCommand(cStr, con);             // create the command
-
-            try
+            for (int i = 0; i < airline.Length; i++)
             {
-                int numEffected = cmd.ExecuteNonQuery(); // execute the command
-                return numEffected;
-            }
-            catch (Exception ex)
-            {
-                return 0;
-                // write to log
-                throw (ex);
-            }
+                String cStr = BuildInsertCommand(airline[i]);      // helper method to build the insert string
 
-            finally
-            {
-                if (con != null)
+                cmd = CreateCommand(cStr, con);             // create the command
+                try
                 {
-                    // close the db connection
-                    con.Close();
+                    numEffected = cmd.ExecuteNonQuery(); // execute the command
+
+                }
+                catch (Exception ex)
+                {
+                    continue;
                 }
             }
+
+
+
+            if (con != null)
+            {
+                // close the db connection
+                con.Close();
+            }
+
+            return numEffected;
 
         }
 
