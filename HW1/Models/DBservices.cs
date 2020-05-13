@@ -308,7 +308,7 @@ namespace HW1.Models
 
             StringBuilder sb = new StringBuilder();
             //use a string builder to create the dynamic string
-            sb.AppendFormat("Values('{0}', '{1}' ,'{2}', '{3}', '{4}', '{5}', '{6}', '{7}')", flight.FlightPath1, flight.AirportFrom1, flight.AirportTo1, flight.DepTime1, flight.ArriveTime1, flight.Duration1, flight.Price, flight.LegsNumber1);
+            sb.AppendFormat("Values('{0}', '{1}' ,'{2}', convert(datetime, '{3}', 103),  convert(datetime, '{4}', 103), '{5}', '{6}', '{7}')", flight.FlightPath1, flight.AirportFrom1, flight.AirportTo1, flight.DepTime1, flight.ArriveTime1, flight.Duration1, flight.Price, flight.LegsNumber1);
             String prefix = "INSERT INTO MyFlights_CS " + "(FlightPath, AirportFrom, AirportTo, DepTime, ArriveTime, Duration, Price, LegsNumber) ";
             command = prefix + sb.ToString();
             return command;
@@ -320,7 +320,7 @@ namespace HW1.Models
 
             StringBuilder sb = new StringBuilder();
             //use a string builder to create the dynamic string
-            sb.AppendFormat("Values('{0}', '{1}' ,'{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}','{9}')", l.Id, l.Fullpathid, l.Legnumber, l.Flight_no, l.Fromairport, l.Toairport,l.Airlinecode, l.DepTime1, l.ArriveTime1,l.Duration1);
+            sb.AppendFormat("Values('{0}', '{1}' ,'{2}', '{3}', '{4}', '{5}', '{6}', convert(datetime, '{7}', 103), convert(datetime, '{8}', 103),'{9}')", l.Id, l.Fullpathid, l.Legnumber, l.Flight_no, l.Fromairport, l.Toairport,l.Airlinecode, l.DepTime1, l.ArriveTime1,l.Duration1);
             String prefix = "INSERT INTO Legs_CS " + "(id, fullpathid, legnumber, flight_no, fromairport, toairport, airlinecode, DepTime, ArriveTime, Duration) ";
             command = prefix + sb.ToString();
             return command;

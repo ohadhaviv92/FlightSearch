@@ -7,6 +7,7 @@ namespace HW1.Models
 {
     public class Leg
     {
+
         string id;
         string fullpathid;
         int legnumber;
@@ -14,11 +15,11 @@ namespace HW1.Models
         string fromairport;
         string toairport;
         string airlinecode;
-        string DepTime;
-        string ArriveTime;
+        DateTime DepTime;
+        DateTime ArriveTime;
         string Duration;
 
-        public Leg(string id, string fullpathid, int legnumber, string flight_no, string fromairport, string toairport, string airlinecode, string depTime1, string arriveTime1, string duration1)
+        public Leg(string id, string fullpathid, int legnumber, string flight_no, string fromairport, string toairport, string airlinecode, DateTime depTime1, DateTime arriveTime1, string duration1)
         {
             Id = id;
             Fullpathid = fullpathid;
@@ -39,8 +40,8 @@ namespace HW1.Models
         public string Fromairport { get => fromairport; set => fromairport = value; }
         public string Toairport { get => toairport; set => toairport = value; }
         public string Airlinecode { get => airlinecode; set => airlinecode = value; }
-        public string DepTime1 { get => DepTime; set => DepTime = value; }
-        public string ArriveTime1 { get => ArriveTime; set => ArriveTime = value; }
+        public DateTime DepTime1 { get => DepTime; set => DepTime = value; }
+        public DateTime ArriveTime1 { get => ArriveTime; set => ArriveTime = value; }
         public string Duration1 { get => Duration; set => Duration = value; }
 
         public int insert()

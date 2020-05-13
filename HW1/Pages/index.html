@@ -12,7 +12,7 @@
 
     <!-- Popper JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-
+    <script src="../Scripts/dateFunctions.js"></script>
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     <script src="../Scripts/autoComplte.js"></script>
@@ -53,6 +53,58 @@
         function loadAirLines() {
                         ajaxCall("GET", "../api/Airline", "", SCGetAirlineTable, errMyFlights);
         }
+        
+        $(document).on("click", ".addBTN", function () {
+            counter = 0;
+            
+
+            let legs = [];
+          
+            for (var i = 0; i < dataArr['data'][$(this).attr('id')]['route'].length; i++) {
+                counter++;
+            }
+
+
+            flight = { FlightPath1: dataArr['data'][$(this).attr('id')]['id'], AirportFrom1: dataArr['data'][$(this).attr('id')]['flyFrom'], AirportTo1: dataArr['data'][$(this).attr('id')]['flyTo'], DepTime1:  convertDate(dataArr['data'][$(this).attr('id')]['dTime']), ArriveTime1: convertDate( dataArr['data'][$(this).attr('id')]['aTime']), Duration1: dataArr['data'][$(this).attr('id')]['duration']['total'], price: parseFloat(dataArr['data'][$(this).attr('id')]['price']), LegsNumber1:counter}
+            ajaxCall('POST', "../api/flight", JSON.stringify(flight), postSuccess, posterr)
+            for (i = 0; i < counter; i++) {//Count how many legs
+                legs.push(dataArr['data'][$(this).attr('id')]['route'][i]['cityTo']) 
+                l = {
+                    id: dataArr['data'][$(this).attr('id')]['route'][i]['id'], fullpathid: dataArr['data'][$(this).attr('id')]['id'], legnumber: (i + 1), flight_no: dataArr['data'][$(this).attr('id')]['route'][i]['flight_no'], fromairport: dataArr['data'][$(this).attr('id')]['route'][i]['flyFrom'], toairport: dataArr['data'][$(this).attr('id')]['route'][i]['flyTo'], airlinecode: dataArr['data'][$(this).attr('id')]['route'][i]['airline'], DepTime1: convertDate(dataArr['data'][$(this).attr('id')]['route'][i]['dTime']), ArriveTime1: convertDate(dataArr['data'][$(this).attr('id')]['route'][i]['aTime']), Duration1: "fix this"
+                }
+               
+                ajaxCall('POST', "../api/Leg", JSON.stringify(l), postSuccess, posterr)
+            }
+        });
+
+
+        function MyFlights() {
+            ajaxCall("GET", "../api/flight", "", successMyFlights, errMyFlights)
+        }
+        
+
+                function searchFlights() { 
+            let from = $(".airportFrom").val()
+            let to = $(".airportTo").val()
+            let dep = $("#fromDate").val()
+            let arrive = $("#toDate").val()
+            let url = "https://api.skypicker.com/flights?flyFrom=" + from + "&to=" + to + "&dateFrom=" + fixDate(dep) + "&dateTo=" + fixDate(arrive) + "&partner=picky"
+            ajaxCall("GET", url, "", successAPICB, errorAPICB)
+            return false;
+        }
+
+
+        function getConnections(connectionsList) {
+            for (var j = 0; j < connectionsList.length; j++) {
+                connectionsArr.push(connectionsList[j]['cityTo'])
+            }
+
+        }
+
+
+        //success functions ----------------------------------------------
+
+
         function successLoadAirLines(data) {
             for (i in data) {
                  if (data[i]['type'] == "airline") {
@@ -67,7 +119,6 @@
             }
             ajaxCall("POST", "../api/Airline", JSON.stringify(airlines), postSuccess, errorCB);
         }
-
 
         function SCGetAirlineTable(data) {
             if (data ==null) {
@@ -115,37 +166,6 @@
         }
 
 
-        $(document).on("click", ".addBTN", function () {
-            counter = 0;
-            console.log(dataArr['data'][$(this).attr('id')])
-            let from = dataArr['data'][$(this).attr('id')]['cityFrom']
-            let to = dataArr['data'][$(this).attr('id')]['cityTo']
-            let price = dataArr['data'][$(this).attr('id')]['price']
-            let depTime = dataArr['data'][$(this).attr('id')]['dTime']
-            let aTime = dataArr['data'][$(this).attr('id')]['aTime']
-            let airline = dataArr['data'][$(this).attr('id')]['route'][0]['airline']
-            legs = [dataArr['data'][$(this).attr('id')]['route'].length]
-            for (var i = 0; i < dataArr['data'][$(this).attr('id')]['route'].length; i++) {
-                counter++;
-            }
-
-
-            flight = { FlightPath1: dataArr['data'][$(this).attr('id')]['id'], AirportFrom1: dataArr['data'][$(this).attr('id')]['flyFrom'], AirportTo1: dataArr['data'][$(this).attr('id')]['flyTo'], DepTime1: dataArr['data'][$(this).attr('id')]['dTime'], ArriveTime1: dataArr['data'][$(this).attr('id')]['aTime'], Duration1: dataArr['data'][$(this).attr('id')]['duration']['total'], price: parseFloat(dataArr['data'][$(this).attr('id')]['price']), LegsNumber1:counter}
-            ajaxCall('POST', "../api/flight", JSON.stringify(flight), postSuccess, posterr)
-            for (i = 0; i < counter; i++) {//Count how many legs
-                legs.push(dataArr['data'][$(this).attr('id')]['route'][i]['cityTo']) 
-                l = {
-                    id: dataArr['data'][$(this).attr('id')]['route'][i]['id'], fullpathid: dataArr['data'][$(this).attr('id')]['id'], legnumber: (i + 1), flight_no: dataArr['data'][$(this).attr('id')]['route'][i]['flight_no'], fromairport: dataArr['data'][$(this).attr('id')]['route'][i]['flyFrom'], toairport: dataArr['data'][$(this).attr('id')]['route'][i]['flyTo'], airlinecode: dataArr['data'][$(this).attr('id')]['route'][i]['airline'], DepTime1: dataArr['data'][$(this).attr('id')]['route'][i]['dTime'], ArriveTime1: dataArr['data'][$(this).attr('id')]['route'][i]['aTime'], Duration1: "fix this"
-                }
-               
-                ajaxCall('POST', "../api/Leg", JSON.stringify(l), postSuccess, posterr)
-            }
-        });
-
-
-        function MyFlights() {
-            ajaxCall("GET", "../api/flight", "", successMyFlights, errMyFlights)
-        }
 
         function successMyFlights(data) {
             i = 1
@@ -177,34 +197,25 @@
             str += "</tbody></table>"
             document.getElementById('ph').innerHTML = str;
         }
-        function errMyFlights(err) {
-            console.log(1);
-        }
 
-        function searchFlights() {
-            let from = $(".airportFrom").val()
-            let to = $(".airportTo").val()
-            let dep = $("#fromDate").val()
-            let arrive = $("#toDate").val()
-            let url = "https://api.skypicker.com/flights?flyFrom=" + from + "&to=" + to + "&dateFrom=" + fixDate(dep) + "&dateTo=" + fixDate(arrive) + "&partner=picky"
-            let api = ajaxCall("GET", url, "", successAPICB, errorAPICB)
-            return false;
-        }
-        function successAPICB(data) {
+
+
+
+       function successAPICB(data) {
             i = 0;
             console.log(data);
             dataArr = data
             str = "<table class='table table-striped'><thead><tr><th scope='col'>#</th><th scope='col'>From</th><th scope='col'>To</th><th scope='col'>Departure time</th><th scope='col'>Arrival time</th><th scope='col'>Stops</th><th scope='col'>Airline name</th><th scope='col'>Price</th><th scope='col'>Store Flight?</th></tr></thead><tbody>"
             for (flight in data['data']) {
-                let depTime = new Date(0);
-                let arrTime = new Date(0);
-                depTime.setUTCSeconds(data['data'][flight]['dTime'])
-                arrTime.setUTCSeconds(data['data'][flight]['aTime'])
+                let depTime = convertDate(data['data'][flight]['dTime']);
+                let arrTime = convertDate(data['data'][flight]['aTime']);
+                
+          
                 str += "<tr><th scope='row'>" + (i + 1) + "</th>"
                 str += "<td>" + data['data'][flight]['cityFrom'] + ", " + data['data'][flight]['countryFrom']['name'] + "</td>"
                 str += "<td>" + data['data'][flight]['cityTo'] + ", " + data['data'][flight]['countryTo']['name'] + "</td>"
-                str += "<td>" + dateToFulldate(depTime) + "</td>"
-                str += "<td>" + dateToFulldate(arrTime) + "</td>"
+                str += "<td>" + depTime+ "</td>"
+                str += "<td>" + arrTime + "</td>"
                 if (data['data'][flight]['route'].length > 1) {
                     str += "<td>"
                     connectionsArr = []
@@ -229,43 +240,42 @@
             
         }
 
-        function getConnections(connectionsList) {
-            for (var j = 0; j < connectionsList.length; j++) {
-                connectionsArr.push(connectionsList[j]['cityTo'])
-            }
-
-        }
-
-        function postSuccess() {
+                function postSuccess() {
             console.log('Flight added')
+
             
         }
+        
+        // end success functions -----------------------------------
+
+
+
+        //error function  -----------------------------------
+
+         function errMyFlights(err) {
+            console.log(1);
+        }
+
+
+
+
         function posterr(err) {
             console.log(err)
         }
 
-        function dateToFulldate(d) {
-            let min = d.getMinutes()
-            if (min < 10)
-                return d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + "<br>" + (d.getHours()) + ":" + (d.getMinutes() + "0");
-            else
-                return d.getDate() + "/" + (d.getMonth() + 1) + "/" + d.getFullYear() + "<br>" + (d.getHours()) + ":" + (d.getMinutes())
-        }
+        
         function errorAPICB(err) {
             console.log(err);
         }
-
-        function fixDate(date) {
-            dateArr = date.split("-");
-            return dateArr[2] + "/" + dateArr[1] + "/" + dateArr[0];
-        }
-
-
 
 
         function errorCB(err) {
             console.log(err);
         }
+
+
+
+        //end error function -------------------------------
 
 
 

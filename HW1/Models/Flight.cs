@@ -11,13 +11,13 @@ namespace HW1.Models
         string FlightPath;
         string AirportFrom;
         string AirportTo;
-        string DepTime;
-        string ArriveTime;
+        DateTime DepTime;
+        DateTime ArriveTime;
         string Duration;
         float price;
         int LegsNumber;
 
-        public Flight(string flightPath1, string airportFrom1, string airportTo1, string depTime1, string arriveTime1, string duration1, float price, int legsNumber1)
+        public Flight(string flightPath1, string airportFrom1, string airportTo1, DateTime depTime1, DateTime arriveTime1, string duration1, float price, int legsNumber1)
         {
             FlightPath1 = flightPath1;
             AirportFrom1 = airportFrom1;
@@ -34,8 +34,8 @@ namespace HW1.Models
         public string FlightPath1 { get => FlightPath; set => FlightPath = value; }
         public string AirportFrom1 { get => AirportFrom; set => AirportFrom = value; }
         public string AirportTo1 { get => AirportTo; set => AirportTo = value; }
-        public string DepTime1 { get => DepTime; set => DepTime = value; }
-        public string ArriveTime1 { get => ArriveTime; set => ArriveTime = value; }
+        public DateTime DepTime1 { get => DepTime; set => DepTime = value; }
+        public DateTime ArriveTime1 { get => ArriveTime; set => ArriveTime = value; }
         public string Duration1 { get => Duration; set => Duration = value; }
         public float Price { get => price; set => price = value; }
         public int LegsNumber1 { get => LegsNumber; set => LegsNumber = value; }
