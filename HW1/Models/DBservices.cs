@@ -133,9 +133,9 @@ namespace HW1.Models
 
 
 
-        public int insert(Airport airport)
+        public int insert(Airport[] airport)
         {
-
+            int numEffected = 0;
             SqlConnection con;
             SqlCommand cmd;
 
@@ -148,31 +148,31 @@ namespace HW1.Models
                 // write to log
                 throw (ex);
             }
-
-            String cStr = BuildInsertCommand(airport);      // helper method to build the insert string
-
-            cmd = CreateCommand(cStr, con);             // create the command
-
-            try
+            for (int i = 0; i < airport.Length; i++)
             {
-                int numEffected = cmd.ExecuteNonQuery(); // execute the command
-                return numEffected;
+                String cStr = BuildInsertCommand(airport[i]);      // helper method to build the insert string
+
+                cmd = CreateCommand(cStr, con);             // create the command
+                try
+                {
+                    numEffected = cmd.ExecuteNonQuery(); // execute the command
+                    
+                }
+                catch (Exception ex)
+                {
+                    continue;
+                }
             }
-            catch (Exception ex)
-            {
-                return 0;
-                // write to log
-                throw (ex);
-            }
+            
 
-            finally
-            {
+            
                 if (con != null)
                 {
                     // close the db connection
                     con.Close();
                 }
-            }
+            
+            return numEffected;
 
         }
 

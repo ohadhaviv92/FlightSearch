@@ -31,10 +31,12 @@ namespace HW1.Models
         public string City { get => city; set => city = value; }
         public string Coutry { get => coutry; set => coutry = value; }
 
-        public int insert()
+
+
+        public static int insert(Airport[] airports)
         {
             DBservices db = new DBservices();
-            db.insert(this);
+            db.insert(airports);
             return 0;
         }
 

@@ -23,9 +23,9 @@ namespace HW1.Controllers
         }
 
         // POST api/<controller>
-        public void Post([FromBody]Airport airport)
+        public void Post([FromBody]Airport[] airport)
         {
-            airport.insert();
+            Airport.insert(airport);
         }
 
         // PUT api/<controller>/5
