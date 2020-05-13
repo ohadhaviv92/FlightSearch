@@ -42,7 +42,7 @@ namespace HW1.Models
         // This method inserts a car to the cars table 
         //--------------------------------------------------------------------------------------------------
 
-        public string checkAirport()
+        public string check(string tableName)
         {
 
             SqlConnection con;
@@ -58,7 +58,7 @@ namespace HW1.Models
                 throw (ex);
             }
 
-            String cStr = "select top(1) * from Airports_CS";      // helper method to build the insert string
+            String cStr = "select top(1) * from "+ tableName;      // helper method to build the insert string
 
             cmd = CreateCommand(cStr, con);             // create the command
 

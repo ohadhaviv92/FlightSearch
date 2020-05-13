@@ -23,7 +23,8 @@
     <script>
         countryCodes = [];
         Myflightsarr = [];
-        data2 = {};
+        airportList = {};
+        airlinesList = {};
         flag = 0;
         dataArr = {} //Store the current search arr
         $(document).ready(function () {
@@ -48,16 +49,15 @@
         });
 
         function loadAirLines() {
+                        ajaxCall("GET", "../api/Airline", "", SCGetAirlineTable, errMyFlights);
 
-            url = "https://api.skypicker.com/airlines";
-            $.get(url).done(successLoadAirLines);
-            $.get(url).fail(errorCB);
+
 
 
 
         }
         function successLoadAirLines(data) {
-             for (i in data) {
+            for (i in data) {
                  if (data[i]['type'] == "airline") {
                 airline = { // Note that the name of the fields must be identical to the names of the properties of the object in the server
                     AirlineCode: data[i]['id'],
@@ -67,29 +67,40 @@
               }
 
             }
+        
+        }
+
+
+        function SCGetAirlineTable(data) {
+            if (data ==null) {
+                url = "https://api.skypicker.com/airlines";
+                $.get(url).done(successLoadAirLines);
+                $.get(url).fail(errorCB);
+            }
+
         }
 
         function successCB(data) {
-            data2 = data;
+            airportList = data;
             ajaxCall("GET", "../api/Airport", "", SCGetAirportTable, errMyFlights);
         
         }
 
         function SCGetAirportTable(data) {
-            if (data != "" && data != null) {
+            if (data!= null) {
                 flag = 1;
             }
                 var options = "";
-            for (i in data2['locations']) {
-                 options += '<option value="'+data2['locations'][i]['id']+'" >'+data2['locations'][i]['name']+'</option>';
+            for (i in airportList['locations']) {
+                 options += '<option value="'+airportList['locations'][i]['id']+'" >'+airportList['locations'][i]['name']+'</option>';
                 if (flag == 0) {
                     airport = { // Note that the name of the fields must be identical to the names of the properties of the object in the server
-                        AirportCode: data2['locations'][i]['code'],
-                        Airportname: data2['locations'][i]['name'],
-                        Longitude: data2['locations'][i]['location']['lon'],
-                        Latitudes: data2['locations'][i]['location']['lat'],
-                        City: data2['locations'][i]['city']['name'],
-                        Coutry: data2['locations'][i]['city']['country']['name']
+                        AirportCode: airportList['locations'][i]['code'],
+                        Airportname: airportList['locations'][i]['name'],
+                        Longitude: airportList['locations'][i]['location']['lon'],
+                        Latitudes: airportList['locations'][i]['location']['lat'],
+                        City: airportList['locations'][i]['city']['name'],
+                        Coutry: airportList['locations'][i]['city']['country']['name']
 
                     };
                     ajaxCall("POST", "../api/Airport", JSON.stringify(airport), postSuccess, errorCB)

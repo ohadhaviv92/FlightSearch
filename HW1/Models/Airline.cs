@@ -27,5 +27,12 @@ namespace HW1.Models
             db.insert(this);
             return 0;
         }
+
+        public static string checkTable()
+        {
+            DBservices db = new DBservices();
+            return db.check("Airlines_CS");
+
+        }
     }
 }

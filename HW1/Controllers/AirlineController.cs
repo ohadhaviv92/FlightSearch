@@ -16,9 +16,9 @@ namespace HW1.Controllers
     public class AirlineController : ApiController
     {
         // GET api/<controller>
-        public IEnumerable<string> Get()
+        public string Get()
         {
-            return new string[] { "value1", "value2" };
+            return Airline.checkTable();
         }
 
         // GET api/<controller>/5

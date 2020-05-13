@@ -42,7 +42,7 @@ namespace HW1.Models
         public static string checkTable()
         {
             DBservices db = new DBservices();
-            return db.checkAirport();
+            return db.check("Airports_CS");
              
         }
     }
