@@ -46,6 +46,7 @@
                     $("#fromDate").min = new Date().toISOString().split("T")[0];
                     $('#GetAirports').click(loadAirports);
                     $('#GetAirLines').click(loadAirLines);
+                    $('#GetAirports').prop('disabled', true); //Disabled the btn
                     var now = new Date(),
 
 
@@ -87,14 +88,15 @@
                         else {
                             swal("All Airline has been loaded!", "", "success");
                         }
-
+                        $('#GetAirLines').prop('disabled', true); //Disabled the btn
+                        $('#GetAirports').prop('disabled', false); //Disabled the btn
 
                     }, errMyFlights);
                 }
 
                 // end API call -------------------------------------------------------------------------
 
-
+                
 
                 $(document).on("click", ".addBTN", function () {
                     counter = 0;
@@ -110,7 +112,7 @@
 
                     flight = { FlightPath1: dataArr['data'][$(this).attr('id')]['id'], AirportFrom1: dataArr['data'][$(this).attr('id')]['flyFrom'], AirportTo1: dataArr['data'][$(this).attr('id')]['flyTo'], DepTime1: convertDate(dataArr['data'][$(this).attr('id')]['dTime']), ArriveTime1: convertDate(dataArr['data'][$(this).attr('id')]['aTime']), Duration1: dataArr['data'][$(this).attr('id')]['duration']['total'], price: parseFloat(dataArr['data'][$(this).attr('id')]['price']), LegsNumber1: counter }
                     ajaxCall('POST', "../api/flight", JSON.stringify(flight), postSuccess, posterr)
-                    for (i = 0; i < counter; i++) {//Count how many legs
+                    for (i = 0; i < counter; i++) {//Count how many legs in the flight
                         legs.push(dataArr['data'][$(this).attr('id')]['route'][i]['cityTo'])
 
                         l = {
@@ -118,7 +120,7 @@
                         }
 
                         ajaxCall('POST', "../api/Leg", JSON.stringify(l), function () {
-                            swal("fligth added", "", "success");
+                            swal("Flight Has Been Added!", "", "success");
                         }, posterr)
                     }
 
@@ -161,18 +163,21 @@
 
 
                     }
-                    ajaxCall("POST", "../api/Airline", JSON.stringify(airlines), postSuccess, errorCB);
+                    ajaxCall("POST", "../api/Airline", JSON.stringify(airlines), airLinesAdded, errorCB);
                     swal("All Airline has been loaded!", "", "success");
 
 
-                }
+        }
 
+                function airLinesAdded() {
+                    $('#GetAirLines').prop('disabled', true); //Disabled the btn
+                }
 
 
                 function successCB(data) {
                     airportList = data;
                     ajaxCall("GET", "../api/Airport", "", SCGetAirportTable, errMyFlights);
-                    $('#GetAirports').prop('disabled', true); //Disabled the btn
+                    
 
 
                 }
@@ -209,7 +214,9 @@
                     swal("All Airports has been loaded!", "", "success");
                     document.getElementById('airportFrom').innerHTML = options;
                     document.getElementById('airportTo').innerHTML = options;
-
+                    $('#GetAirports').prop('disabled', true); //Disabled the btn
+                    $('#searchFlights').prop('disabled', false); //Disabled the btn
+                    
 
 
 
@@ -326,7 +333,6 @@
                     //end error function -------------------------------
 
 
-
     </script>
 </head>
 
@@ -350,7 +356,7 @@
                         <tr><td><input name="airPort" list="airportTo" class="airportTo formelement" required />  <datalist id="airportTo"></datalist></td><td><input required="required" type="date" id="toDate" class="formelement" /></td></tr>
                         <tr>
                             <td colspan="2">
-                                <button class="btn btn-primary" type="submit" disabled>Find Flights!</button>
+                                <button class="btn btn-primary" type="submit" id="searchFlights" disabled>Find Flights!</button>
                                 <button id="MyFlights" type="button" class="btn btn-primary" disabled>My Flights</button>
                                 <button id="GetAirports" type="button" class="btn btn-primary">Get Airports</button>
                                 <button id="GetAirLines" type="button" class="btn btn-primary">Get AirLines</button>
