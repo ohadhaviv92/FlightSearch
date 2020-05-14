@@ -4,16 +4,13 @@ body {
     box-sizing: border-box;
     font: 16px Arial;
     background-image: url('../images/background.jpg');
-    background-position:inherit;
+    background-position: inherit;
     background-repeat: no-repeat;
-    background-size:cover;
-    
+    background-size: cover;
 }
 
 
-.a{
-    display:inline;
-}
+
 
 input {
     border: 1px solid transparent;
