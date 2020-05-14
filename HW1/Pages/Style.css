@@ -39,3 +39,8 @@ input {
 #formdiv {
     padding-top:70px;
 }
+
+.formelement{
+    margin-left:10px;
+    margin-right:10px;
+}
