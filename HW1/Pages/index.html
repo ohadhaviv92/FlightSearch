@@ -92,6 +92,8 @@
 
         $(document).on("click", ".addBTN", function () {
             counter = 0;
+            
+
             let legs = [];
 
             for (var i = 0; i < dataArr['data'][$(this).attr('id')]['route'].length; i++) {
@@ -112,7 +114,11 @@
                 ajaxCall('POST', "../api/Leg", JSON.stringify(l), function () { swal("fligth added", "", "success");
             }, posterr)
             }
+<<<<<<< HEAD
 
+=======
+            swal("Flight Has Been Added!", "", "success");
+>>>>>>> parent of 11763bd... Update index.html
         });
         
 
