@@ -1,4 +1,9 @@
-﻿CREATE table Airlines_CS(
+﻿
+
+
+
+
+CREATE table Airlines_CS(
 AirlineCode nvarchar(90) primary key,
 AirlineName nvarchar(90)
 )
