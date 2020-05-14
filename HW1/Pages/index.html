@@ -92,8 +92,6 @@
 
         $(document).on("click", ".addBTN", function () {
             counter = 0;
-            
-
             let legs = [];
 
             for (var i = 0; i < dataArr['data'][$(this).attr('id')]['route'].length; i++) {
@@ -113,7 +111,7 @@
 
                 ajaxCall('POST', "../api/Leg", JSON.stringify(l), postSuccess, posterr)
             }
-            swal("Flight Has Been Added!", "", "success");
+            
         });
         
 
