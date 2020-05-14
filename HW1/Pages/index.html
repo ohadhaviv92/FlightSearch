@@ -264,6 +264,12 @@
                     i = 0;
                     console.log(data);
                     dataArr = data
+                    if (data['data'].length == 0) {
+                        swal("no flight!", "", "error");
+                        
+
+                        return;
+                    }
                     str = "<table class='table table-striped'><thead><tr><th scope='col'>#</th><th scope='col'>From</th><th scope='col'>To</th><th scope='col'>Departure time</th><th scope='col'>Arrival time</th><th scope='col'>Stops</th><th scope='col'>Airline name</th><th scope='col'>Price</th><th scope='col'>Store Flight?</th></tr></thead><tbody>"
                     for (flight in data['data']) {
                         let depTime = convertDate(data['data'][flight]['dTime']);
