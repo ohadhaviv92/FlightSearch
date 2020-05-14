@@ -114,7 +114,7 @@
                 ajaxCall('POST', "../api/Leg", JSON.stringify(l), postSuccess, posterr)
             }
         });
-
+        swal("Flight Has Been Added!", "", "success");
 
         function MyFlights() {
             ajaxCall("GET", "../api/flight", "", successMyFlights, errMyFlights)
