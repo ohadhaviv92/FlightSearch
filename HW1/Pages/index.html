@@ -111,8 +111,10 @@
                     id: dataArr['data'][$(this).attr('id')]['route'][i]['id'], fullpathid: dataArr['data'][$(this).attr('id')]['id'], legnumber: (i + 1), flight_no: dataArr['data'][$(this).attr('id')]['route'][i]['flight_no'], fromairport: dataArr['data'][$(this).attr('id')]['route'][i]['flyFrom'], toairport: dataArr['data'][$(this).attr('id')]['route'][i]['flyTo'], airlinecode: dataArr['data'][$(this).attr('id')]['route'][i]['airline'], DepTime1: convertDate(dataArr['data'][$(this).attr('id')]['route'][i]['dTime']), ArriveTime1: convertDate(dataArr['data'][$(this).attr('id')]['route'][i]['aTime']), Duration1: calculateDuartion(dataArr['data'][$(this).attr('id')]['route'][i]['aTime'] -dataArr['data'][$(this).attr('id')]['route'][i]['dTime'])
                 }
 
-                ajaxCall('POST', "../api/Leg", JSON.stringify(l), postSuccess, posterr)
+                ajaxCall('POST', "../api/Leg", JSON.stringify(l), function () { swal("fligth added", "", "success");
+ }, posterr)
             }
+
         });
 
 
