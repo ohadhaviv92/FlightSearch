@@ -6,7 +6,24 @@ body {
     
 
 }
+.header{
+    background-color:gray;
+    height:120px;
+    color:white;
+}
 
+.header img {
+    float: left;
+    width: 120px;
+    height: 120px;
+    
+}
+
+.header h1 {
+    position: relative;
+    top: 40px;
+    left: 10px;
+}
 
 
 
