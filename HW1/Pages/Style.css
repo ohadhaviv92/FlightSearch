@@ -1,0 +1,42 @@
+﻿
+
+body {
+    box-sizing: border-box;
+    font: 16px Arial;
+    background-image: url('../images/background.jpg');
+    background-position:inherit;
+    background-repeat: no-repeat;
+    background-size:cover;
+    
+}
+
+
+.a{
+    display:inline;
+}
+
+input {
+    border: 1px solid transparent;
+    background-color: #f1f1f1;
+    padding: 10px;
+    font-size: 16px;
+}
+
+    input[type=text] {
+        background-color: #f1f1f1;
+        width: 100%;
+    }
+
+    input[type=submit] {
+        background-color: DodgerBlue;
+        color: #fff;
+    }
+
+
+
+
+
+#srcBTN{
+    display:inline;
+    
+}

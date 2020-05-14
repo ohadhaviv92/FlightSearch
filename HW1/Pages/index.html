@@ -4,12 +4,15 @@
     <meta charset="utf-8" />
     <title></title>
 
-    <link href="css.css" rel="stylesheet" />
+
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
 
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <link href="Style.css" rel="stylesheet" />
+
 
     <!-- Popper JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -19,7 +22,7 @@
     <script src="../Scripts/autoComplte.js"></script>
     <script src="../Scripts/ajaxCalls.js"></script>
 
-    
+
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
     <script>
@@ -92,7 +95,7 @@
 
         $(document).on("click", ".addBTN", function () {
             counter = 0;
-            
+
 
             let legs = [];
 
@@ -100,25 +103,26 @@
                 counter++;
             }
 
-           
+
 
             flight = { FlightPath1: dataArr['data'][$(this).attr('id')]['id'], AirportFrom1: dataArr['data'][$(this).attr('id')]['flyFrom'], AirportTo1: dataArr['data'][$(this).attr('id')]['flyTo'], DepTime1: convertDate(dataArr['data'][$(this).attr('id')]['dTime']), ArriveTime1: convertDate(dataArr['data'][$(this).attr('id')]['aTime']), Duration1: dataArr['data'][$(this).attr('id')]['duration']['total'], price: parseFloat(dataArr['data'][$(this).attr('id')]['price']), LegsNumber1: counter }
             ajaxCall('POST', "../api/flight", JSON.stringify(flight), postSuccess, posterr)
             for (i = 0; i < counter; i++) {//Count how many legs
                 legs.push(dataArr['data'][$(this).attr('id')]['route'][i]['cityTo'])
-               
+
                 l = {
-                    id: dataArr['data'][$(this).attr('id')]['route'][i]['id'], fullpathid: dataArr['data'][$(this).attr('id')]['id'], legnumber: (i + 1), flight_no: dataArr['data'][$(this).attr('id')]['route'][i]['flight_no'], fromairport: dataArr['data'][$(this).attr('id')]['route'][i]['flyFrom'], toairport: dataArr['data'][$(this).attr('id')]['route'][i]['flyTo'], airlinecode: dataArr['data'][$(this).attr('id')]['route'][i]['airline'], DepTime1: convertDate(dataArr['data'][$(this).attr('id')]['route'][i]['dTime']), ArriveTime1: convertDate(dataArr['data'][$(this).attr('id')]['route'][i]['aTime']), Duration1: calculateDuartion(dataArr['data'][$(this).attr('id')]['route'][i]['aTime'] -dataArr['data'][$(this).attr('id')]['route'][i]['dTime'])
+                    id: dataArr['data'][$(this).attr('id')]['route'][i]['id'], fullpathid: dataArr['data'][$(this).attr('id')]['id'], legnumber: (i + 1), flight_no: dataArr['data'][$(this).attr('id')]['route'][i]['flight_no'], fromairport: dataArr['data'][$(this).attr('id')]['route'][i]['flyFrom'], toairport: dataArr['data'][$(this).attr('id')]['route'][i]['flyTo'], airlinecode: dataArr['data'][$(this).attr('id')]['route'][i]['airline'], DepTime1: convertDate(dataArr['data'][$(this).attr('id')]['route'][i]['dTime']), ArriveTime1: convertDate(dataArr['data'][$(this).attr('id')]['route'][i]['aTime']), Duration1: calculateDuartion(dataArr['data'][$(this).attr('id')]['route'][i]['aTime'] - dataArr['data'][$(this).attr('id')]['route'][i]['dTime'])
                 }
 
-                ajaxCall('POST', "../api/Leg", JSON.stringify(l), function () { swal("fligth added", "", "success");
-            }, posterr)
+                ajaxCall('POST', "../api/Leg", JSON.stringify(l), function () {
+                    swal("fligth added", "", "success");
+                }, posterr)
             }
 
-          
+
 
         });
-        
+
 
         function MyFlights() {
             ajaxCall("GET", "../api/flight", "", successMyFlights, errMyFlights)
@@ -314,16 +318,21 @@
 
 
 
-                //end error function -------------------------------
+                        //end error function -------------------------------
 
 
 
     </script>
 </head>
-<body id="booking">
-    <div class="container-fluid" >
+
+
+
+
+
+<body >
+    <div class="container-fluid">
        
-        <form autocomplete="off" action="" id="srcBTN">
+        <form autocomplete="off" action="" id="srcBTN" class="align-middle" >
             <table>
                 <tr><td><b>Flight from:</b></td></tr>
                 <tr><td>  <input name="airPort" list="airportFrom" class="airportFrom" required/>  <datalist id="airportFrom"></datalist></td><td><input required="required" type="date" id="fromDate" /></td></tr>

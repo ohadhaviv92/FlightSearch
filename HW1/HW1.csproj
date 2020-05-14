@@ -183,7 +183,6 @@
     <Content Include="Global.asax" />
     <Content Include="images\background.jpg" />
     <Content Include="images\banner.jpg" />
-    <Content Include="Pages\css.css" />
     <Content Include="Pages\index.html" />
     <Content Include="Scripts\ajaxCalls.js" />
     <Content Include="Scripts\autoComplte.js" />
@@ -217,6 +216,7 @@
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="Pages\Style.css" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -234,6 +234,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="CSS\" />
     <Folder Include="Views\Airline\" />
     <Folder Include="Views\Default\" />
   </ItemGroup>
