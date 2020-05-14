@@ -340,16 +340,19 @@
                         <tr><td><b>To:</b></td></tr>
                         <tr><td><input name="airPort" list="airportTo" class="airportTo" required />  <datalist id="airportTo"></datalist></td><td><input required="required" type="date" id="toDate" /></td></tr>
                         <tr>
-                            <td><button class="btn btn-primary" type="submit">Find Flights!</button></td> <!--Type should be submit!-->
+                            <td colspan="2">
+                                <button class="btn btn-primary" type="submit">Find Flights!</button>                <button id="MyFlights" type="button" class="btn btn-primary">My Flights</button>
+                                <button id="GetAirports" type="button" class="btn btn-primary">Get Airports</button>
+                                <button id="GetAirLines" type="button" class="btn btn-primary">Get AirLines</button>
+                            </td> <!--Type should be submit!-->
+
                         </tr>
                         <tr>
                         </tr>
                     </table>
 
                 </form>
-                <button id="MyFlights" type="button" class="btn btn-primary">My Flights</button>
-                <button id="GetAirports" type="button" class="btn btn-primary">Get Airports</button>
-                <button id="GetAirLines" type="button" class="btn btn-primary">Get AirLines</button>
+
 
                 <div id="ph"></div>
             </div>
