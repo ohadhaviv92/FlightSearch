@@ -203,7 +203,7 @@ namespace HW1.Models
             }
             catch (Exception ex)
             {
-                return 0;
+               
                 // write to log
                 throw (ex);
             }
