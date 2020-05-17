@@ -125,6 +125,7 @@
 
                         ajaxCall('POST', "../api/Leg", JSON.stringify(l), function () {
                             swal("Flight Has Been Added!", "", "success");
+                            $('#MyFlights').prop('disabled', false); //Disabled the btn
                         }, posterr)
                     }
 
@@ -232,29 +233,25 @@
 
                 function successMyFlights(data) {
                     i = 1
+                    console.log(data);
                     str = "<table class='table table-striped'><thead><tr><th scope='col'>#</th><th scope='col'>From</th><th scope='col'>To</th><th scope='col'>Departure time</th><th scope='col'>Arrival time</th><th scope='col'>Stops</th><th scope='col'>Airline name</th><th scope='col'>Price</th></tr></thead><tbody>"
                     for (flight in data) {
                         let depTime = new Date(0);
                         let arrTime = new Date(0);
-                        depTime.setUTCSeconds(data[flight]['DepTime'])
-                        arrTime.setUTCSeconds(data[flight]['ArriveTime'])
+                        depTime.setUTCSeconds(flight['DepTime'])
+                        arrTime.setUTCSeconds(flight['ArriveTime'])
                         str += "<tr><th scope='row'>" + i + "</th>"
-                        str += "<td>" + data[flight]['From'] + "</td>"
-                        str += "<td>" + data[flight]['To'] + "</td>"
-                        str += "<td>" + dateToFulldate(depTime) + "</td>"
-                        str += "<td>" + dateToFulldate(arrTime) + "</td>"
-                        if (data[flight]['Stops'].length > 1) {
+                        str += "<td>" + flight['AirportFrom1'] + "</td>"
+                        str += "<td>" + flight['AirportTo1'] + "</td>"
+                        str += "<td>" + flight['DepTime1'] + "</td>"
+                        str += "<td>" + flight['ArriveTime1'] + "</td>"
+                       
                             str += "<td>"
-                            for (j = 0; j < data[flight]['Stops'].length - 1; j++) {
-                                str += data[flight]['Stops'][j] + ", "
-                            }
-                            str += "(" + j + " Connections)</td>"
-                        }
-                        else {
-                            str += "<td> No Stops</td>"
-                        }
-                        str += "<td>" + data[flight]['AirlineName'] + "</td>"
-                        str += "<td>" + data[flight]['Price'] + " Euro</td>"
+
+                            str += "(" + flight['LegsNumber1'] + " Connections)</td>"
+
+                        str += "<td>" + flight['AirportFrom1'] + "</td>"
+                        str += "<td>" + flight['Price'] + " Euro</td>"
                         i++
                     }
                     str += "</tbody></table>"
