@@ -104,13 +104,17 @@
 
                     let legs = [];
 
+
+                    
                     for (var i = 0; i < dataArr['data'][$(this).attr('id')]['route'].length; i++) {
                         counter++;
+                        
                     }
 
 
 
                     flight = { FlightPath1: dataArr['data'][$(this).attr('id')]['id'], AirportFrom1: dataArr['data'][$(this).attr('id')]['flyFrom'], AirportTo1: dataArr['data'][$(this).attr('id')]['flyTo'], DepTime1: convertDate(dataArr['data'][$(this).attr('id')]['dTime']), ArriveTime1: convertDate(dataArr['data'][$(this).attr('id')]['aTime']), Duration1: dataArr['data'][$(this).attr('id')]['duration']['total'], price: parseFloat(dataArr['data'][$(this).attr('id')]['price']), LegsNumber1: counter }
+                    
                     ajaxCall('POST', "../api/flight", JSON.stringify(flight), postSuccess, posterr)
                     for (i = 0; i < counter; i++) {//Count how many legs in the flight
                         legs.push(dataArr['data'][$(this).attr('id')]['route'][i]['cityTo'])

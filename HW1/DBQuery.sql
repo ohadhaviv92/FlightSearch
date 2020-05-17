@@ -1,5 +1,7 @@
-﻿
-
+﻿drop table Legs_CS
+drop table MyFlights_CS
+drop table Airports_CS
+drop table Airlines_CS
 
 
 
@@ -8,6 +10,15 @@ AirlineCode nvarchar(90) primary key,
 AirlineName nvarchar(90)
 )
 
+
+create table Airports_CS(
+AirportCode nvarchar(90) primary key,
+Airportname nvarchar(100),
+Longitude nvarchar(15),
+Latitudes nvarchar(15),
+City nvarchar(80),
+Country nvarchar(50),
+)
 
 create table MyFlights_CS(
  FlightPath nvarchar(500) primary key,
@@ -23,16 +34,8 @@ create table MyFlights_CS(
 )
 
 
---select top(1) * from Airports_CS
 
-create table Airports_CS(
-AirportCode nvarchar(90) primary key,
-Airportname nvarchar(100),
-Longitude nvarchar(15),
-Latitudes nvarchar(15),
-City nvarchar(80),
-Country nvarchar(50),
-)
+
 
 Create Table Legs_CS
 (

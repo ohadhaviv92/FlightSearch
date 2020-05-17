@@ -265,19 +265,7 @@ namespace HW1.Models
         //--------------------------------------------------------------------
         // Build the Insert command String
         //--------------------------------------------------------------------
-        //private String BuildInsertCommand(Flight car)
-        //{
-        //    String command;
 
-        //    StringBuilder sb = new StringBuilder();
-        //    // use a string builder to create the dynamic string
-        //    //sb.AppendFormat("Values('{0}', '{1}' ,{2}, {3})", car.Model, car.Manufacturer, car.Year.ToString(), car.Price.ToString());
-        //    //String prefix = "INSERT INTO Cars_CS " + "(model, manufacturer, year, price) ";
-        //    //command = prefix + sb.ToString();
-
-        //    command = "tesdt";//need to remove!!!!! 
-        //    return command;
-        //}
 
         private String BuildInsertCommand(Airline airline)
         {
