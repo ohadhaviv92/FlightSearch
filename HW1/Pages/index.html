@@ -173,6 +173,18 @@
         });
 
 
+        $(document).on("click", ".orderBTN", function () { // Open the buy form.
+            $("#editDiv").show();
+
+        });
+
+     
+        $(document).on("click", "#cancelSaveBTN", function () { // Open the buy form.
+            $("#editDiv").hide();
+
+        });
+
+
         function MyFlights() {
             ajaxCall("GET", "../api/flight", "", successMyFlights, errFunc)
         }
@@ -354,7 +366,7 @@
                         },
                           {
                            render: function (data, type, row, meta) {
-                               let dataflight = "data-flightId='" +row.Id  + "'";
+                               let dataflight = "data-flightId='" +row.id  + "'";
 
                                 return  "<button  type='button' class = 'orderBTN btn btn-primary' " + dataflight + ">Order</button>";
                             }
@@ -425,7 +437,7 @@
 
 
     <div class="container">
-<<<<<<< HEAD
+    
 
         <div id="editDiv">
             <form id="carForm">
@@ -455,10 +467,6 @@
                         <textarea rows="6" class="form-control" id="description" placeholder="Enter the description"></textarea>
                     </div>
 
-                    <div class="form-group col-sm-4">
-                        <img src="images/car.jpg" id="image" />
-                    </div>
-
                 </div>
 
                 <button type="submit" class="btn btn-primary btn-lg" id="saveBTN">Save</button>
@@ -480,22 +488,22 @@
                 </tr>
             </thead>
         </table>
-=======
-            <table id="flightTable" class="display nowrap" style="width:100%">
-                <thead>
-                    <tr>
-                        <th>From</th>
-                        <th>To</th>
-                        <th>Departure time</th>
-                        <th>Arrival time</th>
-                        <th>Stops</th>
-                        <th>Airline name</th>
-                        <th>Price</th>
-                        <th>Order</th>
-                    </tr>
-                </thead>
-            </table>
->>>>>>> 9437e8d421417d70502a9547e4c0fa88f50fcf29
+
+        <table id="flightTable" class="display nowrap" style="width:100%">
+            <thead>
+                <tr>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Departure time</th>
+                    <th>Arrival time</th>
+                    <th>Stops</th>
+                    <th>Airline name</th>
+                    <th>Price</th>
+                    <th>Order</th>
+                </tr>
+            </thead>
+        </table>
+
 
         <div class="row justify-content-md-center ">
             <div class="col col-md-auto" id="formdiv">
