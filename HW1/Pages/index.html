@@ -73,6 +73,8 @@
 
 
         $(document).ready(function () {
+
+            console.log(localStorage.getItem('user'));
             $("#srcBTN").submit(loadFlights);
             $("#MyFlights").click(MyFlights)
             $("#fromDate").min = new Date().toISOString().split("T")[0];
@@ -331,40 +333,6 @@
                 flightData.push({id:i,cityFrom:data['data'][i]['cityFrom'],cityTo:data['data'][i]['cityTo'],dTime:depTime.toLocaleDateString('en-US'),aTime:arrTime.toLocaleDateString('en-US'),route:conection,airline:data['data'][i]['route'][0]['airline'],price:data['data'][i]['price'] + " Euro"})
             }
 
-
-            //str = "<table class='table table-striped'><thead><tr><th scope='col'>#</th><th scope='col'>From</th><th scope='col'>To</th><th scope='col'>Departure time</th><th scope='col'>Arrival time</th><th scope='col'>Stops</th><th scope='col'>Airline name</th><th scope='col'>Price</th><th scope='col'>Store Flight?</th></tr></thead><tbody>"
-            //for (flight in data['data']) {
-            //    let depTime = convertDate(data['data'][flight]['dTime']);
-            //    let arrTime = convertDate(data['data'][flight]['aTime']);
-
-
-            //    str += "<tr><th scope='row'>" + (i + 1) + "</th>"
-            //    str += "<td>" + data['data'][flight]['cityFrom'] + ", " + data['data'][flight]['countryFrom']['name'] + "</td>"
-            //    str += "<td>" + data['data'][flight]['cityTo'] + ", " + data['data'][flight]['countryTo']['name'] + "</td>"
-            //    str += "<td>" + depTime + "</td>"
-            //    str += "<td>" + arrTime + "</td>"
-            //    if (data['data'][flight]['route'].length > 1) {
-            //        str += "<td>"
-            //        connectionsArr = []
-            //        getConnections(data['data'][flight]['route'])
-            //        for (var j = 0; j < connectionsArr.length - 1; j++) {
-            //            str += connectionsArr[j] + ", "
-            //        }
-            //        str += "(" + j + " Connections)</td>"
-            //    }
-            //    else {
-            //        str += "<td> No Stops</td>"
-            //    }
-            //    str += "<td>" + data['data'][flight]['route'][0]['airline'] + "</td>"
-            //    str += "<td>" + data['data'][flight]['price'] + " Euro</td>"
-            //    str += "<td><button type='button' class='btn btn-primary addBTN' id=" + (i) + ">Add</button></td></tr>"
-            //    i++
-
-            //}
-            //str += "</tbody></table>"
-            //document.getElementById('ph').innerHTML = str;
-
-
             
             try {
                 if(table!=null) table.destroy();
@@ -388,7 +356,7 @@
                            render: function (data, type, row, meta) {
                                let dataflight = "data-flightId='" +row.Id  + "'";
 
-                                return  "<button value='Order' type='button' class = 'orderBTN btn btn-success' " + dataflight + "></button>";
+                                return  "<button  type='button' class = 'orderBTN btn btn-primary' " + dataflight + ">Order</button>";
                             }
 
                         },
@@ -457,6 +425,7 @@
 
 
     <div class="container">
+<<<<<<< HEAD
 
         <div id="editDiv">
             <form id="carForm">
@@ -511,6 +480,22 @@
                 </tr>
             </thead>
         </table>
+=======
+            <table id="flightTable" class="display nowrap" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>Departure time</th>
+                        <th>Arrival time</th>
+                        <th>Stops</th>
+                        <th>Airline name</th>
+                        <th>Price</th>
+                        <th>Order</th>
+                    </tr>
+                </thead>
+            </table>
+>>>>>>> 9437e8d421417d70502a9547e4c0fa88f50fcf29
 
         <div class="row justify-content-md-center ">
             <div class="col col-md-auto" id="formdiv">
