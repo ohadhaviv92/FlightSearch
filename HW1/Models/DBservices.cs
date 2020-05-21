@@ -42,6 +42,52 @@ namespace HW1.Models
         // This method inserts a car to the cars table 
         //--------------------------------------------------------------------------------------------------
 
+
+        public string login(string[] logins)
+        {
+
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+
+            String cStr = "select * from users u where u.username='"+ logins[0]+ "' and u.password='"+ logins[1]+ "'";      // helper method to build the insert string
+
+            cmd = CreateCommand(cStr, con);             // create the command
+
+            try
+            {
+                string numEffected = (string)cmd.ExecuteScalar(); // execute the command
+
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                return "";
+                // write to log
+                throw (ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+
+        }
+
+
         public string check(string tableName)
         {
 
