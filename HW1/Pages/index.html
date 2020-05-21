@@ -81,6 +81,7 @@
             $('#GetAirports').click(loadAirports);
             $('#GetAirLines').click(loadAirLines);
             $('#GetAirports').prop('disabled', true); //Disabled the btn
+            $("#editDiv").hide() //Hide the buy flight form
             var now = new Date(),
 
 
@@ -206,6 +207,18 @@
             }
 
 
+
+        });
+
+
+        $(document).on("click", ".orderBTN", function () { // Open the buy form.
+            $("#editDiv").show();
+
+        });
+
+     
+        $(document).on("click", "#cancelSaveBTN", function () { // Open the buy form.
+            $("#editDiv").hide();
 
         });
 
@@ -391,7 +404,7 @@
                         },
                           {
                            render: function (data, type, row, meta) {
-                               let dataflight = "data-flightId='" +row.Id  + "'";
+                               let dataflight = "data-flightId='" +row.id  + "'";
 
                                 return  "<button  type='button' class = 'orderBTN btn btn-primary' " + dataflight + ">Order</button>";
                             }
@@ -462,20 +475,73 @@
 
 
     <div class="container">
-            <table id="flightTable" class="display nowrap" style="width:100%">
-                <thead>
-                    <tr>
-                        <th>From</th>
-                        <th>To</th>
-                        <th>Departure time</th>
-                        <th>Arrival time</th>
-                        <th>Stops</th>
-                        <th>Airline name</th>
-                        <th>Price</th>
-                        <th>Order</th>
-                    </tr>
-                </thead>
-            </table>
+    
+
+        <div id="editDiv">
+            <form id="carForm">
+                <div class="form-group row">
+                    <div class="form-group col-sm-3">
+                        <label for="Passengers"><span class="red-star"></span>Passengers Names</label>
+                        <input type="text" class="form-control" id="Passengers" placeholder="Enter the Passengers names" required>
+                    </div>
+
+
+                    <div class="form-group col-sm-3">
+                        <label for="Email"><span class="red-star"></span>Email</label>
+                        <input type="email" class="form-control" id="email" placeholder="Enter Email" required>
+                    </div>
+
+
+
+                    <div class="form-group col-sm-3">
+                        <label for="terms"><span class="red-star"></span>Accept our terms and conditions?</label>
+                        <input required="required" type="checkbox" class="form-control" id="terms" checked />
+                    </div>
+
+                </div>
+                <div class="form-group row">
+                    <div class="form-group col-sm-8">
+                        <label for="description">Description</label>
+                        <textarea rows="6" class="form-control" id="description" placeholder="Enter the description"></textarea>
+                    </div>
+
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-lg" id="saveBTN">Save</button>
+                <input type="button" class="btn btn-warning btn-lg" id="cancelSaveBTN" value="Cancel" />
+            </form>
+        </div>
+
+        <table id="flightTable" class="display nowrap" style="width:100%">
+            <thead>
+                <tr>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Departure time</th>
+                    <th>Arrival time</th>
+                    <th>Stops</th>
+                    <th>Airline name</th>
+                    <th>Price</th>
+                    <th>add</th>
+                </tr>
+            </thead>
+        </table>
+
+        <table id="flightTable" class="display nowrap" style="width:100%">
+            <thead>
+                <tr>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Departure time</th>
+                    <th>Arrival time</th>
+                    <th>Stops</th>
+                    <th>Airline name</th>
+                    <th>Price</th>
+                    <th>Order</th>
+                </tr>
+            </thead>
+        </table>
+
 
         <div class="row justify-content-md-center ">
             <div class="col col-md-auto" id="searchdiv">
