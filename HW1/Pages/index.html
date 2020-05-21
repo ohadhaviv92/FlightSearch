@@ -383,6 +383,14 @@
                         {
                             data: "price"
                         },
+                          {
+                           render: function (data, type, row, meta) {
+                               let dataflight = "data-flightId='" +row.Id  + "'";
+
+                                return  "<button value='Order' type='button' class = 'orderBTN btn btn-success' " + dataflight + "></button>";
+                            }
+
+                        },
 
 
                     ],
