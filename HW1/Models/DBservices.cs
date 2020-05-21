@@ -42,6 +42,53 @@ namespace HW1.Models
         // This method inserts a car to the cars table 
         //--------------------------------------------------------------------------------------------------
 
+        public User getUser(string userName)
+        {
+            
+            SqlConnection con = null;
+
+            try
+            {
+
+                con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+                String selectSTR = "SELECT * FROM users where username = '" + userName + "'";
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+                // get a reader
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+                User us = new User();
+                while (dr.Read())
+                {   // Read till the end of the data into a row
+                    
+
+                    us.UserName = (string)dr["username"];
+                    us.Password = (string)dr["password"];
+                    us.IsAdmin = (string)dr["isAdmin"];
+                    
+                }
+
+                return us;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+
+
+
+
+            return null;
+        }
 
         public string login(string[] logins)
         {

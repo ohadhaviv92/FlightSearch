@@ -68,6 +68,22 @@ FOREIGN KEY (airlinecode) REFERENCES Airlines_CS(AirlineCode),
 
 )
 
+
+create table discounts(
+AirlineCode nvarchar(90) ,
+AirportCodeFrom nvarchar(90) ,
+AirportCodeTo nvarchar(90) ,
+DateFrom date,
+DateTo date,
+discount float
+FOREIGN KEY (AirlineCode) REFERENCES Airlines_CS(AirlineCode),
+ FOREIGN KEY (AirportCodeFrom) REFERENCES Airports_CS(AirportCode),
+ FOREIGN KEY (AirportCodeTo) REFERENCES Airports_CS(AirportCode),
+ PRIMARY KEY (AirlineCode,AirportCodeFrom,AirportCodeTo,DateFrom,DateTo)
+
+
+)
+
 select * from Airlines_CS
 select * from Airports_CS
 select * from MyFlights_CS

@@ -10,14 +10,25 @@ namespace HW1.Models
 
         string userName;
         string password;
+        string isAdmin;
 
-        public User(string userName, string password)
+        public User()
         {
-            this.userName = userName;
-            this.password = password;
+           
         }
+
+        
 
         public string UserName { get => userName; set => userName = value; }
         public string Password { get => password; set => password = value; }
+        public string IsAdmin { get => isAdmin; set => isAdmin = value; }
+
+
+        public User getUser(string username)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.getUser(username);
+
+        }
     }
 }
