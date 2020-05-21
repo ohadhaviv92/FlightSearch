@@ -446,13 +446,11 @@
         </div>
     </nav>
 
-    <div class="container-fluid">
-        <form id="pForm">
-            <table id="flightTable" class="display nowrap"  style="width:100%">
+
+    <div class="container">
+            <table id="flightTable" class="display nowrap" style="width:100%">
                 <thead>
                     <tr>
-
-                        
                         <th>From</th>
                         <th>To</th>
                         <th>Departure time</th>
@@ -465,39 +463,35 @@
                 </thead>
             </table>
 
-        </form>
-    </div>
+        <div class="row justify-content-md-center ">
+            <div class="col col-md-auto" id="formdiv">
+                <form autocomplete="off" action="" id="srcBTN">
+                    <table>
+                        <tr><td><b>Flight from:</b></td></tr>
+                        <tr><td>  <input name="airPort" list="airportFrom" class="airportFrom formelement" />  <datalist id="airportFrom"></datalist></td><td><input type="date" id="fromDate" class="formelement" /></td></tr>
+                        <tr><td><b>To:</b></td></tr>
+                        <tr><td><input name="airPort" list="airportTo" class="airportTo formelement" />  <datalist id="airportTo"></datalist></td><td><input type="date" id="toDate" class="formelement" /></td></tr>
+                        <tr>
+                            <td colspan="2">
+                                <button class="btn btn-primary" id="searchFlights">Find Flights!</button>
+                                <!--<button class="btn btn-primary" type="submit" id="searchFlights">Find Flights!</button>-->
 
-        <div class="container-fluid">
-            <div class="row justify-content-md-center ">
-                <div class="col col-md-auto" id="formdiv">
-                    <form autocomplete="off" action="" id="srcBTN">
-                        <table>
-                            <tr><td><b>Flight from:</b></td></tr>
-                            <tr><td>  <input name="airPort" list="airportFrom" class="airportFrom formelement"  />  <datalist id="airportFrom"></datalist></td><td><input  type="date" id="fromDate" class="formelement" /></td></tr>
-                            <tr><td><b>To:</b></td></tr>
-                            <tr><td><input name="airPort" list="airportTo" class="airportTo formelement"  />  <datalist id="airportTo"></datalist></td><td><input type="date" id="toDate" class="formelement" /></td></tr>
-                            <tr>
-                                <td colspan="2">
-                                    <button class="btn btn-primary"  id="searchFlights">Find Flights!</button>
-                                  <!--<button class="btn btn-primary" type="submit" id="searchFlights">Find Flights!</button>-->
+                                <button id="MyFlights" type="button" class="btn btn-primary" disabled>My Flights</button>
+                                <button id="GetAirports" type="button" class="btn btn-primary">Get Airports</button>
+                                <button id="GetAirLines" type="button" class="btn btn-primary">Get AirLines</button>
+                            </td> <!--Type should be submit!-->
 
-                                    <button id="MyFlights" type="button" class="btn btn-primary" disabled>My Flights</button>
-                                    <button id="GetAirports" type="button" class="btn btn-primary">Get Airports</button>
-                                    <button id="GetAirLines" type="button" class="btn btn-primary">Get AirLines</button>
-                                </td> <!--Type should be submit!-->
+                        </tr>
 
-                            </tr>
+                    </table>
 
-                        </table>
-
-                    </form>
+                </form>
 
 
 
-                </div>
             </div>
         </div>
+    </div>
         <div id="ph"></div>
 </body>
 </html>

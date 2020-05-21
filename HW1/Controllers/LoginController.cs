@@ -18,10 +18,9 @@ namespace HW1.Controllers
         }
 
         // GET api/<controller>/5
-        public string Get(string[] logins)
+        public void Get(string[] logins)
         {
-            DBservices db = new DBservices();
-            return db.login(logins);
+
         }
 
         // POST api/<controller>
