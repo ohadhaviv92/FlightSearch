@@ -41,6 +41,15 @@ Create Table users
     isAdmin char(1)
 )
 
+Create Table orders
+(
+userId nvarchar(15),
+flightId nvarchar(500),
+FOREIGN KEY (userId) REFERENCES users(username),
+FOREIGN KEY (flightId) REFERENCES MyFlights_CS(FlightPath),
+primary key(userId,flightId)
+)
+
 
 Create Table Legs_CS
 (
