@@ -105,7 +105,9 @@
         }
 
         function loadFlights() {
-            let url = "https://api.skypicker.com/flights?flyFrom=" + $(".airportFrom").val() + "&to=" + $(".airportTo").val() + "&dateFrom=" + fixDate($("#fromDate").val()) + "&dateTo=" + fixDate($("#toDate").val()) + "&partner=picky"
+                let url = "https://api.skypicker.com/flights?flyFrom=TLV&to=LGW&dateFrom=05/06/2020&dateTo=12/06/2020&partner=picky"
+
+           // let url = "https://api.skypicker.com/flights?flyFrom=" + $(".airportFrom").val() + "&to=" + $(".airportTo").val() + "&dateFrom=" + fixDate($("#fromDate").val()) + "&dateTo=" + fixDate($("#toDate").val()) + "&partner=picky"
             ajaxCall("GET", url, "", successAPICB, errFunc)
             return false;
         }
@@ -325,7 +327,7 @@
                     }
                 }
 
-                flightData.push({id:i,cityFrom:data['data'][i]['cityFrom'],cityTo:data['data'][i]['cityTo'],dTime:depTime,aTime:arrTime,route:conection,airline:data['data'][i]['route'][0]['airline'],price:data['data'][i]['price'] + " Euro"})
+                flightData.push({id:i,cityFrom:data['data'][i]['cityFrom'],cityTo:data['data'][i]['cityTo'],dTime:depTime.toLocaleDateString('en-US'),aTime:arrTime.toLocaleDateString('en-US'),route:conection,airline:data['data'][i]['route'][0]['airline'],price:data['data'][i]['price'] + " Euro"})
             }
 
 
@@ -364,10 +366,11 @@
 
             
             try {
-                if(table!=null) table.clear()
+                if(table!=null) table.destroy();
                 table = $('#flightTable').DataTable({
                     data: flightData,
                     pageLength: 5,
+
                     columns: [
    
 
@@ -428,7 +431,7 @@
         <h1>Flight.com</h1>
     </div>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Home</a>
+        <a class="navbar-brand"  href="#">Home</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -445,7 +448,7 @@
 
     <div class="container-fluid">
         <form id="pForm">
-            <table id="flightTable" class="display nowrap" style="width:100%">
+            <table id="flightTable" class="display nowrap"  style="width:100%">
                 <thead>
                     <tr>
 
@@ -471,12 +474,14 @@
                     <form autocomplete="off" action="" id="srcBTN">
                         <table>
                             <tr><td><b>Flight from:</b></td></tr>
-                            <tr><td>  <input name="airPort" list="airportFrom" class="airportFrom formelement" required />  <datalist id="airportFrom"></datalist></td><td><input required="required" type="date" id="fromDate" class="formelement" /></td></tr>
+                            <tr><td>  <input name="airPort" list="airportFrom" class="airportFrom formelement"  />  <datalist id="airportFrom"></datalist></td><td><input  type="date" id="fromDate" class="formelement" /></td></tr>
                             <tr><td><b>To:</b></td></tr>
-                            <tr><td><input name="airPort" list="airportTo" class="airportTo formelement" required />  <datalist id="airportTo"></datalist></td><td><input required="required" type="date" id="toDate" class="formelement" /></td></tr>
+                            <tr><td><input name="airPort" list="airportTo" class="airportTo formelement"  />  <datalist id="airportTo"></datalist></td><td><input type="date" id="toDate" class="formelement" /></td></tr>
                             <tr>
                                 <td colspan="2">
-                                    <button class="btn btn-primary" type="submit" id="searchFlights" disabled>Find Flights!</button>
+                                    <button class="btn btn-primary"  id="searchFlights">Find Flights!</button>
+                                  <!--<button class="btn btn-primary" type="submit" id="searchFlights">Find Flights!</button>-->
+
                                     <button id="MyFlights" type="button" class="btn btn-primary" disabled>My Flights</button>
                                     <button id="GetAirports" type="button" class="btn btn-primary">Get Airports</button>
                                     <button id="GetAirLines" type="button" class="btn btn-primary">Get AirLines</button>
