@@ -25,7 +25,7 @@ namespace HW1.Controllers
         }
 
         // POST api/<controller>
-        public void Post([FromBody]int[] logins)
+        public void Post([FromBody]string[] logins)
         {
 
         }
