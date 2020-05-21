@@ -34,7 +34,12 @@ create table MyFlights_CS(
 )
 
 
-
+Create Table users
+(
+    username nvarchar(15) primary key,
+    password nvarchar(10),
+    isAdmin char(1)
+)
 
 
 Create Table Legs_CS
