@@ -25,9 +25,10 @@ namespace HW1.Controllers
         }
 
         // POST api/<controller>
-        public void Post([FromBody]string[] logins)
+        public string Post([FromBody]string[] logins)
         {
-
+            DBservices db = new DBservices();
+            return db.login(logins);
         }
 
         // PUT api/<controller>/5

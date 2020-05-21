@@ -41,12 +41,17 @@
 		function login() {
 			let username = $("#username").val();
 			let password = $("#password").val();
-            ajaxCall("GET", "../api/login", JSON.stringify([username, password]), loggedIn, loginError)
+            ajaxCall("POST", "../api/login", JSON.stringify([username, password]), loggedIn, loginError)
 			return false;
 		}
 
-		function loggedIn() {
-			console.log("good");
+		function loggedIn(data) {
+			if (data != null) {
+				console.log("user");
+                window.location.pathname = 'Pages/index.html'
+			}
+			else
+				console.log("no user")
 		}
 	</script>
 </head>
