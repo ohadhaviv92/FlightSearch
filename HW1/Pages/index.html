@@ -1,343 +1,417 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
     <title></title>
 
+    <!--SCRIPTS-->
 
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="../Scripts/autoComplte.js"></script>
+    <script src="../Scripts/ajaxCalls.js"></script>
+    <script src="../Scripts/dateFunctions.js"></script>
+
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+
+
+
 
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+
+
+    <!--//data table-->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css">
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+    <!--CSS-->
     <link href="Style.css" rel="stylesheet" />
 
 
 
 
-            <!-- Popper JS -->
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="../Scripts/dateFunctions.js"></script>
-    <!-- Latest compiled JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-    <script src="../Scripts/autoComplte.js"></script>
-    <script src="../Scripts/ajaxCalls.js"></script>
-
-
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
     <script>
-                countryCodes = [];
-                Myflightsarr = [];
-                airportList = {};
-                var airports = new Array();
-                var airlines = new Array();
-                airlinesList = {};
-                flag = 0; // 0 =>  there are already airport table on db
-                dataArr = {} //Store the current search arr
+        var table=null;
+        countryCodes = [];
+        Myflightsarr = [];
+        airportList = {};
+        var airports = new Array();
+        var airlines = new Array();
+        airlinesList = {};
+        flag = 0; // 0 =>  there are already airport table on db
+        dataArr = {} //Store the current search arr
 
 
 
 
-                $(document).ready(function () {
-                    $("#srcBTN").submit(loadFlights);
-                    $("#MyFlights").click(MyFlights)
-                    $("#fromDate").min = new Date().toISOString().split("T")[0];
-                    $('#GetAirports').click(loadAirports);
-                    $('#GetAirLines').click(loadAirLines);
-                    $('#GetAirports').prop('disabled', true); //Disabled the btn
-                    var now = new Date(),
+        $(document).ready(function () {
+            $("#srcBTN").submit(loadFlights);
+            $("#MyFlights").click(MyFlights)
+            $("#fromDate").min = new Date().toISOString().split("T")[0];
+            $('#GetAirports').click(loadAirports);
+            $('#GetAirLines').click(loadAirLines);
+            $('#GetAirports').prop('disabled', true); //Disabled the btn
+            var now = new Date(),
 
 
-                        // minimum date the user can choose, in this case now and in the future
-                        minDate = now.toISOString().substring(0, 10);
-                    $('#fromDate').prop('min', minDate);//Cant fly backwards
-                    $('#toDate').prop('min', minDate); //Cant fly backwards
-                  
+                // minimum date the user can choose, in this case now and in the future
+                minDate = now.toISOString().substring(0, 10);
+            $('#fromDate').prop('min', minDate);//Cant fly backwards
+            $('#toDate').prop('min', minDate); //Cant fly backwards
+            $('#flightTable').hide();
 
 
-                });
 
 
-                // API call ---------------------------------------------------------------
+        });
 
-                function loadAirports() { // Load the airports list from API
 
-                    url = "https://api.skypicker.com/locations?type=dump&locale=en-US&location_types=airport&limit=4000&active_only=true&sort=name";
+        // API call ---------------------------------------------------------------
 
-                    $.get(url).done(successCB);
-                    $.get(url).fail(errorCB);
+        function loadAirports() { // Load the airports list from API
+
+            url = "https://api.skypicker.com/locations?type=dump&locale=en-US&location_types=airport&limit=4000&active_only=true&sort=name";
+
+            $.get(url).done(successCB);
+            $.get(url).fail(errFunc);
+        }
+
+        function loadFlights() {
+            let url = "https://api.skypicker.com/flights?flyFrom=" + $(".airportFrom").val() + "&to=" + $(".airportTo").val() + "&dateFrom=" + fixDate($("#fromDate").val()) + "&dateTo=" + fixDate($("#toDate").val()) + "&partner=picky"
+            ajaxCall("GET", url, "", successAPICB, errFunc)
+            return false;
+        }
+
+
+
+        function loadAirLines() {  // load air lines from API if there is not exists yet on DB
+            ajaxCall("GET", "../api/Airline", "", function (data) {
+                if (data == null) {
+                    url = "https://api.skypicker.com/airlines";
+                    $.get(url).done(successLoadAirLines);
+                    $.get(url).fail(errFunc);
                 }
-
-                function loadFlights() {
-                    let url = "https://api.skypicker.com/flights?flyFrom=" + $(".airportFrom").val() + "&to=" + $(".airportTo").val() + "&dateFrom=" + fixDate($("#fromDate").val()) + "&dateTo=" + fixDate($("#toDate").val()) + "&partner=picky"
-                    ajaxCall("GET", url, "", successAPICB, errorAPICB)
-                    return false;
-                }
-
-
-
-                function loadAirLines() {  // load air lines from API if there is not exists yet on DB
-                    ajaxCall("GET", "../api/Airline", "", function (data) {
-                        if (data == null) {
-                            url = "https://api.skypicker.com/airlines";
-                            $.get(url).done(successLoadAirLines);
-                            $.get(url).fail(errorCB);
-                        }
-                        else {
-                            swal("All Airline has been loaded!", "", "success");
-                        }
-                        $('#GetAirLines').prop('disabled', true); //Disabled the btn
-                        $('#GetAirports').prop('disabled', false); //Disabled the btn
-
-                    }, errMyFlights);
-                }
-
-                // end API call -------------------------------------------------------------------------
-
-                
-
-                $(document).on("click", ".addBTN", function () {
-                    counter = 0;
-
-
-                    let legs = [];
-
-
-                    
-                    for (var i = 0; i < dataArr['data'][$(this).attr('id')]['route'].length; i++) {
-                        counter++;
-                        
-                    }
-
-
-
-                    flight = { FlightPath1: dataArr['data'][$(this).attr('id')]['id'], AirportFrom1: dataArr['data'][$(this).attr('id')]['flyFrom'], AirportTo1: dataArr['data'][$(this).attr('id')]['flyTo'], DepTime1: convertDate(dataArr['data'][$(this).attr('id')]['dTime']), ArriveTime1: convertDate(dataArr['data'][$(this).attr('id')]['aTime']), Duration1: dataArr['data'][$(this).attr('id')]['duration']['total'], price: parseFloat(dataArr['data'][$(this).attr('id')]['price']), LegsNumber1: counter }
-                    
-                    ajaxCall('POST', "../api/flight", JSON.stringify(flight), postSuccess, posterr)
-                    for (i = 0; i < counter; i++) {//Count how many legs in the flight
-                        legs.push(dataArr['data'][$(this).attr('id')]['route'][i]['cityTo'])
-
-                        l = {
-                            id: dataArr['data'][$(this).attr('id')]['route'][i]['id'], fullpathid: dataArr['data'][$(this).attr('id')]['id'], legnumber: (i + 1), flight_no: dataArr['data'][$(this).attr('id')]['route'][i]['flight_no'], fromairport: dataArr['data'][$(this).attr('id')]['route'][i]['flyFrom'], toairport: dataArr['data'][$(this).attr('id')]['route'][i]['flyTo'], airlinecode: dataArr['data'][$(this).attr('id')]['route'][i]['airline'], DepTime1: convertDate(dataArr['data'][$(this).attr('id')]['route'][i]['dTime']), ArriveTime1: convertDate(dataArr['data'][$(this).attr('id')]['route'][i]['aTime']), Duration1: calculateDuartion(dataArr['data'][$(this).attr('id')]['route'][i]['aTime'] - dataArr['data'][$(this).attr('id')]['route'][i]['dTime'])
-                        }
-
-                        ajaxCall('POST', "../api/Leg", JSON.stringify(l), function () {
-                            swal("Flight Has Been Added!", "", "success");
-                            $('#MyFlights').prop('disabled', false); //Disabled the btn
-                        }, posterr)
-                    }
-
-
-
-                });
-
-
-                function MyFlights() {
-                    ajaxCall("GET", "../api/flight", "", successMyFlights, errMyFlights)
-                }
-
-
-
-
-
-
-
-                function getConnections(connectionsList) {
-                    for (var j = 0; j < connectionsList.length; j++) {
-                        connectionsArr.push(connectionsList[j]['cityTo'])
-                    }
-
-                }
-
-
-                //success functions ----------------------------------------------
-
-
-                function successLoadAirLines(data) {
-                    for (i in data) {
-                        if (data[i]['type'] == "airline") {
-                            airline = { // Note that the name of the fields must be identical to the names of the properties of the object in the server
-                                AirlineCode: data[i]['id'],
-                                AirlineName: data[i]['name'],
-                            };
-                            airlines.push(airline)
-
-                        }
-
-
-                    }
-                    ajaxCall("POST", "../api/Airline", JSON.stringify(airlines), airLinesAdded, errorCB);
+                else {
                     swal("All Airline has been loaded!", "", "success");
+                }
+                $('#GetAirLines').prop('disabled', true); //Disabled the btn
+                $('#GetAirports').prop('disabled', false); //Disabled the btn
+
+            }, errFunc);
+        }
+
+        // end API call -------------------------------------------------------------------------
+
+
+
+        $(document).on("click", ".addBTN", function () {
+            counter = 0;
+
+
+            let legs = [];
+
+
+
+            for (var i = 0; i < dataArr['data'][$(this).attr('id')]['route'].length; i++) {
+                counter++;
+
+            }
+
+
+
+            flight = { FlightPath1: dataArr['data'][$(this).attr('id')]['id'], AirportFrom1: dataArr['data'][$(this).attr('id')]['flyFrom'], AirportTo1: dataArr['data'][$(this).attr('id')]['flyTo'], DepTime1: convertDate(dataArr['data'][$(this).attr('id')]['dTime']), ArriveTime1: convertDate(dataArr['data'][$(this).attr('id')]['aTime']), Duration1: dataArr['data'][$(this).attr('id')]['duration']['total'], price: parseFloat(dataArr['data'][$(this).attr('id')]['price']), LegsNumber1: counter }
+
+            ajaxCall('POST', "../api/flight", JSON.stringify(flight), postSuccess, errFunc)
+            for (i = 0; i < counter; i++) {//Count how many legs in the flight
+                legs.push(dataArr['data'][$(this).attr('id')]['route'][i]['cityTo'])
+
+                l = {
+                    id: dataArr['data'][$(this).attr('id')]['route'][i]['id'], fullpathid: dataArr['data'][$(this).attr('id')]['id'], legnumber: (i + 1), flight_no: dataArr['data'][$(this).attr('id')]['route'][i]['flight_no'], fromairport: dataArr['data'][$(this).attr('id')]['route'][i]['flyFrom'], toairport: dataArr['data'][$(this).attr('id')]['route'][i]['flyTo'], airlinecode: dataArr['data'][$(this).attr('id')]['route'][i]['airline'], DepTime1: convertDate(dataArr['data'][$(this).attr('id')]['route'][i]['dTime']), ArriveTime1: convertDate(dataArr['data'][$(this).attr('id')]['route'][i]['aTime']), Duration1: calculateDuartion(dataArr['data'][$(this).attr('id')]['route'][i]['aTime'] - dataArr['data'][$(this).attr('id')]['route'][i]['dTime'])
+                }
+
+                ajaxCall('POST', "../api/Leg", JSON.stringify(l), function () {
+                    swal("Flight Has Been Added!", "", "success");
+                    $('#MyFlights').prop('disabled', false); //Disabled the btn
+                }, errFunc)
+            }
+
+
+
+        });
+
+
+        function MyFlights() {
+            ajaxCall("GET", "../api/flight", "", successMyFlights, errFunc)
+        }
+
+
+
+
+
+
+
+        function getConnections(connectionsList) {
+            for (var j = 0; j < connectionsList.length; j++) {
+                connectionsArr.push(connectionsList[j]['cityTo'])
+            }
+
+        }
+
+
+        //success functions ----------------------------------------------
+
+
+        function successLoadAirLines(data) {
+            for (i in data) {
+                if (data[i]['type'] == "airline") {
+                    airline = { // Note that the name of the fields must be identical to the names of the properties of the object in the server
+                        AirlineCode: data[i]['id'],
+                        AirlineName: data[i]['name'],
+                    };
+                    airlines.push(airline)
+
+                }
+
+
+            }
+            ajaxCall("POST", "../api/Airline", JSON.stringify(airlines), airLinesAdded, errFunc);
+            swal("All Airline has been loaded!", "", "success");
 
 
         }
 
-                function airLinesAdded() {
-                    $('#GetAirLines').prop('disabled', true); //Disabled the btn
-                }
+        function airLinesAdded() {
+            $('#GetAirLines').prop('disabled', true); //Disabled the btn
+        }
 
 
-                function successCB(data) {
-                    airportList = data;
-                    ajaxCall("GET", "../api/Airport", "", SCGetAirportTable, errMyFlights);
-                    
-
-
-                }
-
-                function SCGetAirportTable(data) {
-
-
-                    if (data != null) {
-                        flag = 1;
-                    }
-
-                    var options = "";
-                    for (i in airportList['locations']) {
-                        options += '<option value="' + airportList['locations'][i]['id'] + '" >' + airportList['locations'][i]['name'] + '</option>';
-
-                        airport = { // Note that the name of the fields must be identical to the names of the properties of the object in the server
-                            AirportCode: airportList['locations'][i]['code'],
-                            Airportname: airportList['locations'][i]['name'],
-                            Longitude: airportList['locations'][i]['location']['lon'],
-                            Latitudes: airportList['locations'][i]['location']['lat'],
-                            City: airportList['locations'][i]['city']['name'],
-                            Coutry: airportList['locations'][i]['city']['country']['name']
-
-                        };
-                        airports.push(airport)
-
-                    }
-
-                    if (flag == 0) {
-                        ajaxCall("POST", "../api/Airport", JSON.stringify(airports), postSuccess, errorCB)  // Load the airports to the DB, Only Once
-
-                    }
-
-                    swal("All Airports has been loaded!", "", "success");
-                    document.getElementById('airportFrom').innerHTML = options;
-                    document.getElementById('airportTo').innerHTML = options;
-                    $('#GetAirports').prop('disabled', true); //Disabled the btn
-                    $('#searchFlights').prop('disabled', false); //Disabled the btn
-                    
+        function successCB(data) {
+            airportList = data;
+            ajaxCall("GET", "../api/Airport", "", SCGetAirportTable, errFunc);
 
 
 
-                }
+        }
+
+        function SCGetAirportTable(data) {
+
+
+            if (data != null) {
+                flag = 1;
+            }
+
+            var options = "";
+            for (i in airportList['locations']) {
+                options += '<option value="' + airportList['locations'][i]['id'] + '" >' + airportList['locations'][i]['name'] + '</option>';
+
+                airport = { // Note that the name of the fields must be identical to the names of the properties of the object in the server
+                    AirportCode: airportList['locations'][i]['code'],
+                    Airportname: airportList['locations'][i]['name'],
+                    Longitude: airportList['locations'][i]['location']['lon'],
+                    Latitudes: airportList['locations'][i]['location']['lat'],
+                    City: airportList['locations'][i]['city']['name'],
+                    Coutry: airportList['locations'][i]['city']['country']['name']
+
+                };
+                airports.push(airport)
+
+            }
+
+            if (flag == 0) {
+                ajaxCall("POST", "../api/Airport", JSON.stringify(airports), postSuccess, errFunc)  // Load the airports to the DB, Only Once
+
+            }
+
+            swal("All Airports has been loaded!", "", "success");
+            document.getElementById('airportFrom').innerHTML = options;
+            document.getElementById('airportTo').innerHTML = options;
+            $('#GetAirports').prop('disabled', true); //Disabled the btn
+            $('#searchFlights').prop('disabled', false); //Disabled the btn
 
 
 
 
-
-                function successMyFlights(data) {
-                    i = 1
-                    console.log(data);
-                    str = "<table class='table table-striped'><thead><tr><th scope='col'>#</th><th scope='col'>From</th><th scope='col'>To</th><th scope='col'>Departure time</th><th scope='col'>Arrival time</th><th scope='col'>Stops</th><th scope='col'>Airline name</th><th scope='col'>Price</th></tr></thead><tbody>"
-                    for (flight in data) {
-                        let depTime = new Date(0);
-                        let arrTime = new Date(0);
-                        depTime.setUTCSeconds(flight['DepTime'])
-                        arrTime.setUTCSeconds(flight['ArriveTime'])
-                        str += "<tr><th scope='row'>" + i + "</th>"
-                        str += "<td>" + flight['AirportFrom1'] + "</td>"
-                        str += "<td>" + flight['AirportTo1'] + "</td>"
-                        str += "<td>" + flight['DepTime1'] + "</td>"
-                        str += "<td>" + flight['ArriveTime1'] + "</td>"
-                       
-                            str += "<td>"
-
-                            str += "(" + flight['LegsNumber1'] + " Connections)</td>"
-
-                        str += "<td>" + flight['AirportFrom1'] + "</td>"
-                        str += "<td>" + flight['Price'] + " Euro</td>"
-                        i++
-                    }
-                    str += "</tbody></table>"
-                    document.getElementById('ph').innerHTML = str;
-                }
+        }
 
 
 
 
-                function successAPICB(data) {
-                    i = 0;
-                    console.log(data);
-                    dataArr = data
-                    if (data['data'].length == 0) {
-                        swal("no flight!", "", "error");
-                        
 
-                        return;
-                    }
-                    str = "<table class='table table-striped'><thead><tr><th scope='col'>#</th><th scope='col'>From</th><th scope='col'>To</th><th scope='col'>Departure time</th><th scope='col'>Arrival time</th><th scope='col'>Stops</th><th scope='col'>Airline name</th><th scope='col'>Price</th><th scope='col'>Store Flight?</th></tr></thead><tbody>"
-                    for (flight in data['data']) {
-                        let depTime = convertDate(data['data'][flight]['dTime']);
-                        let arrTime = convertDate(data['data'][flight]['aTime']);
+        function successMyFlights(data) {
 
 
-                        str += "<tr><th scope='row'>" + (i + 1) + "</th>"
-                        str += "<td>" + data['data'][flight]['cityFrom'] + ", " + data['data'][flight]['countryFrom']['name'] + "</td>"
-                        str += "<td>" + data['data'][flight]['cityTo'] + ", " + data['data'][flight]['countryTo']['name'] + "</td>"
-                        str += "<td>" + depTime + "</td>"
-                        str += "<td>" + arrTime + "</td>"
-                        if (data['data'][flight]['route'].length > 1) {
-                            str += "<td>"
-                            connectionsArr = []
-                            getConnections(data['data'][flight]['route'])
-                            for (var j = 0; j < connectionsArr.length - 1; j++) {
-                                str += connectionsArr[j] + ", "
-                            }
-                            str += "(" + j + " Connections)</td>"
-                        }
-                        else {
-                            str += "<td> No Stops</td>"
-                        }
-                        str += "<td>" + data['data'][flight]['route'][0]['airline'] + "</td>"
-                        str += "<td>" + data['data'][flight]['price'] + " Euro</td>"
-                        str += "<td><button type='button' class='btn btn-primary addBTN' id=" + (i) + ">Add</button></td></tr>"
-                        i++
+
+
+            i = 1
+            console.log(data);
+            str = "<table class='table table-striped'><thead><tr><th scope='col'>#</th><th scope='col'>From</th><th scope='col'>To</th><th scope='col'>Departure time</th><th scope='col'>Arrival time</th><th scope='col'>Stops</th><th scope='col'>Airline name</th><th scope='col'>Price</th></tr></thead><tbody>"
+            for (flight in data) {
+                let depTime = new Date(0);
+                let arrTime = new Date(0);
+                depTime.setUTCSeconds(flight['DepTime'])
+                arrTime.setUTCSeconds(flight['ArriveTime'])
+                str += "<tr><th scope='row'>" + i + "</th>"
+                str += "<td>" + flight['AirportFrom1'] + "</td>"
+                str += "<td>" + flight['AirportTo1'] + "</td>"
+                str += "<td>" + flight['DepTime1'] + "</td>"
+                str += "<td>" + flight['ArriveTime1'] + "</td>"
+
+                str += "<td>"
+
+                str += "(" + flight['LegsNumber1'] + " Connections)</td>"
+
+                str += "<td>" + flight['AirportFrom1'] + "</td>"
+                str += "<td>" + flight['Price'] + " Euro</td>"
+                i++
+            }
+            str += "</tbody></table>"
+            document.getElementById('ph').innerHTML = str;
+        }
+
+
+
+
+        function successAPICB(data) {
+            i = 0;
+            console.log(data);
+            dataArr = data
+            if (data['data'].length == 0) {
+                swal("no flight!", "", "error");
+
+
+                return;
+            }
+
+            flightData = [];
+            for (var i in data['data']) {
+                 let depTime = convertDate(data['data'][i]['dTime']);
+                let arrTime = convertDate(data['data'][i]['aTime']);
+
+                conection = "";
+                if (data['data'][i]['route'].length > 1) {
+                    connectionsArr = []
+                    getConnections(data['data'][i]['route'])
+                    for (var j = 0; j < connectionsArr.length - 1; j++) {
+                        conection += connectionsArr[j] + ", ";
 
                     }
-                    str += "</tbody></table>"
-                    document.getElementById('ph').innerHTML = str;
-                    swal("we found " + data['data'].length +" flights for you!", "", "success");
-
                 }
 
-                function postSuccess() {
-                    console.log('Flight added')
+                flightData.push({id:i,cityFrom:data['data'][i]['cityFrom'],cityTo:data['data'][i]['cityTo'],dTime:depTime,aTime:arrTime,route:conection,airline:data['data'][i]['route'][0]['airline'],price:data['data'][i]['price'] + " Euro"})
+            }
 
 
-                }
-
-                // end success functions -----------------------------------
-
-
-
-                //error function  -----------------------------------
-
-                function errMyFlights(err) {
-                    console.log(1);
-                }
+            //str = "<table class='table table-striped'><thead><tr><th scope='col'>#</th><th scope='col'>From</th><th scope='col'>To</th><th scope='col'>Departure time</th><th scope='col'>Arrival time</th><th scope='col'>Stops</th><th scope='col'>Airline name</th><th scope='col'>Price</th><th scope='col'>Store Flight?</th></tr></thead><tbody>"
+            //for (flight in data['data']) {
+            //    let depTime = convertDate(data['data'][flight]['dTime']);
+            //    let arrTime = convertDate(data['data'][flight]['aTime']);
 
 
-                function posterr(err) {
-                    console.log(err)
-                }
+            //    str += "<tr><th scope='row'>" + (i + 1) + "</th>"
+            //    str += "<td>" + data['data'][flight]['cityFrom'] + ", " + data['data'][flight]['countryFrom']['name'] + "</td>"
+            //    str += "<td>" + data['data'][flight]['cityTo'] + ", " + data['data'][flight]['countryTo']['name'] + "</td>"
+            //    str += "<td>" + depTime + "</td>"
+            //    str += "<td>" + arrTime + "</td>"
+            //    if (data['data'][flight]['route'].length > 1) {
+            //        str += "<td>"
+            //        connectionsArr = []
+            //        getConnections(data['data'][flight]['route'])
+            //        for (var j = 0; j < connectionsArr.length - 1; j++) {
+            //            str += connectionsArr[j] + ", "
+            //        }
+            //        str += "(" + j + " Connections)</td>"
+            //    }
+            //    else {
+            //        str += "<td> No Stops</td>"
+            //    }
+            //    str += "<td>" + data['data'][flight]['route'][0]['airline'] + "</td>"
+            //    str += "<td>" + data['data'][flight]['price'] + " Euro</td>"
+            //    str += "<td><button type='button' class='btn btn-primary addBTN' id=" + (i) + ">Add</button></td></tr>"
+            //    i++
+
+            //}
+            //str += "</tbody></table>"
+            //document.getElementById('ph').innerHTML = str;
 
 
-                function errorAPICB(err) {
-                    console.log(err);
-                }
+            
+            try {
+                if(table!=null) table.clear()
+                table = $('#flightTable').DataTable({
+                    data: flightData,
+                    pageLength: 5,
+                    columns: [
+   
+
+                        { data: "cityFrom" },
+                        { data: "cityTo" },
+                        { data: "dTime" },
+                        { data: "aTime" },
+                        { data: "route" },
+                         { data: "airline" },
+                        {
+                            data: "price"
+                        },
 
 
-                function errorCB(err) {
-                    console.log(err);
-                }
+                    ],
+                });
 
-                    //end error function -------------------------------
+            }
+
+            catch (err) {
+                alert(err);
+            }
+            $('#flightTable').show();
+            swal("we found " + data['data'].length + " flights for you!", "", "success");
+
+        }
+
+        function postSuccess() {
+            console.log('Flight added')
+
+
+        }
+
+        // end success functions -----------------------------------
+
+
+
+        //error function  -----------------------------------
+
+        function errFunc(err) {
+            swal("Error: " + err);
+        }
+
+                                                            //end error function -------------------------------
 
 
     </script>
@@ -368,35 +442,58 @@
             </ul>
         </div>
     </nav>
+
     <div class="container-fluid">
-        <div class="row justify-content-md-center ">
-            <div class="col col-md-auto" id="formdiv">
-                <form autocomplete="off" action="" id="srcBTN">
-                    <table>
-                        <tr><td><b>Flight from:</b></td></tr>
-                        <tr><td>  <input name="airPort" list="airportFrom" class="airportFrom formelement" required />  <datalist id="airportFrom"></datalist></td><td><input required="required" type="date" id="fromDate" class="formelement" /></td></tr>
-                        <tr><td><b>To:</b></td></tr>
-                        <tr><td><input name="airPort" list="airportTo" class="airportTo formelement" required />  <datalist id="airportTo"></datalist></td><td><input required="required" type="date" id="toDate" class="formelement" /></td></tr>
-                        <tr>
-                            <td colspan="2">
-                                <button class="btn btn-primary" type="submit" id="searchFlights" disabled>Find Flights!</button>
-                                <button id="MyFlights" type="button" class="btn btn-primary" disabled>My Flights</button>
-                                <button id="GetAirports" type="button" class="btn btn-primary">Get Airports</button>
-                                <button id="GetAirLines" type="button" class="btn btn-primary">Get AirLines</button>
-                            </td> 
+        <form id="pForm">
+            <table id="flightTable" class="display nowrap" style="width:100%">
+                <thead>
+                    <tr>
 
-                        </tr>
+                        
+                        <th>From</th>
+                        <th>To</th>
+                        <th>Departure time</th>
+                        <th>Arrival time</th>
+                        <th>Stops</th>
+                        <th>Airline name</th>
+                        <th>Price</th>
+                        <th>add</th>
+                    </tr>
+                </thead>
+            </table>
 
-                    </table>
+        </form>
+    </div>
 
-                </form>
+        <div class="container-fluid">
+            <div class="row justify-content-md-center ">
+                <div class="col col-md-auto" id="formdiv">
+                    <form autocomplete="off" action="" id="srcBTN">
+                        <table>
+                            <tr><td><b>Flight from:</b></td></tr>
+                            <tr><td>  <input name="airPort" list="airportFrom" class="airportFrom formelement" required />  <datalist id="airportFrom"></datalist></td><td><input required="required" type="date" id="fromDate" class="formelement" /></td></tr>
+                            <tr><td><b>To:</b></td></tr>
+                            <tr><td><input name="airPort" list="airportTo" class="airportTo formelement" required />  <datalist id="airportTo"></datalist></td><td><input required="required" type="date" id="toDate" class="formelement" /></td></tr>
+                            <tr>
+                                <td colspan="2">
+                                    <button class="btn btn-primary" type="submit" id="searchFlights" disabled>Find Flights!</button>
+                                    <button id="MyFlights" type="button" class="btn btn-primary" disabled>My Flights</button>
+                                    <button id="GetAirports" type="button" class="btn btn-primary">Get Airports</button>
+                                    <button id="GetAirLines" type="button" class="btn btn-primary">Get AirLines</button>
+                                </td> <!--Type should be submit!-->
+
+                            </tr>
+
+                        </table>
+
+                    </form>
 
 
 
+                </div>
             </div>
         </div>
-    </div>
-    <div id="ph"></div>
+        <div id="ph"></div>
 </body>
 </html>
 
