@@ -193,17 +193,13 @@
 
 
 
-            for (var i = 0; i < dataArr['data'][parseInt(row)]['route'].length; i++) {
-                counter++;
-
-            }
 
 
 
-            flight = { FlightPath1: dataArr['data'][parseInt(row)]['id'], AirportFrom1: dataArr['data'][parseInt(row)]['flyFrom'], AirportTo1: dataArr['data'][parseInt(row)]['flyTo'], DepTime1: convertDate(dataArr['data'][parseInt(row)]['dTime']), ArriveTime1: convertDate(dataArr['data'][parseInt(row)]['aTime']), Duration1: dataArr['data'][parseInt(row)]['duration']['total'], price: parseFloat(dataArr['data'][parseInt(row)]['price']), LegsNumber1: counter }
+            flight = { FlightPath1: dataArr['data'][parseInt(row)]['id'], AirportFrom1: dataArr['data'][parseInt(row)]['flyFrom'], AirportTo1: dataArr['data'][parseInt(row)]['flyTo'], DepTime1: convertDate(dataArr['data'][parseInt(row)]['dTime']), ArriveTime1: convertDate(dataArr['data'][parseInt(row)]['aTime']), Duration1: dataArr['data'][parseInt(row)]['duration']['total'], price: parseFloat(dataArr['data'][parseInt(row)]['price']), LegsNumber1: dataArr['data'][parseInt(row)]['route'].length }
 
             ajaxCall('POST', "../api/flight", JSON.stringify(flight), postSuccess, errFunc)
-            for (i = 0; i < counter; i++) {//Count how many legs in the flight
+            for (i = 0; i < dataArr['data'][parseInt(row)]['route'].length; i++) {//Count how many legs in the flight
                 legs.push(dataArr['data'][parseInt(row)]['route'][i]['cityTo'])
 
                 l = {
@@ -213,6 +209,8 @@
                 ajaxCall('POST', "../api/Leg", JSON.stringify(l), function () {
                     swal("Flight Has Been Added!", "", "success");
                     $('#MyFlights').prop('disabled', false); //Disabled the btn
+                    $('#editDiv').hide();
+                    $('#flightTable').show();
                 }, errFunc)
             }
 
@@ -229,6 +227,8 @@
 
 
         $(document).on("click", ".orderBTN", function () { // Open the buy form.
+            
+                    $('#flightTable').parents('div.dataTables_wrapper').first().hide();
             $("#editDiv").show();
             row = $(this).attr("data-flightid");
             console.log(row)
@@ -239,6 +239,7 @@
      
         $(document).on("click", "#cancelSaveBTN", function () { // Close the buy form.
             $("#editDiv").hide();
+            $('#flightTable').show();
 
         });
 
@@ -362,7 +363,7 @@
                 str += "(" + flight['LegsNumber1'] + " Connections)</td>"
 
                 str += "<td>" + flight['AirportFrom1'] + "</td>"
-                str += "<td>" + flight['Price'] + " Euro</td>"
+                str += "<td>" + flight['Price'] + " $</td>"
                 i++
             }
             str += "</tbody></table>"

@@ -43,13 +43,14 @@ Create Table users
 
 Create Table orders
 (
-userId nvarchar(15),
+
+
 flightId nvarchar(500),
 passengersNames nvarchar(100),
 userEmail nvarchar(70),
-FOREIGN KEY (userId) REFERENCES users(username),
+
 FOREIGN KEY (flightId) REFERENCES MyFlights_CS(FlightPath),
-primary key(userId,flightId)
+primary key(userEmail,flightId)
 )
 
 select *
