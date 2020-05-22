@@ -58,6 +58,8 @@
 
 
         $(document).ready(function () {
+            $("#discountsTable").hide() // Hide the discounts table on first load
+
 
             ajaxCall("GET", "../api/order", "", function (orders) {
 
@@ -103,13 +105,23 @@
 
            function errFunc(err) {
                 swal("Error: " + err);
-            }
+        }
+
+        function hideOrdersTable() {
+            
+        }
+
+
+        function hideDiscountTable() {
+
+        }
+
     </script>
 
 
 </head>
 <body>
-    <div class="container">
+    <div class="container-fluid">
         <div class="header">
             <img src="../images/—Pngtree—blue and red airplane vector_4235031.png" />
             <h1>Flight.com</h1>
@@ -121,16 +133,15 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav" id="menu">
-                    <a class="navbar-brand" href="#">Orders</a>
-                    <a class="navbar-brand" href="#">Discount</a>
-
+                    <a id="ordersTab" class="navbar-brand" href="#">Orders</a>
+                    <a id="discountsTab" class="navbar-brand" href="#">Discount</a>
                 </ul>
             </div>
         </nav>
 
         <table id="flightTable" class="display nowrap" style="width:100%">
             <thead>
-                
+
                 <tr>
                     <th>Email</th>
                     <th>Passenger Name</th>
@@ -140,14 +151,32 @@
                     <th>Arrival time</th>
                     <th>Duration</th>
                     <th>Stops Numbers</th>
-                    
+
                     <th>Price</th>
 
                 </tr>
-               
+
             </thead>
         </table>
+        <table id="discountsTable" class="display nowrap" style="width:100%">
+            <thead>
 
-        </div>
+                <tr>
+                    <th>Email</th>
+                    <th>Passenger Name</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Departure time</th>
+                    <th>Arrival time</th>
+                    <th>Duration</th>
+                    <th>Stops Numbers</th>
+
+                    <th>Price</th>
+
+                </tr>
+
+            </thead>
+        </table>
+    </div>
 </body>
 </html>

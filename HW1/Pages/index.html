@@ -223,7 +223,7 @@
             useremail = $("#email").val()
 
             ajaxCall("POST", "../api/order", JSON.stringify([flightId, passengersNames, useremail]), successMyFlights, errFunc)
-           
+            return false;
         }
 
 
