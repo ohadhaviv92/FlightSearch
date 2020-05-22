@@ -17,7 +17,12 @@ namespace HW1.Models
            
         }
 
-        
+        public User(string userName, string password, string isAdmin)
+        {
+            this.userName = userName;
+            this.password = password;
+            this.isAdmin = isAdmin;
+        }
 
         public string UserName { get => userName; set => userName = value; }
         public string Password { get => password; set => password = value; }

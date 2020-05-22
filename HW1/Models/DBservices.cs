@@ -25,6 +25,52 @@ namespace HW1.Models
             //
         }
 
+        public Order getOrders()
+        {
+            SqlConnection con = null;
+
+            try
+            {
+
+                con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+                String selectSTR = "select * from orders as o join users as u on o.userId = u.username join MyFlights_CS as f on f.FlightPath = o.flightId";
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+                // get a reader
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+                Order ord = new Order();
+                while (dr.Read())
+                {   // Read till the end of the data into a row
+
+                    ord.OrderID= (int)dr["orderID"];
+                    ord.User = new User((string)dr["username"], (string)dr["password"], (string)dr["isAdmin"]);
+                    ord.Flight = new Flight((string)dr["username"], (string)dr["username"], (string)dr["username"], (DateTime)dr["username"], (DateTime)dr["username"], (string)dr["username"], (float)dr["username"], (int)dr["username"]);
+                  
+                }
+
+                return ord;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+
+
+
+
+            return null;
+        }
+
         //--------------------------------------------------------------------------------------------------
         // This method creates a connection to the database according to the connectionString name in the web.config 
         //--------------------------------------------------------------------------------------------------
