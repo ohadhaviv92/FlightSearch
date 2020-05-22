@@ -70,7 +70,7 @@ namespace HW1.Models
         }
 
 
-        public Order getOrders()
+        public List<Order> getOrders()
         {
             SqlConnection con = null;
 
@@ -84,18 +84,21 @@ namespace HW1.Models
 
                 // get a reader
                 SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
-                Order ord = new Order();
+                List<Order> list = new List<Order>();
                 while (dr.Read())
                 {   // Read till the end of the data into a row
-
+                    Order ord = new Order();
                     ord.Email= (string)dr["userEmail"];
-                    
+             
+                 
+                    Flight f= new Flight((string)dr["flightId"], (string)dr["AirportFrom"], (string)dr["AirportTo"], (DateTime)dr["DepTime"], (DateTime)dr["ArriveTime"], (string)dr["Duration"], float.Parse(dr["Price"].ToString()), (int)dr["LegsNumber"]);
                     ord.PassengersNames= (string)dr["passengersNames"];
-                    ord.Flight = new Flight((string)dr["flightId"], (string)dr["AirportFrom"], (string)dr["AirportTo"], (DateTime)dr["DepTime"], (DateTime)dr["ArriveTime"], (string)dr["Duration"], (float)dr["Price"], (int)dr["LegsNumber"]);
-                  
+                    ord.Flight = f;
+                    list.Add(ord);
+
                 }
 
-                return ord;
+                return list;
             }
             catch (Exception ex)
             {

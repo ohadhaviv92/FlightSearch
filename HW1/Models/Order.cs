@@ -36,7 +36,7 @@ namespace HW1.Models
         
         public Flight Flight { get => flight; set => flight = value; }
 
-        public Order getOrders()
+        public List<Order> getOrders()
         {
             DBservices db = new DBservices();
             return db.getOrders();

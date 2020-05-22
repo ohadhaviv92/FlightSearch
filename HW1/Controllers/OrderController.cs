@@ -15,7 +15,7 @@ namespace HW1.Controllers
 
 
         // GET: api/Order/5
-        public Order Get()
+        public List<Order> Get()
         {
 
             Order or = new Order();

@@ -46,9 +46,9 @@
 
 
 
-
-
-
+    <script src="../Scripts/ajaxCalls.js"></script>
+    <script src="../Scripts/dateFunctions.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 
     <!--CSS-->
@@ -56,36 +56,98 @@
 
     <script>
 
-        
+
         $(document).ready(function () {
 
-            ajaxCall("GET", "../api/order", "", function (data) {
-                console.log(data)
+            ajaxCall("GET", "../api/order", "", function (orders) {
+
+                console.log(orders)
+                orsders2 = [];
+                for (var i in orders) {
+                    orsders2.push({ Email: orders[i]["Email"], PassengersNames: orders[i]["PassengersNames"], From: orders[i]["Flight"]["AirportFrom1"], To: orders[i]["Flight"]["AirportTo1"], Departuretime: orders[i]["Flight"]["DepTime1"], Arrivaltime: orders[i]["Flight"]["ArriveTime1"], Duartion: calculateDuartion(orders[i]["Flight"]["Duration1"]), StopsNumbers: orders[i]["Flight"]["LegsNumber1"], Price: orders[i]["Flight"]["Price"] });
+                }
+                
+                 try {
+                
+                table = $('#flightTable').DataTable({
+                    data: orsders2,
+                    pageLength: 5,
+
+                    columns: [
+                        { data: "Email" },
+                        { data: "PassengersNames" },
+                        { data: "From" },
+                        { data: "To" },
+                        { data: "Departuretime" },
+                        { data: "Arrivaltime" },
+                        { data: "Duartion" },
+                        { data: "StopsNumbers" },
+                        
+                        { data: "Price" },
+                        
+               
+                       
+
+
+                    ],
+                });
+
+            }
+
+            catch (err) {
+                alert(err);
+            }
 
             }, errFunc);
+        })
 
-
+           function errFunc(err) {
+                swal("Error: " + err);
+            }
     </script>
 
 
 </head>
 <body>
-    <div class="header">
-        <img src="../images/—Pngtree—blue and red airplane vector_4235031.png" />
-        <h1>Flight.com</h1>
-    </div>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav" id="menu">
-                <a class="navbar-brand" href="#">Orders</a>
-                <a class="navbar-brand" href="#">Discount</a>
-
-            </ul>
+    <div class="container">
+        <div class="header">
+            <img src="../images/—Pngtree—blue and red airplane vector_4235031.png" />
+            <h1>Flight.com</h1>
         </div>
-    </nav>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav" id="menu">
+                    <a class="navbar-brand" href="#">Orders</a>
+                    <a class="navbar-brand" href="#">Discount</a>
+
+                </ul>
+            </div>
+        </nav>
+
+        <table id="flightTable" class="display nowrap" style="width:100%">
+            <thead>
+                
+                <tr>
+                    <th>Email</th>
+                    <th>Passenger Name</th>
+                    <th>From</th>
+                    <th>To</th>
+                    <th>Departure time</th>
+                    <th>Arrival time</th>
+                    <th>Duration</th>
+                    <th>Stops Numbers</th>
+                    
+                    <th>Price</th>
+
+                </tr>
+               
+            </thead>
+        </table>
+
+        </div>
 </body>
 </html>
