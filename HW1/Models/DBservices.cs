@@ -25,6 +25,51 @@ namespace HW1.Models
             //
         }
 
+
+        public int insertOrder(string[] order)
+        {
+
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+
+            String cStr = BuildInsertCommand(order);      // helper method to build the insert string
+
+            cmd = CreateCommand(cStr, con);             // create the command
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+
+                // write to log
+                throw (ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+
+        }
+
+
         public Order getOrders()
         {
             SqlConnection con = null;
@@ -405,6 +450,20 @@ namespace HW1.Models
         // Build the Insert command String
         //--------------------------------------------------------------------
 
+
+
+
+        private String BuildInsertCommand(string[] order)
+        {
+            String command;
+
+            StringBuilder sb = new StringBuilder();
+            //use a string builder to create the dynamic string
+            sb.AppendFormat("Values('{0}', '{1}', '{2}')", order[0], order[1],order[2]);
+            String prefix = "INSERT INTO order " + "(flightid, passengersNames,userEmail) ";
+            command = prefix + sb.ToString();
+            return command;
+        }
 
         private String BuildInsertCommand(Airline airline)
         {
