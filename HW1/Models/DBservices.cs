@@ -53,7 +53,7 @@ namespace HW1.Models
             }
             catch (Exception ex)
             {
-
+                
                 // write to log
                 throw (ex);
             }
@@ -464,7 +464,7 @@ namespace HW1.Models
             StringBuilder sb = new StringBuilder();
             //use a string builder to create the dynamic string
             sb.AppendFormat("Values('{0}', '{1}', '{2}')", order[0], order[1],order[2]);
-            String prefix = "INSERT INTO order " + "(flightid, passengersNames,userEmail) ";
+            String prefix = "INSERT INTO orders " + "(flightid, passengersNames,userEmail) ";
             command = prefix + sb.ToString();
             return command;
         }
