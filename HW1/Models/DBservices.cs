@@ -120,6 +120,57 @@ namespace HW1.Models
             return null;
         }
 
+
+        public List<Discount> getDiscounts()
+        {
+            SqlConnection con = null;
+
+            try
+            {
+
+                con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+                String selectSTR = "select * from discounts";
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+                // get a reader
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+                List<Discount> list = new List<Discount>();
+                while (dr.Read())
+                {   // Read till the end of the data into a row
+                    Discount discount = new Discount();
+                    discount.AirlineCode = (string)dr["AirlineCode"];
+                    discount.AirportCodeFrom = (string)dr["AirportCodeFrom"];
+                    discount.AirportCodeTo = (string)dr["AirportCodeTo"];
+                    discount.DateFrom = (DateTime)dr["DateFrom"];
+                    discount.DateTo = (DateTime)dr["DateTo"];
+                    discount.DiscountAmount = (double)dr["discount"];
+                    list.Add(discount);
+
+                }
+
+                return list;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+
+
+
+
+            return null;
+        }
+
         //--------------------------------------------------------------------------------------------------
         // This method creates a connection to the database according to the connectionString name in the web.config 
         //--------------------------------------------------------------------------------------------------

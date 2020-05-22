@@ -58,8 +58,9 @@
 
 
         $(document).ready(function () {
-            $("#discountsTable").hide() // Hide the discounts table on first load
-
+          /*  $("#discountsTable").hide() */// Hide the discounts table on first load
+            $("#flightTable").click(hideDiscountTable)
+            $("#discountsTable").click(hideOrdersTable)
 
             ajaxCall("GET", "../api/order", "", function (orders) {
 
@@ -87,9 +88,7 @@
                         
                         { data: "Price" },
                         
-               
-                       
-
+              
 
                     ],
                 });
@@ -103,17 +102,63 @@
             }, errFunc);
         })
 
+        ajaxCall("GET", "../api/discount", "", function (discountsData) {
+
+            console.log(discountsData)
+            discounts = [];
+            for (var i in discountsData) {
+                discounts.push({ AirlineCompany: discountsData[i]["AirlineCode"], From: discountsData[i]["AirportCodeFrom"], To: discountsData[i]["AirportCodeTo"], FromDate: discountsData[i]["DateFrom"], DateTo: discountsData[i]["DateTo"], Discount: discountsData[i]["DiscountAmount"]});
+            }
+
+            try {
+
+                table = $('#discountsTable').DataTable({
+                    data: discounts,
+                    pageLength: 5,
+
+                    columns: [
+                        {
+                            render: function (data, type, row, meta) {
+                                let dataDiscount = "data-discountId='" + row.Id + "'";
+
+                                editBtn = "<button type='button' class = 'editBtn btn btn-success' " + dataDiscount + "> Edit </button>";
+                                deleteBtn = "<button type='button' class = 'deleteBtn btn btn-danger' " + dataDiscount + "> Delete </button>";
+                                return editBtn + deleteBtn;
+                            }
+                        },
+                        { data: "AirlineCompany" },
+                        { data: "From" },
+                        { data: "To" },
+                        { data: "FromDate" },
+                        { data: "ToDate" },
+                        { data: "Discount" },
+
+                    ],
+                });
+
+            }
+
+            catch (err) {
+                alert(err);
+            }
+
+        }, errFunc);
+        
+
+
            function errFunc(err) {
                 swal("Error: " + err);
         }
 
-        function hideOrdersTable() {
-            
+        function hideDiscountTable() {
+            $("#discountsTable").hide()
+            $("#flightTable").show()
         }
 
 
-        function hideDiscountTable() {
-
+        function hideOrdersTable() {
+            $("#discountsTable").show()
+            $("#flightTable").hide()
         }
 
     </script>
@@ -151,7 +196,6 @@
                     <th>Arrival time</th>
                     <th>Duration</th>
                     <th>Stops Numbers</th>
-
                     <th>Price</th>
 
                 </tr>
@@ -160,18 +204,15 @@
         </table>
         <table id="discountsTable" class="display nowrap" style="width:100%">
             <thead>
-
+                <input type="button" value="New Discount" class="btn btn-primary btn-md" id="newDiscountBTN" />
                 <tr>
-                    <th>Email</th>
-                    <th>Passenger Name</th>
+                    <th></th>
+                    <th>Airline Company</th>
                     <th>From</th>
                     <th>To</th>
-                    <th>Departure time</th>
-                    <th>Arrival time</th>
-                    <th>Duration</th>
-                    <th>Stops Numbers</th>
-
-                    <th>Price</th>
+                    <th>From Date</th>
+                    <th>To Date</th>
+                    <th>Discount in %</th>
 
                 </tr>
 

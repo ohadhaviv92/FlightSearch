@@ -12,7 +12,7 @@ namespace HW1.Models
         string airportCodeTo;
         DateTime dateFrom;
         DateTime dateTo;
-        float discountAmount;
+        double discountAmount;
 
         public Discount()
         {
@@ -33,6 +33,12 @@ namespace HW1.Models
         public string AirportCodeTo { get => airportCodeTo; set => airportCodeTo = value; }
         public DateTime DateFrom { get => dateFrom; set => dateFrom = value; }
         public DateTime DateTo { get => dateTo; set => dateTo = value; }
-        public float DiscountAmount { get => discountAmount; set => discountAmount = value; }
+        public double DiscountAmount { get => discountAmount; set => discountAmount = value; }
+
+        public List<Discount> getDiscounts()
+        {
+            DBservices db = new DBservices();
+            return db.getDiscounts();
+        }
     }
 }
