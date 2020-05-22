@@ -217,20 +217,56 @@
 
         });
 
-        function saveOrder(row) {
-            flightId = dataArr['data'][row]['id']
+
+
+        $(document).on("click", "#saveBTN", function () { // Open the buy form.
+
+            counter = 0;
+
+
+            let legs = [];
+
+
+
+            for (var i = 0; i < dataArr['data'][parseInt(row)]['route'].length; i++) {
+                counter++;
+
+            }
+
+
+
+            flight = { FlightPath1: dataArr['data'][parseInt(row)]['id'], AirportFrom1: dataArr['data'][parseInt(row)]['flyFrom'], AirportTo1: dataArr['data'][parseInt(row)]['flyTo'], DepTime1: convertDate(dataArr['data'][parseInt(row)]['dTime']), ArriveTime1: convertDate(dataArr['data'][parseInt(row)]['aTime']), Duration1: dataArr['data'][parseInt(row)]['duration']['total'], price: parseFloat(dataArr['data'][parseInt(row)]['price']), LegsNumber1: counter }
+
+            ajaxCall('POST', "../api/flight", JSON.stringify(flight), postSuccess, errFunc)
+            for (i = 0; i < counter; i++) {//Count how many legs in the flight
+                legs.push(dataArr['data'][parseInt(row)]['route'][i]['cityTo'])
+
+                l = {
+                    id: dataArr['data'][parseInt(row)]['route'][i]['id'], fullpathid: dataArr['data'][parseInt(row)]['id'], legnumber: (i + 1), flight_no: dataArr['data'][parseInt(row)]['route'][i]['flight_no'], fromairport: dataArr['data'][parseInt(row)]['route'][i]['flyFrom'], toairport: dataArr['data'][parseInt(row)]['route'][i]['flyTo'], airlinecode: dataArr['data'][parseInt(row)]['route'][i]['airline'], DepTime1: convertDate(dataArr['data'][parseInt(row)]['route'][i]['dTime']), ArriveTime1: convertDate(dataArr['data'][parseInt(row)]['route'][i]['aTime']), Duration1: calculateDuartion(dataArr['data'][parseInt(row)]['route'][i]['aTime'] - dataArr['data'][parseInt(row)]['route'][i]['dTime'])
+                }
+
+                ajaxCall('POST', "../api/Leg", JSON.stringify(l), function () {
+                    swal("Flight Has Been Added!", "", "success");
+                    $('#MyFlights').prop('disabled', false); //Disabled the btn
+                }, errFunc)
+            }
+
+
+
+            flightId = dataArr['data'][parseInt(row)]['id']
             passengersNames = $("#Passengers").val()
             useremail = $("#email").val()
+
             ajaxCall("POST", "../api/order", JSON.stringify([flightId, passengersNames, useremail]), successMyFlights, errFunc)
-        }
+
+        });
+
 
 
         $(document).on("click", ".orderBTN", function () { // Open the buy form.
             $("#editDiv").show();
             row = $(this).attr("data-flightid");
             console.log(row)
-            saveOrder(row)
-
             
 
         });
