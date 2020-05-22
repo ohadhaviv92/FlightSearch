@@ -170,6 +170,7 @@
     <Compile Include="Models\Airline.cs" />
     <Compile Include="Models\Airport.cs" />
     <Compile Include="Models\DBservices.cs" />
+    <Compile Include="Models\Discount.cs" />
     <Compile Include="Models\Flight.cs" />
     <Compile Include="Models\Leg.cs" />
     <Compile Include="Models\Order.cs" />
