@@ -93,6 +93,10 @@
 
             ajaxCall("GET", "../api/user?username=" + localStorage.getItem('user'), "", function (user) {
 
+                if (user.UserName == null) {
+                     window.location.pathname = 'Pages/login.html'
+
+                }
 
                 str = "";
 
@@ -103,11 +107,13 @@
                    
                 }
 
-                str+= " <li class='nav-item'>"
-                str += "<a class='navbar-brand' id='logout' href='#'>Logout</a> </li>"
+         
 
                 str+= " <li class='nav-item'>"
-                    str+="<a class='navbar-brand' id='search' href='#'>Search</a> </li>"
+                str += "<a class='navbar-brand' id='search' href='#'>Search</a> </li>"
+
+                       str+= " <li class='nav-item'>"
+                str += "<a class='navbar-brand' id='logout' href='#'>Logout</a> </li>"
 
 
                 document.getElementById("menu").innerHTML += str;
@@ -522,7 +528,7 @@
                     <th>Stops</th>
                     <th>Airline name</th>
                     <th>Price</th>
-                    <th>add</th>
+                    <th>Order</th>
                 </tr>
             </thead>
         </table>
@@ -530,14 +536,7 @@
         <table id="flightTable" class="display nowrap" style="width:100%">
             <thead>
                 <tr>
-                    <th>From</th>
-                    <th>To</th>
-                    <th>Departure time</th>
-                    <th>Arrival time</th>
-                    <th>Stops</th>
-                    <th>Airline name</th>
-                    <th>Price</th>
-                    <th>Order</th>
+
                 </tr>
             </thead>
         </table>
