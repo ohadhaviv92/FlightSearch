@@ -63,6 +63,7 @@
         countryCodes = [];
         Myflightsarr = [];
         airportList = {};
+        chosenFlight = 0; // get the chosen flight id
         var airports = new Array();
         var airlines = new Array();
         airlinesList = {};
@@ -219,11 +220,16 @@
 
         $(document).on("click", ".orderBTN", function () { // Open the buy form.
             $("#editDiv").show();
+            row = $(this).attr("data-flightid");
+            console.log(row)
+            let flight = {
+                id : dataArr[]
+            }
 
         });
 
      
-        $(document).on("click", "#cancelSaveBTN", function () { // Open the buy form.
+        $(document).on("click", "#cancelSaveBTN", function () { // Close the buy form.
             $("#editDiv").hide();
 
         });
@@ -327,8 +333,6 @@
 
 
         function successMyFlights(data) {
-
-
 
 
             i = 1
