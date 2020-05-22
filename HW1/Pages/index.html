@@ -217,15 +217,20 @@
 
         });
 
+        function saveOrder(row) {
+            flightId = dataArr['data'][row]['id']
+            passengersNames = $("#Passengers").val()
+            useremail = $("#email").val()
+            ajaxCall("POST", "../api/order", JSON.stringify([flightId, passengersNames, useremail]), successMyFlights, errFunc)
+        }
+
 
         $(document).on("click", ".orderBTN", function () { // Open the buy form.
             $("#editDiv").show();
             row = $(this).attr("data-flightid");
             console.log(row)
-            flightId = dataArr['data'][row]['id']
-            passengersNames = $("#Passengers").val()
-            useremail = $("#email").val()
-            ajaxCall("POST", "../api/order", JSON.stringify([flightId, passengersNames, useremail]), successMyFlights, errFunc)
+            saveOrder(row)
+
             
 
         });
