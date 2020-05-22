@@ -34,7 +34,7 @@ namespace HW1.Models
 
                 con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
 
-                String selectSTR = "select * from orders as o join users as u on o.userId = u.username join MyFlights_CS as f on f.FlightPath = o.flightId";
+                String selectSTR = "select * from orders as o join MyFlights_CS as f on f.FlightPath = o.flightId";
                 SqlCommand cmd = new SqlCommand(selectSTR, con);
 
                 // get a reader
@@ -43,8 +43,9 @@ namespace HW1.Models
                 while (dr.Read())
                 {   // Read till the end of the data into a row
 
-                    ord.OrderID= (int)dr["orderID"];
-                    ord.User = new User((string)dr["username"], (string)dr["password"], (string)dr["isAdmin"]);
+                    ord.Email= (string)dr["userEmail"];
+                    
+                    ord.PassengersNames= (string)dr["passengersNames"];
                     ord.Flight = new Flight((string)dr["username"], (string)dr["username"], (string)dr["username"], (DateTime)dr["username"], (DateTime)dr["username"], (string)dr["username"], (float)dr["username"], (int)dr["username"]);
                   
                 }
