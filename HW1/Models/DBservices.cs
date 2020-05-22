@@ -6,7 +6,7 @@ using System.Data.SqlClient;
 using System.Web.Configuration;
 using System.Data;
 using System.Text;
-
+using System.Globalization;
 
 /// <summary>
 /// DBServices is a class created by me to provides some DataBase Services
@@ -25,7 +25,50 @@ namespace HW1.Models
             //
         }
 
+        public string deleteDiscount(Discount discount)
+        {
 
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+                
+            }
+
+            String cStr = "DELETE FROM discounts where AirlineCode = '"+discount.AirlineCode+"' and AirportCodeFrom = '"+discount.AirportCodeFrom+"' and AirportCodeTo = '"+discount.AirportCodeTo+"' and DateFrom = '"+discount.DateFrom+"' and DateTo = '"+discount.DateTo+"' and discount = '"+discount.DiscountAmount+"'" ;      // helper method to build the insert string
+
+            cmd = CreateCommand(cStr, con);             // create the command
+
+            try
+            {
+                string numEffected = (string)cmd.ExecuteScalar(); // execute the command
+
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                return "";
+                // write to log
+                throw (ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+
+        }
         public int insertOrder(string[] order)
         {
 

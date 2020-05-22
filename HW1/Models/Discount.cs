@@ -40,5 +40,11 @@ namespace HW1.Models
             DBservices db = new DBservices();
             return db.getDiscounts();
         }
+
+        public void deleteDiscount()
+        {
+            DBservices db = new DBservices();
+            db.deleteDiscount(this);
+        }
     }
 }

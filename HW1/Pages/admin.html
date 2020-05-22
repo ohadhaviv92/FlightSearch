@@ -55,12 +55,12 @@
     <link href="Style.css" rel="stylesheet" />
 
     <script>
-
-
+        discounts = []
+        index = 0;
         $(document).ready(function () {
           /*  $("#discountsTable").hide() */// Hide the discounts table on first load
-            $("#flightTable").click(hideDiscountTable)
-            $("#discountsTable").click(hideOrdersTable)
+            $("#ordersTab").click(hideDiscountTable)
+            $("#discountsTab").click(hideOrdersTable)
 
             ajaxCall("GET", "../api/order", "", function (orders) {
 
@@ -85,10 +85,7 @@
                         { data: "Arrivaltime" },
                         { data: "Duartion" },
                         { data: "StopsNumbers" },
-                        
                         { data: "Price" },
-                        
-              
 
                     ],
                 });
@@ -105,9 +102,9 @@
         ajaxCall("GET", "../api/discount", "", function (discountsData) {
 
             console.log(discountsData)
-            discounts = [];
+            
             for (var i in discountsData) {
-                discounts.push({ AirlineCompany: discountsData[i]["AirlineCode"], From: discountsData[i]["AirportCodeFrom"], To: discountsData[i]["AirportCodeTo"], FromDate: discountsData[i]["DateFrom"], DateTo: discountsData[i]["DateTo"], Discount: discountsData[i]["DiscountAmount"]});
+                discounts.push({ AirlineCompany: discountsData[i]["AirlineCode"], From: discountsData[i]["AirportCodeFrom"], To: discountsData[i]["AirportCodeTo"], FromDate: discountsData[i]["DateFrom"], ToDate: discountsData[i]["DateTo"], Discount: discountsData[i]["DiscountAmount"]});
             }
 
             try {
@@ -117,21 +114,23 @@
                     pageLength: 5,
 
                     columns: [
-                        {
-                            render: function (data, type, row, meta) {
-                                let dataDiscount = "data-discountId='" + row.Id + "'";
-
-                                editBtn = "<button type='button' class = 'editBtn btn btn-success' " + dataDiscount + "> Edit </button>";
-                                deleteBtn = "<button type='button' class = 'deleteBtn btn btn-danger' " + dataDiscount + "> Delete </button>";
-                                return editBtn + deleteBtn;
-                            }
-                        },
+                        
                         { data: "AirlineCompany" },
                         { data: "From" },
                         { data: "To" },
                         { data: "FromDate" },
                         { data: "ToDate" },
                         { data: "Discount" },
+                        {
+                            render: function (data, type, row, meta) {
+                                let dataDiscount = "data-discountId='" + index + "'";
+                                index++
+
+                                editBtn = "<button type='button' class = 'editBtn btn btn-success editBTN' " + dataDiscount + "> Edit </button>";
+                                deleteBtn = "<button type='button' class = 'deleteBtn btn btn-danger deleteBTN' " + dataDiscount + "> Delete </button>";
+                                return editBtn + deleteBtn;
+                            }
+                        },
 
                     ],
                 });
@@ -159,6 +158,34 @@
         function hideOrdersTable() {
             $("#discountsTable").show()
             $("#flightTable").hide()
+        }
+
+
+        function deleteDiscount(row) {
+            discount = {
+                airlineCode: discounts[parseInt(row)]['AirlineCompany'],
+                airportCodeFrom: discounts[parseInt(row)]['From'],
+                airportCodeTo: discounts[parseInt(row)]['To'],
+                dateFrom: discounts[parseInt(row)]['FromDate'],
+                dateTo: discounts[parseInt(row)]['ToDate'],
+                discountAmount: discounts[parseInt(row)]['Discount']
+            };
+            ajaxCall('POST', "../api/discount", JSON.stringify(discount), postSuccess, errFunc)
+
+        }
+
+        $(document).on("click", ".deleteBTN", function () { 
+            console.log($(this).attr('data-discountId'));
+            deleteDiscount($(this).attr('data-discountId'))
+           
+
+
+        });
+
+        function postSuccess() {
+            console.log('good')
+
+
         }
 
     </script>
