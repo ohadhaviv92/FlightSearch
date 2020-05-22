@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using HW1.Models;
+using Microsoft.Ajax.Utilities;
 
 namespace HW1.Controllers
 {
@@ -23,8 +24,10 @@ namespace HW1.Controllers
         }
 
         // POST: api/Order
-        public void Post([FromBody]string value)
+        public void Post([FromBody]string[] values)
         {
+            DBservices db = new DBservices();
+            db.insertOrder(values);
         }
 
         // PUT: api/Order/5
