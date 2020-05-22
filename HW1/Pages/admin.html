@@ -59,9 +59,10 @@
         
         $(document).ready(function () {
 
+            ajaxCall("GET", "../api/order", "", function (data) {
+                console.log(data)
 
-
-        }
+            }, errFunc);
 
 
     </script>

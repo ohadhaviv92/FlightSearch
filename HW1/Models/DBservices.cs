@@ -46,7 +46,7 @@ namespace HW1.Models
                     ord.Email= (string)dr["userEmail"];
                     
                     ord.PassengersNames= (string)dr["passengersNames"];
-                    ord.Flight = new Flight((string)dr["username"], (string)dr["username"], (string)dr["username"], (DateTime)dr["username"], (DateTime)dr["username"], (string)dr["username"], (float)dr["username"], (int)dr["username"]);
+                    ord.Flight = new Flight((string)dr["flightId"], (string)dr["AirportFrom"], (string)dr["AirportTo"], (DateTime)dr["DepTime"], (DateTime)dr["ArriveTime"], (string)dr["Duration"], (float)dr["Price"], (int)dr["LegsNumber"]);
                   
                 }
 
