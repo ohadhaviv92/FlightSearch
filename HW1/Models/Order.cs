@@ -8,7 +8,7 @@ namespace HW1.Models
     public class Order
     {
 
-        int orderID;
+        
         string passengersNames;
         string email;
         
@@ -21,16 +21,16 @@ namespace HW1.Models
           
         }
 
-        public Order(int orderID, string passengersNames, string email, Flight flight)
+        public Order( string passengersNames, string email, Flight flight)
         {
-            this.orderID = orderID;
+            
             this.passengersNames = passengersNames;
             this.email = email;
             
             this.flight = flight;
         }
 
-        public int OrderID { get => orderID; set => orderID = value; }
+       
         public string PassengersNames { get => passengersNames; set => passengersNames = value; }
         public string Email { get => email; set => email = value; }
         
