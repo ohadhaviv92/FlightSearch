@@ -8,16 +8,31 @@ namespace HW1.Models
     public class Discount
     {
         string airlineCode;
-        string AirportCodeFrom;
-        string AirportCodeTo;
-        DateTime DateFrom;
-        DateTime DateTo;
-        float discount;
+        string airportCodeFrom;
+        string airportCodeTo;
+        DateTime dateFrom;
+        DateTime dateTo;
+        float discountAmount;
+
+        public Discount()
+        {
+        }
+
+        public Discount(string airlineCode, string airportCodeFrom, string airportCodeTo, DateTime dateFrom, DateTime dateTo, float discountAmount)
+        {
+            this.airlineCode = airlineCode;
+            this.airportCodeFrom = airportCodeFrom;
+            this.airportCodeTo = airportCodeTo;
+            this.dateFrom = dateFrom;
+            this.dateTo = dateTo;
+            this.discountAmount = discountAmount;
+        }
 
         public string AirlineCode { get => airlineCode; set => airlineCode = value; }
-        public string AirportCodeFrom1 { get => AirportCodeFrom; set => AirportCodeFrom = value; }
-        public string AirportCodeTo1 { get => AirportCodeTo; set => AirportCodeTo = value; }
-  
-      
+        public string AirportCodeFrom { get => airportCodeFrom; set => airportCodeFrom = value; }
+        public string AirportCodeTo { get => airportCodeTo; set => airportCodeTo = value; }
+        public DateTime DateFrom { get => dateFrom; set => dateFrom = value; }
+        public DateTime DateTo { get => dateTo; set => dateTo = value; }
+        public float DiscountAmount { get => discountAmount; set => discountAmount = value; }
     }
 }
