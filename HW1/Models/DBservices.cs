@@ -42,7 +42,7 @@ namespace HW1.Models
                 
             }
 
-            String cStr = "DELETE FROM discounts where AirlineCode = '"+discount.AirlineCode+"' and AirportCodeFrom = '"+discount.AirportCodeFrom+"' and AirportCodeTo = '"+discount.AirportCodeTo+"' and DateFrom = '"+discount.DateFrom+"' and DateTo = '"+discount.DateTo+"' and discount = '"+discount.DiscountAmount+"'" ;      // helper method to build the insert string
+            String cStr = "DELETE FROM discounts where AirlineCode = '"+discount.AirlineCode+"' and AirportCodeFrom = '"+discount.AirportCodeFrom+"' and AirportCodeTo = '"+discount.AirportCodeTo+"' and DateFrom = '"+ discount.DateFrom.Year+"-"+discount.DateFrom.Month+"-"+discount.DateFrom.Day + "' and DateTo = '"+ discount.DateTo.Year+"-"+ discount.DateTo.Month+"-"+ discount.DateTo.Day + "' and discount = '"+discount.DiscountAmount+"'" ;      // helper method to build the insert string
 
             cmd = CreateCommand(cStr, con);             // create the command
 
