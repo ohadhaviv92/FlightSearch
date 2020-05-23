@@ -27,7 +27,8 @@ namespace HW1.Controllers
         // POST api/<controller>
         public void Post([FromBody]Discount discount)
         {
-            discount.deleteDiscount();
+            DBservices db = new DBservices();
+            db.addDiscount(discount);
         }
 
         // PUT api/<controller>/5
@@ -36,8 +37,9 @@ namespace HW1.Controllers
         }
 
         // DELETE api/<controller>/5
-        public void Delete(int id)
+        public void Delete([FromBody]Discount discount)
         {
+            discount.deleteDiscount();
         }
     }
 }

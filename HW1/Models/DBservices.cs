@@ -25,6 +25,51 @@ namespace HW1.Models
             //
         }
 
+
+
+        public int addDiscount(Discount discount)
+        {
+
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+
+            String cStr = BuildInsertCommand(discount);      // helper method to build the insert string
+
+            cmd = CreateCommand(cStr, con);             // create the command
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+
+                // write to log
+                throw (ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+
+        }
+
         public Discount deleteDiscount(Discount discount)
         {
 
@@ -548,7 +593,17 @@ namespace HW1.Models
         //--------------------------------------------------------------------
 
 
+        private String BuildInsertCommand(Discount discount)
+        {
+            String command;
 
+            StringBuilder sb = new StringBuilder();
+            //use a string builder to create the dynamic string
+            sb.AppendFormat("Values('{0}', '{1}', '{2}','{3}','{4}','{5}')", discount.AirlineCode, discount.AirportCodeFrom,discount.AirportCodeTo,discount.DateFrom, discount.DateTo, discount.DiscountAmount);
+            String prefix = "INSERT INTO discounts " + "(AirlineCode, AirportCodeFrom,AirportCodeTo,DateFrom,DateTo,discount) ";
+            command = prefix + sb.ToString();
+            return command;
+        }
 
         private String BuildInsertCommand(string[] order)
         {
