@@ -109,7 +109,7 @@
 
             try {
 
-                table = $('#discountsTable').DataTable({
+                discountTable = $('#discountsTable').DataTable({
                     data: discounts,
                     pageLength: 5,
 
@@ -170,7 +170,7 @@
                 dateTo: discounts[parseInt(row)]['ToDate'],
                 discountAmount: discounts[parseInt(row)]['Discount']
             };
-            ajaxCall('POST', "../api/discount", JSON.stringify(discount), postSuccess, errFunc)
+            ajaxCall('POST', "../api/discount", JSON.stringify(discount), deleteSuccess, errFunc)
 
         }
 
@@ -182,10 +182,18 @@
 
         });
 
-        function postSuccess() {
+        function deleteSuccess(data) {
             console.log('good')
+            redrawTable(discountTable, data)
 
+        }
 
+        function redrawTable(tbl, data) {
+            tbl.clear();
+            for (var i = 0; i < data.length; i++) {
+                tbl.row.add(data[i]);
+            }
+            tbl.draw();
         }
 
     </script>

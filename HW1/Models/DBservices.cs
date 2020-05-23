@@ -25,7 +25,7 @@ namespace HW1.Models
             //
         }
 
-        public string deleteDiscount(Discount discount)
+        public Discount deleteDiscount(Discount discount)
         {
 
             SqlConnection con;
@@ -50,11 +50,10 @@ namespace HW1.Models
             {
                 string numEffected = (string)cmd.ExecuteScalar(); // execute the command
 
-                return numEffected;
+                return discount;
             }
             catch (Exception ex)
             {
-                return "";
                 // write to log
                 throw (ex);
             }
