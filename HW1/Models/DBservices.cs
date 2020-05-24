@@ -599,7 +599,7 @@ namespace HW1.Models
 
             StringBuilder sb = new StringBuilder();
             //use a string builder to create the dynamic string
-            sb.AppendFormat("Values('{0}', '{1}', '{2}','{3}','{4}','{5}')", discount.AirlineCode, discount.AirportCodeFrom,discount.AirportCodeTo,discount.DateFrom, discount.DateTo, discount.DiscountAmount);
+            sb.AppendFormat("Values('{0}', '{1}', '{2}','{3}','{4}','{5}')", discount.AirlineCode, discount.AirportCodeFrom,discount.AirportCodeTo,discount.DateFrom.ToShortDateString(), discount.DateTo.ToShortDateString(), discount.DiscountAmount);
             String prefix = "INSERT INTO discounts " + "(AirlineCode, AirportCodeFrom,AirportCodeTo,DateFrom,DateTo,discount) ";
             command = prefix + sb.ToString();
             return command;
