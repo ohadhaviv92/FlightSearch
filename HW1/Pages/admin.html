@@ -57,6 +57,11 @@
     <script>
         discounts = []
         index = 0;
+        getOrders()
+        getDiscounts()
+        
+
+        function getOrders() {
         $(document).ready(function () {
           /*  $("#discountsTable").hide() */// Hide the discounts table on first load
             $("#ordersTab").click(hideDiscountTable)
@@ -103,50 +108,52 @@
 
             }, errFunc);
         })
-
-        ajaxCall("GET", "../api/discount", "", function (discountsData) {
-
-            console.log(discountsData)
-            
-            for (var i in discountsData) {
-                discounts.push({ AirlineCompany: discountsData[i]["AirlineCode"], From: discountsData[i]["AirportCodeFrom"], To: discountsData[i]["AirportCodeTo"], FromDate: discountsData[i]["DateFrom"], ToDate: discountsData[i]["DateTo"], Discount: discountsData[i]["DiscountAmount"]});
             }
+        function getDiscounts() {
+            ajaxCall("GET", "../api/discount", "", function (discountsData) {
 
-            try {
+                console.log(discountsData)
 
-                discountTable = $('#discountsTable').DataTable({
-                    data: discounts,
-                    pageLength: 5,
+                for (var i in discountsData) {
+                    discounts.push({ AirlineCompany: discountsData[i]["AirlineCode"], From: discountsData[i]["AirportCodeFrom"], To: discountsData[i]["AirportCodeTo"], FromDate: discountsData[i]["DateFrom"], ToDate: discountsData[i]["DateTo"], Discount: discountsData[i]["DiscountAmount"] });
+                }
 
-                    columns: [
-                        
-                        { data: "AirlineCompany" },
-                        { data: "From" },
-                        { data: "To" },
-                        { data: "FromDate" },
-                        { data: "ToDate" },
-                        { data: "Discount" },
-                        {
-                            render: function (data, type, row, meta) {
-                                let dataDiscount = "data-discountId='" + index + "'";
-                                index++
+                try {
 
-                                editBtn = "<button type='button' class = 'editBtn btn btn-success editBTN' " + dataDiscount + "> Edit </button>";
-                                deleteBtn = "<button type='button' class = 'deleteBtn btn btn-danger deleteBTN' " + dataDiscount + "> Delete </button>";
-                                return editBtn + deleteBtn;
-                            }
-                        },
+                    discountTable = $('#discountsTable').DataTable({
+                        data: discounts,
+                        pageLength: 5,
 
-                    ],
-                });
+                        columns: [
 
-            }
+                            { data: "AirlineCompany" },
+                            { data: "From" },
+                            { data: "To" },
+                            { data: "FromDate" },
+                            { data: "ToDate" },
+                            { data: "Discount" },
+                            {
+                                render: function (data, type, row, meta) {
+                                    let dataDiscount = "data-discountId='" + index + "'";
+                                    index++
 
-            catch (err) {
-                alert(err);
-            }
+                                    editBtn = "<button type='button' class = 'editBtn btn btn-success editBTN' " + dataDiscount + "> Edit </button>";
+                                    deleteBtn = "<button type='button' class = 'deleteBtn btn btn-danger deleteBTN' " + dataDiscount + "> Delete </button>";
+                                    return editBtn + deleteBtn;
+                                }
+                            },
 
-        }, errFunc);
+                        ],
+                    });
+
+                }
+
+                catch (err) {
+                    alert(err);
+                }
+
+            }, errFunc);
+        }
         
 
 
@@ -176,6 +183,7 @@
                 discountAmount: discounts[parseInt(row)]['Discount']
             };
             ajaxCall('DELETE', "../api/discount", JSON.stringify(discount), deleteSuccess, errFunc)
+            
 
         }
 
@@ -209,7 +217,7 @@
             }
 
             ajaxCall('POST', "../api/discount", JSON.stringify(newDiscount), addSuccess, errFunc)
-            return false;
+            
             
         }
 
@@ -217,13 +225,14 @@
 
         }
 
-        function addSuccess(){
+        function addSuccess(data){
             console.log("added")
+            
         }
 
         function deleteSuccess(data) {
             console.log('good')
-            redrawTable(discountTable, data)
+            
 
         }
 
