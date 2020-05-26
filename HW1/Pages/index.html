@@ -46,11 +46,6 @@
 
 
 
-
-
-
-
-
     <!--CSS-->
     <link href="Style.css" rel="stylesheet" />
 
@@ -62,14 +57,14 @@
         var table=null;
         countryCodes = [];
         Myflightsarr = [];
+        discountsArr=[]
         airportList = {};
-        chosenFlight = 0; // get the chosen flight id
         var airports = new Array();
         var airlines = new Array();
         airlinesList = {};
         flag = 0; // 0 =>  there are already airport table on db
         dataArr = {} //Store the current search arr
-
+        ajaxCall("GET", "../api/discount", "", saveDiscounts, errFunc);
 
        
 
@@ -180,6 +175,10 @@
             }, errFunc);
         }
 
+        function saveDiscounts(data) {
+            discountsArr=data
+        }
+
         // end API call -------------------------------------------------------------------------
 
 
@@ -228,7 +227,7 @@
 
         $(document).on("click", ".orderBTN", function () { // Open the buy form.
             
-                    $('#flightTable').parents('div.dataTables_wrapper').first().hide();
+            $('#flightTable').parents('div.dataTables_wrapper').first().hide();
             $("#editDiv").show();
             row = $(this).attr("data-flightid");
             console.log(row)
@@ -247,11 +246,6 @@
         function MyFlights() {
             ajaxCall("GET", "../api/flight", "", successMyFlights, errFunc)
         }
-
-
-
-
-
 
 
         function getConnections(connectionsList) {
@@ -419,7 +413,20 @@
                         { data: "route" },
                          { data: "airline" },
                         {
-                            data: "price"
+                            data: "price",
+                            render: function (data, type, row, meta) {
+                                console.log(flightData[row.id])
+                                for (var i = 0; i < discountsArr.length; i++) {
+                                    deptime = new Date(flightData[row.id].dTime)
+                                    arrtime = new Date(flightData[row.id].aTime)
+                                    startdis = new Date(discountsArr[i].DateFrom)
+                                    enddis = new Date(discountsArr[i].DateTo)
+                                    if (flightData[row.id].airline == discountsArr[i].AirlineCode && startdis <= deptime && enddis >= arrtime)
+                                        console.log("yes")
+                                }
+                                
+                                return data
+                            }
                         },
                           {
                            render: function (data, type, row, meta) {
@@ -602,13 +609,6 @@ These Terms will be governed by and interpreted in accordance with the laws of t
             </thead>
         </table>
 
-        <table id="flightTable" class="display nowrap" style="width:100%">
-            <thead>
-                <tr>
-
-                </tr>
-            </thead>
-        </table>
 
 
         <div class="row justify-content-md-center ">
@@ -634,7 +634,6 @@ These Terms will be governed by and interpreted in accordance with the laws of t
                     </table>
 
                 </form>
-
 
 
             </div>
