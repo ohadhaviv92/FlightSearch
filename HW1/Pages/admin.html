@@ -74,7 +74,7 @@
                 mode="add"
             });
             $("#editDiv").hide();
-
+            
             ajaxCall("GET", "../api/order", "", function (orders) {
 
                 console.log(orders)
@@ -110,7 +110,8 @@
 
             }, errFunc);
         })
-            }
+        }
+
         function getDiscounts() {
             ajaxCall("GET", "../api/discount", "", function (discountsData) {
 
@@ -177,6 +178,7 @@
 
         function deleteDiscount(row) {
             ajaxCall('DELETE', "../api/discount", row, deleteSuccess, errFunc)
+            window.location.pathname = 'Pages/admin.html'
 
         }
 
@@ -213,7 +215,7 @@
                 ajaxCall('POST', "../api/discount", JSON.stringify(newDiscount), addSuccess, errFunc)
             else if (mode == "edit")
                 ajaxCall('PUT', "../api/discount", JSON.stringify(newDiscount), addSuccess, errFunc)
-            return false;
+            
         }
 
 
@@ -246,6 +248,7 @@
 
         function deleteSuccess(data) {
             console.log('good')
+            window.location.pathname = 'Pages/admin.html'
 
             
 
@@ -285,77 +288,82 @@
                 </ul>
             </div>
         </nav>
-        <div class="row" id="editDiv">
+        <div class="container">
+            <div class="row" id="editDiv">
 
-            <form id="addDiscountForm">
-                <div class="form-group row">
-                    <div class="form-group col-sm-3">
-                        <label for="Passengers"><span class="red-star"></span>Airline Code</label>
-                        <input type="text" class="form-control" id="Airline" placeholder="Enter the Airline Code:" required>
-                    </div>
+                <form id="addDiscountForm">
+                    <div class="form-group row">
+                        <div class="form-group col-sm-3">
+                            <label for="Passengers"><span class="red-star"></span>Airline Code</label>
+                            <input type="text" class="form-control" id="Airline" placeholder="Enter the Airline Code:" required>
+                        </div>
 
 
-                    <div class="form-group col-sm-3">
-                        <label for="Email"><span class="red-star"></span>From Airport</label>
-                        <input type="text" class="form-control" id="fromairport" placeholder="Enter The From Airport" required>
-                    </div>
-                    <div class="form-group col-sm-3">
-                        <label for="Email"><span class="red-star"></span>To Airport</label>
-                        <input type="text" class="form-control" id="toairport" placeholder="Enter The To Airport" required>
-                    </div>
-                    <div class="form-group col-sm-3">
-                        <label for="Email"><span class="red-star"></span>From date</label>
-                        <input type="date" class="form-control" id="fromdate" placeholder="Insert date DD/MM/YYYY" required>
-                    </div>
-                    <div class="form-group col-sm-3">
-                        <label for="Email"><span class="red-star"></span>To date</label>
-                        <input type="date" class="form-control" id="todate" placeholder="Insert date DD/MM/YYYY" required>
-                    </div>
-                    <div class="form-group col-sm-3">
-                        <label for="Email"><span class="red-star"></span>Discount</label>
-                        <input type="number" max="100" min="0" class="form-control" id="discount" placeholder="Enter discount in % (without %)" required>
+                        <div class="form-group col-sm-3">
+                            <label for="Email"><span class="red-star"></span>From Airport</label>
+                            <input type="text" class="form-control" id="fromairport" placeholder="Enter The From Airport" required>
+                        </div>
+                        <div class="form-group col-sm-3">
+                            <label for="Email"><span class="red-star"></span>To Airport</label>
+                            <input type="text" class="form-control" id="toairport" placeholder="Enter The To Airport" required>
+                        </div>
+                        <div class="form-group col-sm-3">
+                            <label for="Email"><span class="red-star"></span>From date</label>
+                            <input type="date" class="form-control" id="fromdate" placeholder="Insert date DD/MM/YYYY" required>
+                        </div>
+                        <div class="form-group col-sm-3">
+                            <label for="Email"><span class="red-star"></span>To date</label>
+                            <input type="date" class="form-control" id="todate" placeholder="Insert date DD/MM/YYYY" required>
+                        </div>
+                        <div class="form-group col-sm-3">
+                            <label for="Email"><span class="red-star"></span>Discount</label>
+                            <input type="number" max="100" min="0" class="form-control" id="discount" placeholder="Enter discount in % (without %)" required>
+                        </div>
+
                     </div>
 
-                </div>
+                    <button type="submit" class="btn btn-primary btn-lg" id="saveBTN">Save</button>
+                    <input type="button" class="btn btn-warning btn-lg" id="cancelSaveBTN" value="Cancel" />
+                </form>
 
-                <button type="submit" class="btn btn-primary btn-lg" id="saveBTN">Save</button>
-                <input type="button" class="btn btn-warning btn-lg" id="cancelSaveBTN" value="Cancel" />
-            </form>
+            </div>
+            <hr />
+            <table id="flightTable" class="display nowrap" style="width:100%">
+                <thead>
+
+                    <tr>
+                        <th>Email</th>
+                        <th>Passenger Name</th>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>Departure time</th>
+                        <th>Arrival time</th>
+                        <th>Duration</th>
+                        <th>Stops Numbers</th>
+                        <th>Price</th>
+
+                    </tr>
+
+                </thead>
+            </table>
+            <hr />
+            <table id="discountsTable" class="display nowrap" style="width:100%">
+                <thead>
+                    <input type="button" value="New Discount" class="btn btn-primary btn-md" id="newDiscountBTN" />
+                    <tr>
+                        <th></th>
+                        <th>Airline Company</th>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>From Date</th>
+                        <th>To Date</th>
+                        <th>Discount in %</th>
+
+                    </tr>
+
+                </thead>
+            </table>
         </div>
-        <table id="flightTable" class="display nowrap" style="width:100%">
-            <thead>
-
-                <tr>
-                    <th>Email</th>
-                    <th>Passenger Name</th>
-                    <th>From</th>
-                    <th>To</th>
-                    <th>Departure time</th>
-                    <th>Arrival time</th>
-                    <th>Duration</th>
-                    <th>Stops Numbers</th>
-                    <th>Price</th>
-
-                </tr>
-
-            </thead>
-        </table>
-        <table id="discountsTable" class="display nowrap" style="width:100%">
-            <thead>
-                <input type="button" value="New Discount" class="btn btn-primary btn-md" id="newDiscountBTN" />
-                <tr>
-                    <th></th>
-                    <th>Airline Company</th>
-                    <th>From</th>
-                    <th>To</th>
-                    <th>From Date</th>
-                    <th>To Date</th>
-                    <th>Discount in %</th>
-
-                </tr>
-
-            </thead>
-        </table>
-    </div>
+        </div>
 </body>
 </html>

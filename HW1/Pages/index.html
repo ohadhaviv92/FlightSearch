@@ -394,7 +394,7 @@
                 }
 
                 flightData.push({
-                    id: i, cityFrom: data['data'][i]['cityFrom'], cityTo: data['data'][i]['cityTo'], dTime: depTime.toLocaleDateString('en-US'), aTime: arrTime.toLocaleDateString('en-US'), route: conection, airline: data['data'][i]['route'][0]['airline'], price: data['data'][i]['price'] + " Euro", fromShort: data['data'][i]["flyFrom"], toShort: data['data'][i]["flyTo"]})
+                    id: i, cityFrom: data['data'][i]['cityFrom'], cityTo: data['data'][i]['cityTo'], dTime: depTime.toLocaleDateString('en-US'), aTime: arrTime.toLocaleDateString('en-US'), route: conection, airline: data['data'][i]['route'][0]['airline'], price: data['data'][i]['price'] + " $", fromShort: data['data'][i]["flyFrom"], toShort: data['data'][i]["flyTo"]})
             }
 
             
@@ -425,7 +425,7 @@
                                     if (flightData[row.id].airline == discountsArr[i].AirlineCode && startdis <= deptime && enddis >= arrtime && flightData[row.id].fromShort == discountsArr[i].AirportCodeFrom && flightData[row.id].toShort == discountsArr[i].AirportCodeTo) {
 
                                         a = parseInt(data.split(" ")[0]) *(1- ((discountsArr[i].DiscountAmount) / 100))
-                                        return a
+                                        return "<strike>" + data.split(" ")[0] +"$</strike>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp"+ a.toFixed(2) + "$&nbsp&nbsp<img class='sale-img' src='../images/Sale-icon.png'/>"
                                         }
                                     
 
@@ -637,7 +637,7 @@ These Terms will be governed by and interpreted in accordance with the laws of t
                             </td> <!--Type should be submit!-->
 
                         </tr>
-
+                        
                     </table>
 
                 </form>
