@@ -393,7 +393,8 @@
                     }
                 }
 
-                flightData.push({ id: i, cityFrom: data['data'][i]['cityFrom'], cityTo: data['data'][i]['cityTo'], dTime: depTime.toLocaleDateString('en-US'), aTime: arrTime.toLocaleDateString('en-US'), route: conection, airline: data['data'][i]['route'][0]['airline'], price: data['data'][i]['price'] + " Euro", fromShort: data['data'][i]["cityCodeFrom"], toShort: data['data'][i]["cityCodeTo"]})
+                flightData.push({
+                    id: i, cityFrom: data['data'][i]['cityFrom'], cityTo: data['data'][i]['cityTo'], dTime: depTime.toLocaleDateString('en-US'), aTime: arrTime.toLocaleDateString('en-US'), route: conection, airline: data['data'][i]['route'][0]['airline'], price: data['data'][i]['price'] + " Euro", fromShort: data['data'][i]["flyFrom"], toShort: data['data'][i]["flyTo"]})
             }
 
             
@@ -421,11 +422,17 @@
                                     arrtime = new Date(flightData[row.id].aTime)
                                     startdis = new Date(discountsArr[i].DateFrom)
                                     enddis = new Date(discountsArr[i].DateTo)
-                                    if (flightData[row.id].airline == discountsArr[i].AirlineCode && startdis <= deptime && enddis >= arrtime && flightData[row.id].fromShort == discountsArr[i].AirportCodeFrom && flightData[row.id].toShort == discountsArr[i].AirportCodeTo)
-                                        console.log("yes")
+                                    if (flightData[row.id].airline == discountsArr[i].AirlineCode && startdis <= deptime && enddis >= arrtime && flightData[row.id].fromShort == discountsArr[i].AirportCodeFrom && flightData[row.id].toShort == discountsArr[i].AirportCodeTo) {
+
+                                        a = parseInt(data.split(" ")[0]) *(1- ((discountsArr[i].DiscountAmount) / 100))
+                                        return a
+                                        }
+                                    
+
                                 }
-                                
                                 return data
+                                
+                                
                             }
                         },
                           {
