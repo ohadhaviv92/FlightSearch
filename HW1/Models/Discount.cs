@@ -56,6 +56,12 @@ namespace HW1.Models
             return db.addDiscount(this);
         }
 
+        public string editDiscount()
+        {
+            DBservices db = new DBservices();
+            return db.editDiscount(this);
+        }
+
 
     }
 }

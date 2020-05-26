@@ -55,8 +55,9 @@
     <link href="Style.css" rel="stylesheet" />
 
     <script>
+        mode = ""
+        currentRow=0
         discounts = []
-        index = 0;
         getOrders()
         getDiscounts()
         
@@ -66,9 +67,10 @@
           /*  $("#discountsTable").hide() */// Hide the discounts table on first load
             $("#ordersTab").click(hideDiscountTable)
             $("#discountsTab").click(hideOrdersTable)
-            $("#addDiscountForm").submit(addDiscount)
+            $("#addDiscountForm").submit(chooseAddOrUpdate)
             $("#newDiscountBTN").click(function () {
                 $("#editDiv").show();
+                mode="add"
             });
             $("#editDiv").hide();
 
@@ -190,7 +192,7 @@
         });
 
 
-        function addDiscount() {
+        function chooseAddOrUpdate() {
             let airlinecode = $("#Airline").val()
             let from = $("#fromairport").val()
             let to = $("#toairport").val()
@@ -199,6 +201,7 @@
             let discountAmount = $("#discount").val()
 
             newDiscount = {
+                Id: currentRow,
                 AirlineCode: airlinecode,
                 AirportCodeFrom: from,
                 AirportCodeTo: to,
@@ -206,14 +209,33 @@
                 DateTo: todate,
                 DiscountAmount: discountAmount
             }
-
-            ajaxCall('POST', "../api/discount", JSON.stringify(newDiscount), addSuccess, errFunc)
+            if (mode == "add")
+                ajaxCall('POST', "../api/discount", JSON.stringify(newDiscount), addSuccess, errFunc)
+            else if (mode == "edit")
+                ajaxCall('PUT', "../api/discount", JSON.stringify(newDiscount), addSuccess, errFunc)
             return false;
-            
-            
+        }
+
+
+        function findDiscountById(row) {
+            for (var i = 0; i < discounts.length; i++) {
+                if (discounts[i].id == row)
+                    return discounts[i]
+            }
         }
 
         function editDiscount(row) {
+            mode = "edit"
+            currentRow=row
+            let disocunt = findDiscountById(row)
+            $("#editDiv").show();
+            $("#Airline").val(disocunt.AirlineCompany)
+            $("#fromairport").val(disocunt.From)
+            $("#toairport").val(disocunt.To)
+            $("#fromdate").val(disocunt.FromDate.split('T')[0])
+            $("#todate").val(disocunt.ToDate.split('T')[0])
+            $("#discount").val(disocunt.Discount)
+            
 
         }
 

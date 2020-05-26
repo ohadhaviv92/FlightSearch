@@ -26,7 +26,49 @@ namespace HW1.Models
         }
 
 
+        public string editDiscount(Discount discount)
+        {
 
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+
+            }
+
+            String cStr = "UPDATE discounts set AirlineCode = '"+discount.AirlineCode+"', AirportCodeFrom = '"+discount.AirportCodeFrom+"', AirportCodeTo = '"+discount.AirportCodeTo+"', DateFrom = '"+discount.DateFrom.ToShortDateString()+"', DateTo='"+discount.DateTo.ToShortDateString()+"', discount = "+discount.DiscountAmount+" where id = "+discount.Id ;      // helper method to build the insert string
+
+            cmd = CreateCommand(cStr, con);             // create the command
+
+            try
+            {
+                string numEffected = (string)cmd.ExecuteScalar(); // execute the command
+
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+
+        }
         public int addDiscount(Discount discount)
         {
 
