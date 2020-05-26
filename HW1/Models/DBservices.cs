@@ -70,7 +70,7 @@ namespace HW1.Models
 
         }
 
-        public Discount deleteDiscount(Discount discount)
+        public string deleteDiscount(int discountId)
         {
 
             SqlConnection con;
@@ -87,7 +87,7 @@ namespace HW1.Models
                 
             }
 
-            String cStr = "DELETE FROM discounts where AirlineCode = '"+discount.AirlineCode+"' and AirportCodeFrom = '"+discount.AirportCodeFrom+"' and AirportCodeTo = '"+discount.AirportCodeTo+"' and DateFrom = '"+ discount.DateFrom.Year+"-"+discount.DateFrom.Month+"-"+discount.DateFrom.Day + "' and DateTo = '"+ discount.DateTo.Year+"-"+ discount.DateTo.Month+"-"+ discount.DateTo.Day + "' and discount = '"+discount.DiscountAmount+"'" ;      // helper method to build the insert string
+            String cStr = "DELETE FROM discounts where id = "+ discountId+"" ;      // helper method to build the insert string
 
             cmd = CreateCommand(cStr, con);             // create the command
 
@@ -95,7 +95,7 @@ namespace HW1.Models
             {
                 string numEffected = (string)cmd.ExecuteScalar(); // execute the command
 
-                return discount;
+                return numEffected;
             }
             catch (Exception ex)
             {
@@ -226,6 +226,7 @@ namespace HW1.Models
                 while (dr.Read())
                 {   // Read till the end of the data into a row
                     Discount discount = new Discount();
+                    discount.Id = (int)dr["id"];
                     discount.AirlineCode = (string)dr["AirlineCode"];
                     discount.AirportCodeFrom = (string)dr["AirportCodeFrom"];
                     discount.AirportCodeTo = (string)dr["AirportCodeTo"];

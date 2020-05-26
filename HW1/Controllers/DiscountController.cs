@@ -37,9 +37,9 @@ namespace HW1.Controllers
         }
 
         // DELETE api/<controller>/5
-        public void Delete([FromBody]Discount discount)
+        public void Delete([FromBody]int discountId)
         {
-            discount.deleteDiscount();
+            Discount.deleteDiscount(discountId);
         }
     }
 }

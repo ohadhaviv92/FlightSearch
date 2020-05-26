@@ -115,7 +115,7 @@
                 console.log(discountsData)
 
                 for (var i in discountsData) {
-                    discounts.push({ AirlineCompany: discountsData[i]["AirlineCode"], From: discountsData[i]["AirportCodeFrom"], To: discountsData[i]["AirportCodeTo"], FromDate: discountsData[i]["DateFrom"], ToDate: discountsData[i]["DateTo"], Discount: discountsData[i]["DiscountAmount"] });
+                    discounts.push({ id: discountsData[i]["Id"],AirlineCompany: discountsData[i]["AirlineCode"], From: discountsData[i]["AirportCodeFrom"], To: discountsData[i]["AirportCodeTo"], FromDate: discountsData[i]["DateFrom"], ToDate: discountsData[i]["DateTo"], Discount: discountsData[i]["DiscountAmount"] });
                 }
 
                 try {
@@ -134,8 +134,8 @@
                             { data: "Discount" },
                             {
                                 render: function (data, type, row, meta) {
-                                    let dataDiscount = "data-discountId='" + index + "'";
-                                    index++
+                                    let dataDiscount = "data-discountId='" + row.id + "'";
+                         
 
                                     editBtn = "<button type='button' class = 'editBtn btn btn-success editBTN' " + dataDiscount + "> Edit </button>";
                                     deleteBtn = "<button type='button' class = 'deleteBtn btn btn-danger deleteBTN' " + dataDiscount + "> Delete </button>";
@@ -174,16 +174,7 @@
 
 
         function deleteDiscount(row) {
-            discount = {
-                airlineCode: discounts[parseInt(row)]['AirlineCompany'],
-                airportCodeFrom: discounts[parseInt(row)]['From'],
-                airportCodeTo: discounts[parseInt(row)]['To'],
-                dateFrom: discounts[parseInt(row)]['FromDate'],
-                dateTo: discounts[parseInt(row)]['ToDate'],
-                discountAmount: discounts[parseInt(row)]['Discount']
-            };
-            ajaxCall('DELETE', "../api/discount", JSON.stringify(discount), deleteSuccess, errFunc)
-            
+            ajaxCall('DELETE', "../api/discount", row, deleteSuccess, errFunc)
 
         }
 
@@ -217,6 +208,7 @@
             }
 
             ajaxCall('POST', "../api/discount", JSON.stringify(newDiscount), addSuccess, errFunc)
+            return false;
             
             
         }

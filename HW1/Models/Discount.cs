@@ -7,6 +7,7 @@ namespace HW1.Models
 {
     public class Discount
     {
+        int id;
         string airlineCode;
         string airportCodeFrom;
         string airportCodeTo;
@@ -18,8 +19,9 @@ namespace HW1.Models
         {
         }
 
-        public Discount(string airlineCode, string airportCodeFrom, string airportCodeTo, DateTime dateFrom, DateTime dateTo, float discountAmount)
+        public Discount(int id,string airlineCode, string airportCodeFrom, string airportCodeTo, DateTime dateFrom, DateTime dateTo, float discountAmount)
         {
+            this.id = id;
             this.airlineCode = airlineCode;
             this.airportCodeFrom = airportCodeFrom;
             this.airportCodeTo = airportCodeTo;
@@ -34,6 +36,7 @@ namespace HW1.Models
         public DateTime DateFrom { get => dateFrom; set => dateFrom = value; }
         public DateTime DateTo { get => dateTo; set => dateTo = value; }
         public double DiscountAmount { get => discountAmount; set => discountAmount = value; }
+        public int Id { get => id; set => id = value; }
 
         public List<Discount> getDiscounts()
         {
@@ -41,10 +44,10 @@ namespace HW1.Models
             return db.getDiscounts();
         }
 
-        public Discount deleteDiscount()
+        public static string deleteDiscount(int id)
         {
             DBservices db = new DBservices();
-            return db.deleteDiscount(this);
+            return db.deleteDiscount(id);
         }
 
         public int addDiscount()
