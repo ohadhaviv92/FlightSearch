@@ -3,7 +3,7 @@ drop table MyFlights_CS
 drop table Airports_CS
 drop table Airlines_CS
 
-
+s
 
 CREATE table Airlines_CS(
 AirlineCode nvarchar(90) primary key,
@@ -76,6 +76,7 @@ FOREIGN KEY (airlinecode) REFERENCES Airlines_CS(AirlineCode),
 
 
 create table discounts(
+id int IDENTITY(0,1),
 AirlineCode nvarchar(90) ,
 AirportCodeFrom nvarchar(90) ,
 AirportCodeTo nvarchar(90) ,
@@ -94,3 +95,4 @@ select * from Airlines_CS
 select * from Airports_CS
 select * from MyFlights_CS
 select * from Legs_CS
+select * from discounts
