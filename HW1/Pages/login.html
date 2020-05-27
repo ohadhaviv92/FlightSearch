@@ -41,7 +41,7 @@
 		function login() {
 			let username = $("#username").val();
 			let password = $("#password").val();
-            ajaxCall("POST", "../api/login", JSON.stringify(["admin", "admin"]), loggedIn, loginError)
+            ajaxCall("POST", "../api/login", JSON.stringify([username, password]), loggedIn, loginError)
 			return false;
 		}
 

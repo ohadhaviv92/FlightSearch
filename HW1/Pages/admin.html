@@ -128,8 +128,10 @@
                     });
 
 
-                
 
+                $("#cancelSaveBTN").click(function () {
+                    $("#editDiv").hide();
+                }) 
 
 
           /*  $("#discountsTable").hide() */// Hide the discounts table on first load
@@ -147,7 +149,7 @@
                 console.log(orders)
                 orsders2 = [];
                 for (var i in orders) {
-                    orsders2.push({ Email: orders[i]["Email"], PassengersNames: orders[i]["PassengersNames"], From: orders[i]["Flight"]["AirportFrom1"], To: orders[i]["Flight"]["AirportTo1"], Departuretime: orders[i]["Flight"]["DepTime1"], Arrivaltime: orders[i]["Flight"]["ArriveTime1"], Duartion: calculateDuartion(orders[i]["Flight"]["Duration1"]), StopsNumbers: orders[i]["Flight"]["LegsNumber1"], Price: orders[i]["Flight"]["Price"] +" $"});
+                    orsders2.push({ Email: orders[i]["Email"], PassengersNames: orders[i]["PassengersNames"], From: orders[i]["Flight"]["AirportFrom1"], To: orders[i]["Flight"]["AirportTo1"], Departuretime: orders[i]["Flight"]["DepTime1"].split('T')[0] + " " +orders[i]["Flight"]["DepTime1"].split('T')[1] , Arrivaltime:orders[i]["Flight"]["ArriveTime1"].split('T')[0] + " " +orders[i]["Flight"]["ArriveTime1"].split('T')[1], Duartion: calculateDuartion(orders[i]["Flight"]["Duration1"]), StopsNumbers: orders[i]["Flight"]["LegsNumber1"], Price: orders[i]["Flight"]["Price"] +" $"});
                 }
                 
                  try {
@@ -185,7 +187,7 @@
                 console.log(discountsData)
 
                 for (var i in discountsData) {
-                    discounts.push({ id: discountsData[i]["Id"],AirlineCompany: discountsData[i]["AirlineCode"], From: discountsData[i]["AirportCodeFrom"], To: discountsData[i]["AirportCodeTo"], FromDate: discountsData[i]["DateFrom"], ToDate: discountsData[i]["DateTo"], Discount: discountsData[i]["DiscountAmount"] });
+                    discounts.push({ id: discountsData[i]["Id"],AirlineCompany: discountsData[i]["AirlineCode"], From: discountsData[i]["AirportCodeFrom"], To: discountsData[i]["AirportCodeTo"], FromDate: discountsData[i]["DateFrom"].split('T')[0], ToDate: discountsData[i]["DateTo"].split('T')[0], Discount: discountsData[i]["DiscountAmount"] });
                 }
 
                 try {
@@ -202,7 +204,11 @@
                             { data: "FromDate" },
                             { data: "ToDate" },
                             { data: "Discount" },
+
                             {
+                            
+
+                                
                                 render: function (data, type, row, meta) {
                                     let dataDiscount = "data-discountId='" + row.id + "'";
                                     editBtn = "<button type='button' class = 'editBtn btn btn-success editBTN' " + dataDiscount + "> Edit </button>";
@@ -349,7 +355,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav" id="menu">
-                    <a class="navbar-brand" href="./">Home Page</a>
+                    <a class="navbar-brand" href="./">Home</a>
                     <a id="ordersTab" class="navbar-brand" href="#">Orders</a>
                     <a id="discountsTab" class="navbar-brand" href="#">Discount</a>
                 </ul>
@@ -421,14 +427,18 @@
             <table id="discountsTable" class="display nowrap" style="width:100%">
                 <thead>
                     <input type="button" value="New Discount" class="btn btn-primary btn-md" id="newDiscountBTN" />
+                    <br />
+                    <br />
                     <tr>
-                        <th></th>
+
                         <th>Airline Company</th>
                         <th>From</th>
                         <th>To</th>
                         <th>From Date</th>
                         <th>To Date</th>
+
                         <th>Discount in %</th>
+                        <th> Manage </th>
 
                     </tr>
 

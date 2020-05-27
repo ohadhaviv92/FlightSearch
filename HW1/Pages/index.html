@@ -91,10 +91,7 @@
 
             ajaxCall("GET", "../api/user?username=" + localStorage.getItem('user'), "", function (user) {
 
-                if (user.UserName == null) {
-                     window.location.pathname = 'Pages/login.html'
 
-                }
 
                 str = "";
 
@@ -150,9 +147,9 @@
         }
 
         function loadFlights() {
-                let url = "https://api.skypicker.com/flights?flyFrom=TLV&to=LGW&dateFrom=05/06/2020&dateTo=12/06/2020&partner=picky"
+                //let url = "https://api.skypicker.com/flights?flyFrom=TLV&to=LGW&dateFrom=05/06/2020&dateTo=12/06/2020&partner=picky"
 
-           // let url = "https://api.skypicker.com/flights?flyFrom=" + $(".airportFrom").val() + "&to=" + $(".airportTo").val() + "&dateFrom=" + fixDate($("#fromDate").val()) + "&dateTo=" + fixDate($("#toDate").val()) + "&partner=picky"
+           let url = "https://api.skypicker.com/flights?flyFrom=" + $(".airportFrom").val() + "&to=" + $(".airportTo").val() + "&dateFrom=" + fixDate($("#fromDate").val()) + "&dateTo=" + fixDate($("#toDate").val()) + "&partner=picky"
             ajaxCall("GET", url, "", successAPICB, errFunc)
             return false;
         }
@@ -394,7 +391,8 @@
                 }
 
                 flightData.push({
-                    id: i, cityFrom: data['data'][i]['cityFrom'], cityTo: data['data'][i]['cityTo'], dTime: depTime.toLocaleDateString('en-US'), aTime: arrTime.toLocaleDateString('en-US'), route: conection, airline: data['data'][i]['route'][0]['airline'], price: data['data'][i]['price'] + " $", fromShort: data['data'][i]["flyFrom"], toShort: data['data'][i]["flyTo"]})
+                    id: i, cityFrom: data['data'][i]['cityFrom'], cityTo: data['data'][i]['cityTo'], dTime: depTime.toISOString().split('T')[0] + " " +depTime.toISOString().split('T')[1].split('.')[0] , aTime: arrTime.toISOString().split('T')[0] + " " +arrTime.toISOString().split('T')[1].split('.')[0] , route: conection, airline: data['data'][i]['route'][0]['airline'], price: data['data'][i]['price'] + " $", fromShort: data['data'][i]["flyFrom"], toShort: data['data'][i]["flyTo"]
+                })
             }
 
             
@@ -506,6 +504,9 @@
         </div>
     </nav>
 
+
+    <br />
+    <br />
 
     <div class="container">
     
@@ -623,13 +624,12 @@ These Terms will be governed by and interpreted in accordance with the laws of t
                 <form autocomplete="off" action="" id="srcBTN">
                     <table>
                         <tr><td><b>Flight from:</b></td></tr>
-                        <tr><td>  <input name="airPort" list="airportFrom" class="airportFrom formelement" />  <datalist id="airportFrom"></datalist></td><td><input type="date" id="fromDate" class="formelement" /></td></tr>
+                        <tr><td>  <input name="airPort" list="airportFrom" class="airportFrom formelement" required />  <datalist id="airportFrom"></datalist></td><td><input required="required" type="date" id="fromDate" class="formelement" /></td></tr>
                         <tr><td><b>To:</b></td></tr>
-                        <tr><td><input name="airPort" list="airportTo" class="airportTo formelement" />  <datalist id="airportTo"></datalist></td><td><input type="date" id="toDate" class="formelement" /></td></tr>
+                        <tr><td><input name="airPort" list="airportTo" class="airportTo formelement" required />  <datalist id="airportTo"></datalist></td><td><input required="required" type="date" id="toDate" class="formelement" /></td></tr>
                         <tr>
                             <td colspan="2">
-                                <button class="btn btn-primary" id="searchFlights">Find Flights!</button>
-                                <!--<button class="btn btn-primary" type="submit" id="searchFlights">Find Flights!</button>-->
+                                <button class="btn btn-primary" type="submit" id="searchFlights" disabled>Find Flights!</button>
 
                                 <button id="MyFlights" type="button" class="btn btn-primary" disabled>My Flights</button>
                                 <button id="GetAirports" type="button" class="btn btn-primary">Get Airports</button>
