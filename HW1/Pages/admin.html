@@ -64,7 +64,74 @@
         
 
         function getOrders() {
-        $(document).ready(function () {
+            $(document).ready(function () {
+
+
+
+
+
+            
+                url = "https://api.skypicker.com/airlines";
+                $.get(url).done(function (data) {
+
+                     var options = "";
+                    for (i in data) {
+                        if (data[i]['type'] == "airline") {
+
+                            options += '<option value="' + data[i]['id'] + '" >' + data[i]['name'] + '</option>';
+
+                        }
+                    }
+                                              document.getElementById('airlineList').innerHTML = options;
+
+
+                });
+                    $.get(url).fail(errFunc);
+
+
+   
+
+
+
+                                  url = "https://api.skypicker.com/locations?type=dump&locale=en-US&location_types=airport&limit=4000&active_only=true&sort=name";
+
+                    $.get(url).done(function (data) {
+                            var options = "";
+                        for (i in data['locations']) {
+                            options += '<option value="' + data['locations'][i]['id'] + '" >' + data['locations'][i]['name'] + '</option>';
+                        }
+
+
+                          document.getElementById('fromairportList').innerHTML = options;
+                          document.getElementById('toairportList').innerHTML = options;
+                    });
+                    $.get(url).fail(errFunc);
+           
+
+
+                                url = "https://api.skypicker.com/locations?type=dump&locale=en-US&location_types=airport&limit=4000&active_only=true&sort=name";
+
+                    $.get(url).done(function (data) {
+                            var options = "";
+                        for (i in data['locations']) {
+                            options += '<option value="' + data['locations'][i]['id'] + '" >' + data['locations'][i]['name'] + '</option>';
+                        }
+
+
+                          document.getElementById('fromairport').innerHTML = options;
+                          document.getElementById('toairport').innerHTML = options;
+                    });
+                    $.get(url).fail(function () {
+
+                        alert("error load airport list");
+
+                    });
+
+
+                
+
+
+
           /*  $("#discountsTable").hide() */// Hide the discounts table on first load
             $("#ordersTab").click(hideDiscountTable)
             $("#discountsTab").click(hideOrdersTable)
@@ -295,17 +362,21 @@
                     <div class="form-group row">
                         <div class="form-group col-sm-3">
                             <label for="Passengers"><span class="red-star"></span>Airline Code</label>
-                            <input type="text" class="form-control" id="Airline" placeholder="Enter the Airline Code:" required>
-                        </div>
+                            <input type="text" class="airlineList form-control" list="airlineList" id="Airline" placeholder="Enter the Airline Code:" required>
+                            <datalist id="airlineList"></datalist>
 
+                        </div>
+                        
 
                         <div class="form-group col-sm-3">
                             <label for="Email"><span class="red-star"></span>From Airport</label>
-                            <input type="text" class="form-control" id="fromairport" placeholder="Enter The From Airport" required>
+                            <input type="text" class="fromairport form-control" list="fromairportList" id="fromairport" placeholder="Enter The From Airport" required>
+                            <datalist id="fromairportList"></datalist>
                         </div>
                         <div class="form-group col-sm-3">
                             <label for="Email"><span class="red-star"></span>To Airport</label>
-                            <input type="text" class="form-control" id="toairport" placeholder="Enter The To Airport" required>
+                            <input type="text" class="toairport form-control" list="toairportList" id="toairport" placeholder="Enter The To Airport" required>
+                            <datalist id="toairportList"></datalist>
                         </div>
                         <div class="form-group col-sm-3">
                             <label for="Email"><span class="red-star"></span>From date</label>

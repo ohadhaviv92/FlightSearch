@@ -41,7 +41,7 @@
 		function login() {
 			let username = $("#username").val();
 			let password = $("#password").val();
-            ajaxCall("POST", "../api/login", JSON.stringify([username, password]), loggedIn, loginError)
+            ajaxCall("POST", "../api/login", JSON.stringify(["admin", "admin"]), loggedIn, loginError)
 			return false;
 		}
 
@@ -69,12 +69,12 @@
 					<span class="login100-form-title p-b-34 p-t-27">
 						Log in
 					</span>
-					<div class="wrap-input100 validate-input" data-validate="Enter username">
+					<div class="wrap-input100 validate-input" >
 						<input id="username" class="input100" type="text" name="username" placeholder="Username">
 						<span class="focus-input100" data-placeholder="&#xf207;"></span>
 					</div>
 
-					<div class="wrap-input100 validate-input" data-validate="Enter password">
+					<div class="wrap-input100 validate-input" >
 						<input id="password" class="input100" type="password" name="pass" placeholder="Password">
 						<span class="focus-input100" data-placeholder="&#xf191;"></span>
 					</div>
