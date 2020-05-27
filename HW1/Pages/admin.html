@@ -251,7 +251,7 @@
 
         function deleteDiscount(row) {
             ajaxCall('DELETE', "../api/discount", row, deleteSuccess, errFunc)
-            window.location.pathname = 'Pages/admin.html'
+            window.location.pathname += 'Pages/admin.html'
 
         }
 

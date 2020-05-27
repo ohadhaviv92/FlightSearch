@@ -48,8 +48,8 @@
 		function loggedIn(data) {
 			if (data != null) {
                 console.log("user");
-                localStorage.setItem('user', data);
-                window.location.pathname = 'Pages/index.html'
+				localStorage.setItem('user', data);
+				window.location.pathname = window.location.pathname.replace('login.html','index.html')
 			}
 			else
 				console.log("no user")
