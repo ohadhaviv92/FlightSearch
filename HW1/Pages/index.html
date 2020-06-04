@@ -74,8 +74,8 @@
             $("#srcBTN").submit(loadFlights);
             $("#MyFlights").click(MyFlights)
             $("#fromDate").min = new Date().toISOString().split("T")[0];
-            $('#GetAirports').click(loadAirports);
-            $('#GetAirLines').click(loadAirLines);
+            loadAirports();
+            loadAirLines();
             $('#GetAirports').prop('disabled', true); //Disabled the btn
             $("#editDiv").hide() //Hide the buy flight form
             $("#terms").prop("checked", false); // Make the check box unchecked on first seen
@@ -203,10 +203,11 @@
                 }
 
                 ajaxCall('POST', "../api/Leg", JSON.stringify(l), function () {
-                    swal("Flight Has Been Added!", "", "success");
-                    $('#MyFlights').prop('disabled', false); //Disabled the btn
+                    swal("Flight Has Been ordered!", "", "success");
+                    
                     $('#editDiv').hide();
-                    $('#flightTable').show();
+                     $('#flightTable').parents('div.dataTables_wrapper').first().show();
+                    
                 }, errFunc)
             }
 
@@ -217,6 +218,7 @@
             useremail = $("#email").val()
 
             ajaxCall("POST", "../api/order", JSON.stringify([flightId, passengersNames, useremail]), successMyFlights, errFunc)
+            
             return false;
         }
 
@@ -629,11 +631,10 @@ These Terms will be governed by and interpreted in accordance with the laws of t
                         <tr><td><input name="airPort" list="airportTo" class="airportTo formelement" required />  <datalist id="airportTo"></datalist></td><td><input required="required" type="date" id="toDate" class="formelement" /></td></tr>
                         <tr>
                             <td colspan="2">
-                                <button class="btn btn-primary" type="submit" id="searchFlights" disabled>Find Flights!</button>
+                                <button class="btn btn-primary" type="submit" id="searchFlights" >Find Flights!</button>
 
-                                <button id="MyFlights" type="button" class="btn btn-primary" disabled>My Flights</button>
-                                <button id="GetAirports" type="button" class="btn btn-primary">Get Airports</button>
-                                <button id="GetAirLines" type="button" class="btn btn-primary">Get AirLines</button>
+                               
+
                             </td> <!--Type should be submit!-->
 
                         </tr>
