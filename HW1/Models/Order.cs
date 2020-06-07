@@ -11,7 +11,10 @@ namespace HW1.Models
         
         string passengersNames;
         string email;
-        
+        DateTime orderDate;
+
+
+
         Flight flight;
 
 
@@ -21,19 +24,19 @@ namespace HW1.Models
           
         }
 
-        public Order( string passengersNames, string email, Flight flight)
+        public Order( string passengersNames, string email, Flight flight,DateTime orderDate)
         {
             
             this.passengersNames = passengersNames;
             this.email = email;
-            
+            this.orderDate = orderDate;
             this.flight = flight;
         }
 
        
         public string PassengersNames { get => passengersNames; set => passengersNames = value; }
         public string Email { get => email; set => email = value; }
-        
+        public DateTime OrderDate { get => orderDate; set => orderDate = value; }
         public Flight Flight { get => flight; set => flight = value; }
 
         public List<Order> getOrders()

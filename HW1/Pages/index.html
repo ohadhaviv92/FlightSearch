@@ -216,8 +216,10 @@
             flightId = dataArr['data'][parseInt(row)]['id']
             passengersNames = $("#Passengers").val()
             useremail = $("#email").val()
-
-            ajaxCall("POST", "../api/order", JSON.stringify([flightId, passengersNames, useremail]), successMyFlights, errFunc)
+            orderDate = new Date()
+            var date = orderDate.getFullYear() + '-' + orderDate.getDate()+ '-' + (orderDate.getMonth() + 1);
+            
+            ajaxCall("POST", "../api/order", JSON.stringify([flightId, passengersNames, useremail, orderDate]), successMyFlights, errFunc)
             
             return false;
         }

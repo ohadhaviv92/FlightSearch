@@ -218,7 +218,7 @@ namespace HW1.Models
                 {   // Read till the end of the data into a row
                     Order ord = new Order();
                     ord.Email= (string)dr["userEmail"];
-             
+                    ord.OrderDate = (DateTime)dr["orderDate"];
                  
                     Flight f= new Flight((string)dr["flightId"], (string)dr["AirportFrom"], (string)dr["AirportTo"], (DateTime)dr["DepTime"], (DateTime)dr["ArriveTime"], (string)dr["Duration"], float.Parse(dr["Price"].ToString()), (int)dr["LegsNumber"]);
                     ord.PassengersNames= (string)dr["passengersNames"];
@@ -654,8 +654,8 @@ namespace HW1.Models
 
             StringBuilder sb = new StringBuilder();
             //use a string builder to create the dynamic string
-            sb.AppendFormat("Values('{0}', '{1}', '{2}')", order[0], order[1],order[2]);
-            String prefix = "INSERT INTO orders " + "(flightid, passengersNames,userEmail) ";
+            sb.AppendFormat("Values('{0}', '{1}', '{2}','{3}')", order[0], order[1],order[2], order[3]);
+            String prefix = "INSERT INTO orders " + "(flightid, passengersNames,userEmail,orderDate) ";
             command = prefix + sb.ToString();
             return command;
         }

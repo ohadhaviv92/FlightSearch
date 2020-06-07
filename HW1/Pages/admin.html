@@ -149,7 +149,7 @@
                 console.log(orders)
                 orsders2 = [];
                 for (var i in orders) {
-                    orsders2.push({ Email: orders[i]["Email"], PassengersNames: orders[i]["PassengersNames"], From: orders[i]["Flight"]["AirportFrom1"], To: orders[i]["Flight"]["AirportTo1"], Departuretime: orders[i]["Flight"]["DepTime1"].split('T')[0] + " " +orders[i]["Flight"]["DepTime1"].split('T')[1] , Arrivaltime:orders[i]["Flight"]["ArriveTime1"].split('T')[0] + " " +orders[i]["Flight"]["ArriveTime1"].split('T')[1], Duartion: calculateDuartion(orders[i]["Flight"]["Duration1"]), StopsNumbers: orders[i]["Flight"]["LegsNumber1"], Price: orders[i]["Flight"]["Price"] +" $"});
+                    orsders2.push({ Email: orders[i]["Email"], PassengersNames: orders[i]["PassengersNames"], From: orders[i]["Flight"]["AirportFrom1"], To: orders[i]["Flight"]["AirportTo1"], Departuretime: orders[i]["Flight"]["DepTime1"].split('T')[0] + " " + orders[i]["Flight"]["DepTime1"].split('T')[1], Arrivaltime: orders[i]["Flight"]["ArriveTime1"].split('T')[0] + " " + orders[i]["Flight"]["ArriveTime1"].split('T')[1], Duartion: calculateDuartion(orders[i]["Flight"]["Duration1"]), StopsNumbers: orders[i]["Flight"]["LegsNumber1"], Price: orders[i]["Flight"]["Price"] + " $", OrderDate: orders[i]["OrderDate"].split('T')[0] + "  " + orders[i]["OrderDate"].split('T')[1] });
                 }
                 
                  try {
@@ -167,6 +167,7 @@
                         { data: "Duartion" },
                         { data: "StopsNumbers" },
                         { data: "Price" },
+                        { data: "OrderDate" },
 
                     ],
                 });
@@ -418,6 +419,7 @@
                         <th>Duration</th>
                         <th>Stops Numbers</th>
                         <th>Price</th>
+                        <th>Order Date</th>
 
                     </tr>
 

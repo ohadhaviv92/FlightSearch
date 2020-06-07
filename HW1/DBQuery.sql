@@ -3,7 +3,7 @@ drop table MyFlights_CS
 drop table Airports_CS
 drop table Airlines_CS
 
-s
+
 
 CREATE table Airlines_CS(
 AirlineCode nvarchar(90) primary key,
@@ -48,6 +48,7 @@ Create Table orders
 flightId nvarchar(500),
 passengersNames nvarchar(100),
 userEmail nvarchar(70),
+orderDate datetime,
 
 FOREIGN KEY (flightId) REFERENCES MyFlights_CS(FlightPath),
 primary key(userEmail,flightId)
@@ -91,8 +92,14 @@ FOREIGN KEY (AirlineCode) REFERENCES Airlines_CS(AirlineCode),
 
 )
 
+UPDATE discounts
+SET col1 = constant_value1 , col2 =  constant_value2 , colN = constant_valueN
+
 select * from Airlines_CS
 select * from Airports_CS
 select * from MyFlights_CS
 select * from Legs_CS
 select * from discounts
+select * from orders
+
+UPDATE discounts set AirlineCode = 'LI', AirportCodeFrom = 'SYD', AirportCodeTo = 'TLV', DateFrom = '05/02/2020', DateTo='05/04/2020', discount = 97 where id = 0
