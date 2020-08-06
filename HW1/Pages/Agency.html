@@ -93,7 +93,7 @@
 
              }
 
-           
+             
             document.getElementById('airportFrom').innerHTML = options;
             
     
@@ -107,7 +107,16 @@
             console.log($(".airportFrom").attr("lat"));
         }
 
-   
+        $(".airportFrom").click(function () {
+            var val = $('#item').val()
+            var xyz = $('#items option').filter(function () {
+                return this.value == val;
+            }).data('xyz');
+            /* if value doesn't match an option, xyz will be undefined*/
+            var msg = xyz ? 'xyz=' + xyz : 'No Match';
+            console.log(msg)
+
+        })
     </script>
 
 
@@ -138,7 +147,7 @@
     <div>
         <b>Flight from:</b>
         <input name="airPort" list="airportFrom" class="airportFrom formelement" required />  <datalist id="airportFrom"></datalist>
-        <button onclick="a()"> dfg</button>
-
+        <button id="searchDeals"> dfg</button>
+        </div>
 </body>
 </html>
