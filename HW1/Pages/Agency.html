@@ -99,28 +99,27 @@
             
     
 
-
-
-
         }
 
         function a (){
             console.log('long' + airportArr[$(".airportFrom").val()][0] +'lat:+' +airportArr[$(".airportFrom").val()][1]);
         }
 
-        $(".airportFrom").click(function () {
-            var val = $('#item').val()
-            var xyz = $('#items option').filter(function () {
-                return this.value == val;
-            }).data('xyz');
-            /* if value doesn't match an option, xyz will be undefined*/
-            var msg = xyz ? 'xyz=' + xyz : 'No Match';
-            console.log(msg)
+        function loadTrips() {
+            let url = "https://www.triposo.com/api/20200405/poi.json?account=GHJA9MHT&token=hirq8t8e96qfgwt9p6vxx8i0nfhhicjj&tag_labels=!hotels&distance=<10000&count=100&fields=id,name,score,intro,tag_labels,images&order_by=distance&tag_labels=!lunch&tag_labels=architectural_style&annotate=distance:" + airportArr[$(".airportFrom").val()][1] + "," + airportArr[$(".airportFrom").val()][0]
+            console.log(url)
 
-        })
-    </script>
+            ajaxCall("GET", url, "", successAPICB, errFunc)
+            return false;
+        }
 
-
+        function successAPICB(data) {
+            console.log("k")
+        }
+        function errFunc(err) {
+            console.log("Error: " + err);
+        }
+</script>
 </head>
 <body>
     <div class="container-fluid">
@@ -148,7 +147,7 @@
     
         <b>Flight from:</b>
         <input name="airPort" list="airportFrom" class="airportFrom formelement" required />  <datalist id="airportFrom"></datalist>
-        <button id="searchDeals"> dfg</button>
+    <button onclick="loadTrips()"> dfg</button>
         </div>
 </body>
 </html>
