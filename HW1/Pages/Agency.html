@@ -50,25 +50,61 @@
     <link href="Style.css" rel="stylesheet" />
 
     <script>
+
         $(document).ready(function () {
 
+            loadAirports();
+        });
 
-            url = "https://api.skypicker.com/airlines";
-            $.get(url).done(function (data) {
 
-                var options = "";
-                for (i in data) {
-                    if (data[i]['type'] == "airline") {
+         function loadAirports() { // Load the airports list from API
 
-                        options += '<option value="' + data[i]['id'] + '" >' + data[i]['name'] + '</option>';
+            url = "https://api.skypicker.com/locations?type=dump&locale=en-US&location_types=airport&limit=4000&active_only=true&sort=name";
 
-                    }
-                }
-                document.getElementById('airport').innerHTML = options;
-
-            });
+            $.get(url).done(successCB);
             $.get(url).fail(errFunc);
+        }
 
+
+            function successCB(data) {
+            airportList = data;
+            ajaxCall("GET", "../api/Airport", "", SCGetAirportTable, errFunc);
+
+
+
+        }
+
+
+         function errFunc(err) {
+            swal("Error: " + err);
+        }
+
+
+         function SCGetAirportTable(data) {
+
+
+            if (data != null) {
+                flag = 1;
+            }
+
+            var options = "";
+             for (i in airportList['locations']) {
+                 options += '<option lat='+airportList['locations'][i]['location']['lat']+' long='+airportList['locations'][i]['location']['lon'] + ' value="' + airportList['locations'][i]['id'] +  '" >' + airportList['locations'][i]['city']['name'] + '</option>';
+
+             }
+
+           
+            document.getElementById('airportFrom').innerHTML = options;
+            
+    
+
+
+
+
+        }
+
+        function a (){
+            console.log($(".airportFrom").attr("lat"));
         }
 
    
@@ -100,9 +136,9 @@
         </nav>
     </div>
     <div>
-        <input name="airPort" list="airport" class="airportFrom formelement" required />
-    </div>
-
+        <b>Flight from:</b>
+        <input name="airPort" list="airportFrom" class="airportFrom formelement" required />  <datalist id="airportFrom"></datalist>
+        <button onclick="a()"> dfg</button>
 
 </body>
 </html>
