@@ -1,0 +1,3 @@
+&account=GHJA9MHT&token=hirq8t8e96qfgwt9p6vxx8i0nfhhicjj
+
+https://www.triposo.com/api/20180206/poi.json?annotate=distance:52.308056,4.764167&location_id=Amsterdam&tag_labels=sightseeing&distance=<1200&fields=id,name,score,intro,tag_labels&order_by=-score&account=GHJA9MHT&token=hirq8t8e96qfgwt9p6vxx8i0nfhhicjj
