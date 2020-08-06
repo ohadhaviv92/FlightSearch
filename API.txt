@@ -1,3 +1,7 @@
 &account=GHJA9MHT&token=hirq8t8e96qfgwt9p6vxx8i0nfhhicjj
 
-https://www.triposo.com/api/20180206/poi.json?annotate=distance:52.308056,4.764167&location_id=Amsterdam&tag_labels=sightseeing&distance=<1200&fields=id,name,score,intro,tag_labels&order_by=-score&account=GHJA9MHT&token=hirq8t8e96qfgwt9p6vxx8i0nfhhicjj
+https://www.triposo.com/api/20180206/poi.json?annotate=distance:52.308056,4.764167&location_id=Amsterdam&tag_labels=sightseeing&distance=<1200&fields=id,name,score,intro,tag_labels&order_by=score&account=GHJA9MHT&token=hirq8t8e96qfgwt9p6vxx8i0nfhhicjj
+
+
+
+https://www.triposo.com/api/20200405/poi.json?account=GHJA9MHT&token=hirq8t8e96qfgwt9p6vxx8i0nfhhicjj&annotate=distance:13.7319,100.5292&tag_labels=!hotels&distance=<5000&count=100&fields=id,name,score,intro,tag_labels,images&order_by=distance&tag_labels=!lunch&tag_labels=architectural_style
