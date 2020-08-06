@@ -1,0 +1,239 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+    <title></title>
+
+    <!--SCRIPTS-->
+
+    <script src="../Scripts/autoComplte.js"></script>
+    <script src="../Scripts/ajaxCalls.js"></script>
+    <script src="../Scripts/dateFunctions.js"></script>
+
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+
+
+
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link href="Style.css" rel="stylesheet" />
+
+
+    <!--//data table-->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css">
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
+
+
+
+
+
+    <script src="../Scripts/ajaxCalls.js"></script>
+    <script src="../Scripts/dateFunctions.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+
+    <!--CSS-->
+    <link href="Style.css" rel="stylesheet" />
+
+    <script>
+        mode = ""
+        currentRow=0
+        discounts = []
+        getOrders()
+        getDiscounts()
+        hideDiscountTable()
+
+
+        function getOrders() {
+            $(document).ready(function () {
+
+
+                url = "https://api.skypicker.com/airlines";
+                $.get(url).done(function (data) {
+
+                     var options = "";
+                    for (i in data) {
+                        if (data[i]['type'] == "airline") {
+
+                            options += '<option value="' + data[i]['id'] + '" >' + data[i]['name'] + '</option>';
+
+                        }
+                    }
+                   document.getElementById('airlineList').innerHTML = options;
+
+                });
+                    $.get(url).fail(errFunc);
+
+
+                     url = "https://api.skypicker.com/locations?type=dump&locale=en-US&location_types=airport&limit=4000&active_only=true&sort=name";
+
+                    $.get(url).done(function (data) {
+                            var options = "";
+                        for (i in data['locations']) {
+                            options += '<option value="' + data['locations'][i]['id'] + '" >' + data['locations'][i]['name'] + '</option>';
+                        }
+
+
+                          document.getElementById('fromairportList').innerHTML = options;
+                          document.getElementById('toairportList').innerHTML = options;
+                    });
+                    $.get(url).fail(errFunc);
+
+
+
+                                url = "https://api.skypicker.com/locations?type=dump&locale=en-US&location_types=airport&limit=4000&active_only=true&sort=name";
+
+                    $.get(url).done(function (data) {
+                            var options = "";
+                        for (i in data['locations']) {
+                            options += '<option value="' + data['locations'][i]['id'] + '" >' + data['locations'][i]['name'] + '</option>';
+                        }
+
+
+                          document.getElementById('fromairport').innerHTML = options;
+                          document.getElementById('toairport').innerHTML = options;
+                    });
+                    $.get(url).fail(function () {
+
+                        alert("error load airport list");
+
+                    });
+
+
+
+                $("#cancelSaveBTN").click(function () {
+                    $("#editDiv").hide();
+                })
+
+
+          /*  $("#discountsTable").hide() */// Hide the discounts table on first load
+            $("#ordersTab").click(hideDiscountTable)
+            $("#discountsTab").click(hideOrdersTable)
+            $("#addDiscountForm").submit(chooseAddOrUpdate)
+            $("#newDiscountBTN").click(function () {
+                $("#editDiv").show();
+                mode="add"
+            });
+            $("#editDiv").hide();
+
+            ajaxCall("GET", "../api/order", "", function (orders) {
+
+                console.log(orders)
+                orsders2 = [];
+                for (var i in orders) {
+                    orsders2.push({ Email: orders[i]["Email"], PassengersNames: orders[i]["PassengersNames"], From: orders[i]["Flight"]["AirportFrom1"], To: orders[i]["Flight"]["AirportTo1"], Departuretime: orders[i]["Flight"]["DepTime1"].split('T')[0] + " " + orders[i]["Flight"]["DepTime1"].split('T')[1], Arrivaltime: orders[i]["Flight"]["ArriveTime1"].split('T')[0] + " " + orders[i]["Flight"]["ArriveTime1"].split('T')[1], Duartion: calculateDuartion(orders[i]["Flight"]["Duration1"]), StopsNumbers: orders[i]["Flight"]["LegsNumber1"], Price: orders[i]["Flight"]["Price"] + " $", OrderDate: orders[i]["OrderDate"].split('T')[0] + "  " + orders[i]["OrderDate"].split('T')[1] });
+                }
+
+                 try {
+
+                ordersTable = $('#flightTable').DataTable({
+                    data: orsders2,
+                    pageLength: 5,
+                    columns: [
+                        { data: "Email" },
+                        { data: "PassengersNames" },
+                        { data: "From" },
+                        { data: "To" },
+                        { data: "Departuretime" },
+                        { data: "Arrivaltime" },
+                        { data: "Duartion" },
+                        { data: "StopsNumbers" },
+                        { data: "Price" },
+                        { data: "OrderDate" },
+
+                    ],
+                });
+
+            }
+
+            catch (err) {
+                alert(err);
+            }
+
+            }, errFunc);
+        })
+     }
+
+
+
+
+           function errFunc(err) {
+                swal("Error: " + err);
+        }
+
+
+
+
+
+        function addSuccess(data){
+            console.log("added")
+
+        }
+
+        function deleteSuccess(data) {
+            console.log('good')
+            window.location.pathname = window.location.pathname
+
+
+
+        }
+
+        function redrawTable(tbl, data) {
+            tbl.clear();
+            for (var i = 0; i < data.length; i++) {
+                tbl.row.add(data[i]);
+            }
+            tbl.draw();
+        }
+
+    </script>
+
+
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col header">
+                <img src="../images/—Pngtree—blue and red airplane vector_4235031.png" />
+                <h1>Flight.com</h1>
+            </div>
+        </div>
+
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav" id="menu">
+                    <a class="navbar-brand" href="./">Home</a>
+                    <a id="ordersTab" class="navbar-brand" href="#">Orders</a>
+                    <a id="discountsTab" class="navbar-brand" href="#">Discount</a>
+                </ul>
+            </div>
+        </nav>
+    </div>
+
+
+
+</body>
+</html>
