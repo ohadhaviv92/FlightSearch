@@ -41,11 +41,6 @@
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
-
-
-
-
-
     <script src="../Scripts/ajaxCalls.js"></script>
     <script src="../Scripts/dateFunctions.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
@@ -55,156 +50,28 @@
     <link href="Style.css" rel="stylesheet" />
 
     <script>
-        mode = ""
-        currentRow=0
-        discounts = []
-        getOrders()
-        getDiscounts()
-        hideDiscountTable()
+        $(document).ready(function () {
 
 
-        function getOrders() {
-            $(document).ready(function () {
+            url = "https://api.skypicker.com/airlines";
+            $.get(url).done(function (data) {
 
+                var options = "";
+                for (i in data) {
+                    if (data[i]['type'] == "airline") {
 
-                url = "https://api.skypicker.com/airlines";
-                $.get(url).done(function (data) {
+                        options += '<option value="' + data[i]['id'] + '" >' + data[i]['name'] + '</option>';
 
-                     var options = "";
-                    for (i in data) {
-                        if (data[i]['type'] == "airline") {
-
-                            options += '<option value="' + data[i]['id'] + '" >' + data[i]['name'] + '</option>';
-
-                        }
                     }
-                   document.getElementById('airlineList').innerHTML = options;
-
-                });
-                    $.get(url).fail(errFunc);
-
-
-                     url = "https://api.skypicker.com/locations?type=dump&locale=en-US&location_types=airport&limit=4000&active_only=true&sort=name";
-
-                    $.get(url).done(function (data) {
-                            var options = "";
-                        for (i in data['locations']) {
-                            options += '<option value="' + data['locations'][i]['id'] + '" >' + data['locations'][i]['name'] + '</option>';
-                        }
-
-
-                          document.getElementById('fromairportList').innerHTML = options;
-                          document.getElementById('toairportList').innerHTML = options;
-                    });
-                    $.get(url).fail(errFunc);
-
-
-
-                                url = "https://api.skypicker.com/locations?type=dump&locale=en-US&location_types=airport&limit=4000&active_only=true&sort=name";
-
-                    $.get(url).done(function (data) {
-                            var options = "";
-                        for (i in data['locations']) {
-                            options += '<option value="' + data['locations'][i]['id'] + '" >' + data['locations'][i]['name'] + '</option>';
-                        }
-
-
-                          document.getElementById('fromairport').innerHTML = options;
-                          document.getElementById('toairport').innerHTML = options;
-                    });
-                    $.get(url).fail(function () {
-
-                        alert("error load airport list");
-
-                    });
-
-
-
-                $("#cancelSaveBTN").click(function () {
-                    $("#editDiv").hide();
-                })
-
-
-          /*  $("#discountsTable").hide() */// Hide the discounts table on first load
-            $("#ordersTab").click(hideDiscountTable)
-            $("#discountsTab").click(hideOrdersTable)
-            $("#addDiscountForm").submit(chooseAddOrUpdate)
-            $("#newDiscountBTN").click(function () {
-                $("#editDiv").show();
-                mode="add"
-            });
-            $("#editDiv").hide();
-
-            ajaxCall("GET", "../api/order", "", function (orders) {
-
-                console.log(orders)
-                orsders2 = [];
-                for (var i in orders) {
-                    orsders2.push({ Email: orders[i]["Email"], PassengersNames: orders[i]["PassengersNames"], From: orders[i]["Flight"]["AirportFrom1"], To: orders[i]["Flight"]["AirportTo1"], Departuretime: orders[i]["Flight"]["DepTime1"].split('T')[0] + " " + orders[i]["Flight"]["DepTime1"].split('T')[1], Arrivaltime: orders[i]["Flight"]["ArriveTime1"].split('T')[0] + " " + orders[i]["Flight"]["ArriveTime1"].split('T')[1], Duartion: calculateDuartion(orders[i]["Flight"]["Duration1"]), StopsNumbers: orders[i]["Flight"]["LegsNumber1"], Price: orders[i]["Flight"]["Price"] + " $", OrderDate: orders[i]["OrderDate"].split('T')[0] + "  " + orders[i]["OrderDate"].split('T')[1] });
                 }
+                document.getElementById('airport').innerHTML = options;
 
-                 try {
-
-                ordersTable = $('#flightTable').DataTable({
-                    data: orsders2,
-                    pageLength: 5,
-                    columns: [
-                        { data: "Email" },
-                        { data: "PassengersNames" },
-                        { data: "From" },
-                        { data: "To" },
-                        { data: "Departuretime" },
-                        { data: "Arrivaltime" },
-                        { data: "Duartion" },
-                        { data: "StopsNumbers" },
-                        { data: "Price" },
-                        { data: "OrderDate" },
-
-                    ],
-                });
-
-            }
-
-            catch (err) {
-                alert(err);
-            }
-
-            }, errFunc);
-        })
-     }
-
-
-
-
-           function errFunc(err) {
-                swal("Error: " + err);
-        }
-
-
-
-
-
-        function addSuccess(data){
-            console.log("added")
+            });
+            $.get(url).fail(errFunc);
 
         }
 
-        function deleteSuccess(data) {
-            console.log('good')
-            window.location.pathname = window.location.pathname
-
-
-
-        }
-
-        function redrawTable(tbl, data) {
-            tbl.clear();
-            for (var i = 0; i < data.length; i++) {
-                tbl.row.add(data[i]);
-            }
-            tbl.draw();
-        }
-
+   
     </script>
 
 
@@ -232,7 +99,9 @@
             </div>
         </nav>
     </div>
-
+    <div>
+        <input name="airPort" list="airport" class="airportFrom formelement" required />
+    </div>
 
 
 </body>
