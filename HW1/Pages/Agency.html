@@ -50,7 +50,8 @@
     <link href="Style.css" rel="stylesheet" />
 
     <script>
-
+        airportList = [];
+        airportArr=[];
         $(document).ready(function () {
 
             loadAirports();
@@ -89,8 +90,8 @@
 
             var options = "";
              for (i in airportList['locations']) {
-                 options += '<option lat='+airportList['locations'][i]['location']['lat']+' long='+airportList['locations'][i]['location']['lon'] + ' value="' + airportList['locations'][i]['id'] +  '" >' + airportList['locations'][i]['city']['name'] + '</option>';
-
+                 options += '<option  value="' + airportList['locations'][i]['id'] +  '" >' + airportList['locations'][i]['city']['name'] + '</option>';
+                 airportArr[airportList['locations'][i]['id']] = [ airportList['locations'][i]['location']['lon'],airportList['locations'][i]['location']['lat'] ];
              }
 
            
@@ -104,7 +105,7 @@
         }
 
         function a (){
-            console.log($(".airportFrom").attr("lat"));
+            console.log('long' + airportArr[$(".airportFrom").val()][0] +'lat:+' +airportArr[$(".airportFrom").val()][1]);
         }
 
    
@@ -135,7 +136,7 @@
             </div>
         </nav>
     </div>
-    <div>
+    
         <b>Flight from:</b>
         <input name="airPort" list="airportFrom" class="airportFrom formelement" required />  <datalist id="airportFrom"></datalist>
         <button onclick="a()"> dfg</button>
