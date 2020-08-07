@@ -115,37 +115,69 @@
             $.get(url).done(successAPICB);
             $.get(url).fail(errFunc);
         }
-
+        str = "";
         function successAPICB(data) {
             console.log(data)
-            console.log(data['results'][0]['name'])
+            document.getElementById('ph').innerHTML = "";
+            str += "<div class='container-fluid'>";
             for (var i = 0; i < data['results'].length; i++) {
-                currentTrips.push({
-                    name: data['results'][i]['name'], intro: data['results'][i]['intro'], distance: data['results'][i]['distance'], score: data['results'][i]['score']
-                })
+                if (i % 4 == 0) {
+                    str += '<div class="row">';
+                } 
+                str+='<div class="col-sm-3">'
+                str += " <div class='card' style='width:18rem;'>";
+                 if (data['results'][i]['images'][0]== undefined)
+                str += "<img src='https://dilavr.com.ua/image/catalog/empty-img.png' class='card-img-top' alt='...' style='width:100%;height:215px;'> ";
+                else {
+                    
+                     str += "<img src='" + data['results'][i]['images'][0]['source_url'] + "' class='card-img-top' alt='...' style='width:100%;height:215px;'>";
+                }
+               
+                str += "<div class='card-body'>";
+                str += "<h5 class='card-title'>"+data['results'][i]['name']+"</h5>";
+                str+=" <p class='card-text' style='width:250px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'>"+data['results'][i]['intro']+"</p>"
+                str+=" <h6 class='card-title'>score: "+data['results'][i]['score']+"</p>"
+                str += " <a href='#' class='btn btn-primary'>Add</a>"
+                
+
+                str += "</div></div></div>";
+                       if ((i+1) % 4 == 0) {
+                    str += '</div>';
+                } 
             }
-            try {
 
-                discountTable = $('#tripsTable').DataTable({
-                    data: currentTrips,
-                    pageLength: 10,
+            str += '</div>';
+            
 
-                    columns: [
-
-                        { data: "name" },
-                        { data: "intro" },
-                        { data: "distance" },
-                        { data: "score" },
-
-                    ],
-                });
-
-            }
-            catch (err) {
-                alert(err);
-            }
-            $('#tripsTable').show();
+            document.getElementById('ph').innerHTML = str;
         }
+
+        //        currentTrips.push({
+        //            name: data['results'][i]['name'], intro: data['results'][i]['intro'], distance: data['results'][i]['distance'], score: data['results'][i]['score']
+        //        })
+        //    }
+        //    try {
+
+        //        discountTable = $('#tripsTable').DataTable({
+        //            data: currentTrips,
+        //            pageLength: 10,
+
+        //            columns: [
+
+        //                { data: "name" },
+        //                { data: "intro" },
+        //                { data: "distance" },
+        //                { data: "score" },
+
+        //            ],
+        //        });
+
+        //    }
+        //    catch (err) {
+        //        alert(err);
+        //    }
+        //    $('#tripsTable').show();
+        //}
 
 
 
@@ -179,14 +211,26 @@
             </div>
         </nav>
     
-    <div class="row">
-        <div class="col">
-            <b>Flight from:</b>
-            <input name="airPort" list="airportFrom" class="airportFrom formelement" required />  <datalist id="airportFrom"></datalist>
-            <button onclick="loadTrips()"> dfg</button><br />
+        <div class="row">
+            <div class="col">
+                <b>choose airport:</b>
+                <input name="airPort" list="airportFrom" class="airportFrom formelement" required />  <datalist id="airportFrom"></datalist>
+
+
+            </div>
+            <div class="col">
+                <b>distance:</b>
+                <input type="text" id="distance" />
+                <button onclick="loadTrips()"> search</button>
+
+            </div>
+           
         </div>
-    </div>
-    <div class="row">
+
+
+
+        <div id="ph"></div>
+    <!--<div class="row">
         <div class="col">
             <table id="tripsTable" class="display nowrap" style="width:100%">
                 <thead>
@@ -199,7 +243,7 @@
                 </thead>
             </table>
         </div>
-    </div>
+    </div>-->
     </div>
 </body>
 </html>
