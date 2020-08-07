@@ -50,15 +50,16 @@
     <link href="Style.css" rel="stylesheet" />
 
     <script>
+        currentTrips = []
         airportList = [];
-        airportArr=[];
+        airportArr = [];
         $(document).ready(function () {
 
             loadAirports();
         });
 
 
-         function loadAirports() { // Load the airports list from API
+        function loadAirports() { // Load the airports list from API
 
             url = "https://api.skypicker.com/locations?type=dump&locale=en-US&location_types=airport&limit=4000&active_only=true&sort=name";
 
@@ -67,7 +68,7 @@
         }
 
 
-            function successCB(data) {
+        function successCB(data) {
             airportList = data;
             ajaxCall("GET", "../api/Airport", "", SCGetAirportTable, errFunc);
 
@@ -76,12 +77,12 @@
         }
 
 
-         function errFunc(err) {
+        function errFunc(err) {
             swal("Error: " + err);
         }
 
 
-         function SCGetAirportTable(data) {
+        function SCGetAirportTable(data) {
 
 
             if (data != null) {
@@ -89,27 +90,27 @@
             }
 
             var options = "";
-             for (i in airportList['locations']) {
-                 options += '<option  value="' + airportList['locations'][i]['id'] +  '" >' + airportList['locations'][i]['city']['name'] + '</option>';
-                 airportArr[airportList['locations'][i]['id']] = [ airportList['locations'][i]['location']['lon'],airportList['locations'][i]['location']['lat'],airportList['locations'][i]['city']['name'] ];
-             }
+            for (i in airportList['locations']) {
+                options += '<option  value="' + airportList['locations'][i]['id'] + '" >' + airportList['locations'][i]['city']['name'] + '</option>';
+                airportArr[airportList['locations'][i]['id']] = [airportList['locations'][i]['location']['lon'], airportList['locations'][i]['location']['lat'], airportList['locations'][i]['city']['name']];
+            }
 
-             
+
             document.getElementById('airportFrom').innerHTML = options;
-            
-    
+
+
 
         }
 
-        function a (){
-            console.log('long' + airportArr[$(".airportFrom").val()][0] +'lat:+' +airportArr[$(".airportFrom").val()][1]);
+        function a() {
+            console.log('long' + airportArr[$(".airportFrom").val()][0] + 'lat:+' + airportArr[$(".airportFrom").val()][1]);
         }
 
         function loadTrips() {
-            let url = "https://www.triposo.com/api/20200405/poi.json?account=GHJA9MHT&token=hirq8t8e96qfgwt9p6vxx8i0nfhhicjj&tag_labels=!hotels&distance=<100000&count=100&fields=id,name,score,intro,tag_labels,images,opening_hours&order_by=distance&tag_labels=!lunch&tag_labels=architectural_style&annotate=distance:" + airportArr[$(".airportFrom").val()][1] + "," + airportArr[$(".airportFrom").val()][0]
+            let url = "https://www.triposo.com/api/20200405/poi.json?account=GHJA9MHT&token=hirq8t8e96qfgwt9p6vxx8i0nfhhicjj&tag_labels=!hotels&distance=<100000&count=100&fields=id,name,score,intro,tag_labels,images,opening_hours&order_by=distance&tag_labels=!lunch&tag_labels=architectural_style|do&tag_labels=!shopping&annotate=distance:" + airportArr[$(".airportFrom").val()][1] + "," + airportArr[$(".airportFrom").val()][0]
 
             //let url = "https://www.triposo.com/api/20200405/day_planner.json?longitude=" + airportArr[$(".airportFrom").val()][1] + "&latitude=" + airportArr[$(".airportFrom").val()][0] + "&departure_time=16:55&arrival_time=14:33&max_distance=10000&location_id="+airportArr[$(".airportFrom").val()][2].replace(' ','') +"&account=GHJA9MHT&token=hirq8t8e96qfgwt9p6vxx8i0nfhhicjj"
-                console.log(url);
+            console.log(url);
 
             $.get(url).done(successAPICB);
             $.get(url).fail(errFunc);
@@ -117,11 +118,43 @@
 
         function successAPICB(data) {
             console.log(data)
+            console.log(data['results'][0]['name'])
+            for (var i = 0; i < data['results'].length; i++) {
+                currentTrips.push({
+                    name: data['results'][i]['name'], intro: data['results'][i]['intro'], distance: data['results'][i]['distance'], score: data['results'][i]['score']
+                })
+            }
+            try {
+
+                discountTable = $('#tripsTable').DataTable({
+                    data: currentTrips,
+                    pageLength: 10,
+
+                    columns: [
+
+                        { data: "name" },
+                        { data: "intro" },
+                        { data: "distance" },
+                        { data: "score" },
+
+                    ],
+                });
+
+            }
+            catch (err) {
+                alert(err);
+            }
+            $('#tripsTable').show();
         }
+
+
+
+
+
         function errFunc(err) {
             console.log("Error: " + err);
         }
-</script>
+    </script>
 </head>
 <body>
     <div class="container-fluid">
@@ -145,11 +178,28 @@
                 </ul>
             </div>
         </nav>
-    </div>
     
-        <b>Flight from:</b>
-        <input name="airPort" list="airportFrom" class="airportFrom formelement" required />  <datalist id="airportFrom"></datalist>
-    <button onclick="loadTrips()"> dfg</button>
+    <div class="row">
+        <div class="col">
+            <b>Flight from:</b>
+            <input name="airPort" list="airportFrom" class="airportFrom formelement" required />  <datalist id="airportFrom"></datalist>
+            <button onclick="loadTrips()"> dfg</button><br />
         </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <table id="tripsTable" class="display nowrap" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>name</th>
+                        <th>intro</th>
+                        <th>distance</th>
+                        <th>score</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+    </div>
 </body>
 </html>
