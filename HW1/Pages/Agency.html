@@ -109,12 +109,12 @@
             let url = "https://www.triposo.com/api/20200405/poi.json?account=GHJA9MHT&token=hirq8t8e96qfgwt9p6vxx8i0nfhhicjj&tag_labels=!hotels&distance=<10000&count=100&fields=id,name,score,intro,tag_labels,images&order_by=distance&tag_labels=!lunch&tag_labels=architectural_style&annotate=distance:" + airportArr[$(".airportFrom").val()][1] + "," + airportArr[$(".airportFrom").val()][0]
             console.log(url)
 
-            ajaxCall("GET", url, "", successAPICB, errFunc)
-            return false;
+            $.get(url).done(successAPICB);
+            $.get(url).fail(errFunc);
         }
 
         function successAPICB(data) {
-            console.log("k")
+            console.log(data)
         }
         function errFunc(err) {
             console.log("Error: " + err);

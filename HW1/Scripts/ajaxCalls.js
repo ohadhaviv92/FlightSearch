@@ -3,7 +3,7 @@
         type: method,
         url: api,
         data: data,
-        cache: false,
+        cache: true,
         contentType: "application/json",
         dataType: "json",
         success: successCB,
