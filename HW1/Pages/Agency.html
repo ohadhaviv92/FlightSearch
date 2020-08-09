@@ -59,6 +59,7 @@
             updateCartNumber()
             loadAirports();
             $("#flightForm").submit(loadTrips)
+            $('#cartBtn').prop('disabled', true);
         });
 
         
@@ -81,8 +82,8 @@
 
                 str += '<div class="row">';
 
-                str += '<div class="col-sm-3">'
-                str += " <div class='card' style='width:18rem;'>";
+                str += '<div class="col">'
+                str += " <div class='card' style='width:27rem;'>";
                 if (currentTrips[trips[i]]['images'][0] == undefined)
                     str += "<img src='https://dilavr.com.ua/image/catalog/empty-img.png' class='card-img-top' alt='...' style='width:100%;height:215px;'> ";
                 else {
@@ -127,6 +128,7 @@
             updateCartNumber()
             selectedTrips.push(tripId)
             localStorage.setItem('trips', JSON.stringify(selectedTrips))
+            $('#cartBtn').prop('disabled', false);
         }
 
         function finishBuildDeal()
@@ -279,12 +281,14 @@
                     <td>  <input name="airPort" list="airportFrom" class="airportFrom formelement" required />  <datalist id="airportFrom"></datalist></td>
                     <td><b>Distance:</b></td>
                     <td><input type="number" id="distance" required /></td>
+
+                    <td>
+                        <button type="button" class="btn btn-primary" onclick="cart()" data-toggle="modal" id="cartBtn" data-target="#exampleModal">
+                            View Cart
+                        </button>
+                    </td>
                     <td><p id="cartCounter">Items In Cart:</p></td>
-                    <td> <input type="button" value="Cart" onclick="cart()" /></td>
-<td>  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-            Launch demo modal
-        </button></td>
-                    </tr>
+                </tr>
                     <tr>
                         <td colspan="2">
                             <button class="btn btn-primary" type="submit">Find Trips!</button>
