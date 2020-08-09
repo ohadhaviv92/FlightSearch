@@ -71,6 +71,45 @@
         }
 
 
+        function cart() {
+
+            str = ""
+            trips = JSON.parse(localStorage.getItem('trips'));
+            document.getElementById('ph2').innerHTML = "";
+            str += "<div class='container-fluid'>";
+            for (var i = 0; i < trips.length; i++) {
+
+                str += '<div class="row">';
+
+                str += '<div class="col-sm-3">'
+                str += " <div class='card' style='width:18rem;'>";
+                if (currentTrips[trips[i]]['images'][0] == undefined)
+                    str += "<img src='https://dilavr.com.ua/image/catalog/empty-img.png' class='card-img-top' alt='...' style='width:100%;height:215px;'> ";
+                else {
+
+                    str += "<img onerror=defaultImage(this) src='" + currentTrips[trips[i]]['images'][0]['sizes']['medium']['url'] + "' class='card-img-top' alt='...' style='width:100%;height:215px;'>";
+                }
+
+                str += "<div class='card-body'>";
+                str += "<h5 class='card-title'>" + currentTrips[trips[i]]['name'] + "</h5>";
+                str += " <p class='card-text' style='width:250px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'>" + currentTrips[trips[i]]['intro'] + "</p>"
+                str += " <h6 class='card-title'><b>Score:</b> " + currentTrips[trips[i]]['score'] + "</p>"
+                str += " <h6 class='card-title'><b>Distance:</b> " + currentTrips[trips[i]]['distance'] + " Meters</p>"
+                str += " <h6 class='card-title'><b>Opening Hours:</b><br>\n " + getOpeningHours(currentTrips[trips[i]]) + "</p>"
+                str += " <a id=" + i + " onclick='addToCart(this.id)' class='btn btn-primary'>Add</a>"
+
+
+                str += "</div></div></div>";
+
+                str += '</div>';
+
+               
+            }
+
+             document.getElementById('ph2').innerHTML = str;
+        }
+
+
         function successCB(data) {
             airportList = data;
             ajaxCall("GET", "../api/Airport", "", SCGetAirportTable, errFunc);
@@ -97,7 +136,9 @@
 
         function defaultImage(img) {
             img.src = 'https://dilavr.com.ua/image/catalog/empty-img.png';
-        }
+             }
+
+
         function getOpeningHours(place) {
             let str = ""
             if (place['opening_hours'] == null)
@@ -161,7 +202,7 @@
             $.get(url).fail(errFunc);
             return false;
         }
-        str = "";
+        
         function successAPICB(data) {
             str = ""
             currentTrips = data['results']
@@ -197,6 +238,7 @@
 
             str += '</div>';
             document.getElementById('ph').innerHTML = str;
+            
         }
 
 
@@ -232,37 +274,49 @@
         <form autocomplete="off" action="" id="flightForm">
             <table>
               
-                <tr><td><b>Choose Airport:</b></td>
-                <td>  <input name="airPort" list="airportFrom" class="airportFrom formelement" required />  <datalist id="airportFrom"></datalist></td>
-                <td><b>Distance:</b></td>
-                <td><input type="number" id="distance" required /></td><td><p id="cartCounter">Items In Cart:</p></td></tr>
                 <tr>
-                    <td colspan="2">
-                        <button class="btn btn-primary" type="submit">Find Flights!</button>
-
-                    </td>
-
-                </tr>
-
-            </table>
-
-        </form>
-
-        <div id="ph"></div>
-        <!--<div class="row">
-        <div class="col">
-            <table id="tripsTable" class="display nowrap" style="width:100%">
-                <thead>
-                    <tr>
-                        <th>name</th>
-                        <th>intro</th>
-                        <th>distance</th>
-                        <th>score</th>
+                    <td><b>Choose Airport:</b></td>
+                    <td>  <input name="airPort" list="airportFrom" class="airportFrom formelement" required />  <datalist id="airportFrom"></datalist></td>
+                    <td><b>Distance:</b></td>
+                    <td><input type="number" id="distance" required /></td>
+                    <td><p id="cartCounter">Items In Cart:</p></td>
+                    <td> <input type="button" value="Cart" onclick="cart()" /></td>
+<td>  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+            Launch demo modal
+        </button></td>
                     </tr>
-                </thead>
-            </table>
+                    <tr>
+                        <td colspan="2">
+                            <button class="btn btn-primary" type="submit">Find Trips!</button>
+
+                        </td>
+
+                    </tr>
+
+                </table>
+
+            </form>
+
+            <div id="ph"></div>
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Cart</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div id="ph2"> </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>-->
-    </div>
-</body>
-</html>
+    </body>
+    </html>
