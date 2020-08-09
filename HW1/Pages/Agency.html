@@ -52,7 +52,8 @@
     <script>
         currentTrips = []
         airportList = [];
-        arr = []
+        arrPrice = []
+        arrTime=[]
         localStorage.setItem('trips', JSON.stringify([]))
         airportArr = [];
         selectedTrips=[]
@@ -73,12 +74,20 @@
             $.get(url).fail(errFunc);
         }
 
-        function findTotal() {
+        function findTotalPrice() {
             var tot = 0;
-            for (var i = 0; i < arr.length; i++) {
-                tot += parseInt(arr[i].value);
+            for (var i = 0; i < arrPrice.length; i++) {
+                tot += parseInt(arrPrice[i].value);
             }
             document.getElementById('totalDealPrice').textContent = tot;
+        }
+
+        function findTotalTime() {
+            var tot = 0;
+            for (var i = 0; i < arrTime.length; i++) {
+                tot += parseInt(arrTime[i].value);
+            }
+            document.getElementById('totalTime').textContent = tot;
         }
      
         $(document).on("click", ".addCart", function () { // Open the buy form.
@@ -113,7 +122,8 @@
                 str += " <h6 class='card-title'><b>Score:</b> " + currentTrips[trips[i]]['score'] + "</p>"
                 str += " <h6 class='card-title'><b>Distance:</b> " + currentTrips[trips[i]]['distance'] + " Meters</p>"
                 str += " <h6 class='card-title'><b>Opening Hours:</b><br>\n " + getOpeningHours(currentTrips[trips[i]]) + "</p>" 
-                str += "<b>Price: </b><input type='number' class='price' required />"
+                str += "<b>Price: </b><input type='number' class='price' required /><br>"
+                str += "<b>Duration(min): </b><input type='number' class='duration' required /><br>"
                 str += "<a onclick='removeTrip("+trips[i]+")' class='btn btn-primary'>Remove</a>"
                 str += "</div></div></div>";
 
@@ -124,9 +134,13 @@
 
 
             document.getElementById('ph2').innerHTML = str;
-             arr = document.getElementsByClassName('price');
-            for (var i = 0; i < arr.length; i++) {
-                arr[i].addEventListener('keyup', findTotal);
+            arrPrice = document.getElementsByClassName('price');
+            arrTime = document.getElementsByClassName('duration');
+            for (var i = 0; i < arrPrice.length; i++) {
+                arrPrice[i].addEventListener('keyup', findTotalPrice);
+            }
+            for (var i = 0; i < arrTime.length; i++) {
+                arrTime[i].addEventListener('keyup', findTotalTime);
             }
         }
 
@@ -351,6 +365,9 @@
                                 <div id="ph2"> </div>
                             </div>
                             <div class="modal-footer">
+                                <p><b>Total Time: </b></p>
+                                <p id="totalTime">0</p>
+                                <p><b>Total Price: </b></p>
                                 <p id="totalDealPrice">0</p>
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                 <button type="submit" class="btn btn-primary">Save changes</button>
