@@ -17,7 +17,8 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
-
+    <link href="../Notiflix-2.3.3/dist/notiflix-2.3.3.min.css" rel="stylesheet" />
+    <script src="../Notiflix-2.3.3/dist/notiflix-2.3.3.min.js"></script>
 
 
 
@@ -54,10 +55,10 @@
 
 
     <script>
-        var table=null;
+        var table = null;
         countryCodes = [];
         Myflightsarr = [];
-        discountsArr=[]
+        discountsArr = []
         airportList = {};
         var airports = new Array();
         var airlines = new Array();
@@ -66,11 +67,11 @@
         dataArr = {} //Store the current search arr
         ajaxCall("GET", "../api/discount", "", saveDiscounts, errFunc);
 
-       
+
 
         $(document).ready(function () {
 
-            
+
             $("#srcBTN").submit(loadFlights);
             $("#MyFlights").click(MyFlights)
             $("#fromDate").min = new Date().toISOString().split("T")[0];
@@ -99,29 +100,29 @@
 
                     str += "<li class='nav-item'>"
                     str += "<a class='navbar-brand' href='admin.html' style=color:red>Admin</a></li>"
-                   
+
                 }
 
-         
 
-                str+= " <li class='nav-item'>"
+
+                str += " <li class='nav-item'>"
                 str += "<a class='navbar-brand' id='search' href='#'>Search</a> </li>"
 
-                       str+= " <li class='nav-item'>"
+                str += " <li class='nav-item'>"
                 str += "<a class='navbar-brand' id='logout' href='#'>Logout</a> </li>"
 
 
                 document.getElementById("menu").innerHTML += str;
-                    $('#logout').click(function () {
-                        localStorage.clear();
-                        window.location.pathname += 'login.html'
-                    });
+                $('#logout').click(function () {
+                    localStorage.clear();
+                    window.location.pathname += 'login.html'
+                });
 
                 $('#search').click(function () {
 
                     $('#flightTable').parents('div.dataTables_wrapper').first().hide();
                     $('#searchdiv').show();
-                    });
+                });
 
 
                 console.log(user);
@@ -129,12 +130,12 @@
 
 
             }, errFunc);
-         });
+        });
 
 
 
 
-       
+
 
 
         // API call ---------------------------------------------------------------
@@ -148,9 +149,9 @@
         }
 
         function loadFlights() {
-                //let url = "https://api.skypicker.com/flights?flyFrom=TLV&to=LGW&dateFrom=05/06/2020&dateTo=12/06/2020&partner=picky"
+            Notiflix.Loading.Standard('Getting Flights...');
 
-           let url = "https://api.skypicker.com/flights?flyFrom=" + $(".airportFrom").val() + "&to=" + $(".airportTo").val() + "&dateFrom=" + fixDate($("#fromDate").val()) + "&dateTo=" + fixDate($("#toDate").val()) + "&partner=picky"
+            let url = "https://api.skypicker.com/flights?flyFrom=" + $(".airportFrom").val() + "&to=" + $(".airportTo").val() + "&dateFrom=" + fixDate($("#fromDate").val()) + "&dateTo=" + fixDate($("#toDate").val()) + "&partner=picky"
             ajaxCall("GET", url, "", successAPICB, errFunc)
             return false;
         }
@@ -165,7 +166,7 @@
                     $.get(url).fail(errFunc);
                 }
                 else {
-                    swal("All Airline has been loaded!", "", "success");
+                    Notiflix.Report.Success('Airline Loaded', "", 'Ok');
                 }
                 $('#GetAirLines').prop('disabled', true); //Disabled the btn
                 $('#GetAirports').prop('disabled', false); //Disabled the btn
@@ -174,7 +175,7 @@
         }
 
         function saveDiscounts(data) {
-            discountsArr=data
+            discountsArr = data
         }
 
         // end API call -------------------------------------------------------------------------
@@ -204,11 +205,11 @@
                 }
 
                 ajaxCall('POST', "../api/Leg", JSON.stringify(l), function () {
-                    swal("Flight Has Been ordered!", "", "success");
-                    
+                   
+                    Notiflix.Report.Success('Flight Has Been ordered!', "", 'Ok');
                     $('#editDiv').hide();
-                     $('#flightTable').parents('div.dataTables_wrapper').first().show();
-                    
+                    $('#flightTable').parents('div.dataTables_wrapper').first().show();
+
                 }, errFunc)
             }
 
@@ -218,26 +219,26 @@
             passengersNames = $("#Passengers").val()
             useremail = $("#email").val()
             orderDate = new Date()
-            var date = orderDate.getFullYear() + '-' + orderDate.getDate()+ '-' + (orderDate.getMonth() + 1);
-            
+            var date = orderDate.getFullYear() + '-' + orderDate.getDate() + '-' + (orderDate.getMonth() + 1);
+
             ajaxCall("POST", "../api/order", JSON.stringify([flightId, passengersNames, useremail, orderDate]), successMyFlights, errFunc)
-            
+
             return false;
         }
 
 
 
         $(document).on("click", ".orderBTN", function () { // Open the buy form.
-            
+
             $('#flightTable').parents('div.dataTables_wrapper').first().hide();
             $("#editDiv").show();
             row = $(this).attr("data-flightid");
             console.log(row)
-            
+
 
         });
 
-     
+
         $(document).on("click", "#cancelSaveBTN", function () { // Close the buy form.
             $("#editDiv").hide();
             $('#flightTable').show();
@@ -321,8 +322,7 @@
                 ajaxCall("POST", "../api/Airport", JSON.stringify(airports), postSuccess, errFunc)  // Load the airports to the DB, Only Once
 
             }
-
-            swal("All Airports has been loaded!", "", "success");
+            Notiflix.Report.Success('All Airports has been loaded!', "", 'Ok');
             document.getElementById('airportFrom').innerHTML = options;
             document.getElementById('airportTo').innerHTML = options;
             $('#GetAirports').prop('disabled', true); //Disabled the btn
@@ -382,7 +382,7 @@
 
             flightData = [];
             for (var i in data['data']) {
-                 let depTime = convertDate(data['data'][i]['dTime']);
+                let depTime = convertDate(data['data'][i]['dTime']);
                 let arrTime = convertDate(data['data'][i]['aTime']);
 
                 conection = "";
@@ -396,26 +396,26 @@
                 }
 
                 flightData.push({
-                    id: i, cityFrom: data['data'][i]['cityFrom'], cityTo: data['data'][i]['cityTo'], dTime: depTime.toISOString().split('T')[0] + " " +depTime.toISOString().split('T')[1].split('.')[0] , aTime: arrTime.toISOString().split('T')[0] + " " +arrTime.toISOString().split('T')[1].split('.')[0] , route: conection, airline: data['data'][i]['route'][0]['airline'], price: data['data'][i]['price'] + " $", fromShort: data['data'][i]["flyFrom"], toShort: data['data'][i]["flyTo"]
+                    id: i, cityFrom: data['data'][i]['cityFrom'], cityTo: data['data'][i]['cityTo'], dTime: depTime.toISOString().split('T')[0] + " " + depTime.toISOString().split('T')[1].split('.')[0], aTime: arrTime.toISOString().split('T')[0] + " " + arrTime.toISOString().split('T')[1].split('.')[0], route: conection, airline: data['data'][i]['route'][0]['airline'], price: data['data'][i]['price'] + " $", fromShort: data['data'][i]["flyFrom"], toShort: data['data'][i]["flyTo"]
                 })
             }
 
-            
+
             try {
-                if(table!=null) table.destroy();
+                if (table != null) table.destroy();
                 table = $('#flightTable').DataTable({
                     data: flightData,
                     pageLength: 5,
 
                     columns: [
-   
+
 
                         { data: "cityFrom" },
                         { data: "cityTo" },
                         { data: "dTime" },
                         { data: "aTime" },
                         { data: "route" },
-                         { data: "airline" },
+                        { data: "airline" },
                         {
                             data: "price",
                             render: function (data, type, row, meta) {
@@ -427,22 +427,22 @@
                                     enddis = new Date(discountsArr[i].DateTo)
                                     if (flightData[row.id].airline == discountsArr[i].AirlineCode && startdis <= deptime && enddis >= arrtime && flightData[row.id].fromShort == discountsArr[i].AirportCodeFrom && flightData[row.id].toShort == discountsArr[i].AirportCodeTo) {
 
-                                        a = parseInt(data.split(" ")[0]) *(1- ((discountsArr[i].DiscountAmount) / 100))
-                                        return "<strike>" + data.split(" ")[0] +"$</strike>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp"+ a.toFixed(2) + "$&nbsp&nbsp<img class='sale-img' src='../images/Sale-icon.png'/>"
-                                        }
-                                    
+                                        a = parseInt(data.split(" ")[0]) * (1 - ((discountsArr[i].DiscountAmount) / 100))
+                                        return "<strike>" + data.split(" ")[0] + "$</strike>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp" + a.toFixed(2) + "$&nbsp&nbsp<img class='sale-img' src='../images/Sale-icon.png'/>"
+                                    }
+
 
                                 }
                                 return data
-                                
-                                
+
+
                             }
                         },
-                          {
-                           render: function (data, type, row, meta) {
-                               let dataflight = "data-flightId='" +row.id  + "'";
+                        {
+                            render: function (data, type, row, meta) {
+                                let dataflight = "data-flightId='" + row.id + "'";
 
-                                return  "<button  type='button' class = 'orderBTN btn btn-primary' " + dataflight + ">Order</button>";
+                                return "<button  type='button' class = 'orderBTN btn btn-primary' " + dataflight + ">Order</button>";
                             }
 
                         },
@@ -458,8 +458,8 @@
             }
             $('#flightTable').show();
             $('#searchdiv').hide();
-            swal("We found " + data['data'].length + " flights for you!", "", "success");
-
+            Notiflix.Loading.Remove();
+            Notiflix.Report.Success('Found ' + data['data'].length + " Flights", "We found " + data['data'].length + " flights for you!", 'Let me see');
 
         }
 
@@ -479,7 +479,7 @@
             swal("Error: " + err);
         }
 
-                                                            //end error function -------------------------------
+                                                                //end error function -------------------------------
 
 
     </script>

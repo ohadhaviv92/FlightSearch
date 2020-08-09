@@ -18,8 +18,8 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
 
-
-
+    <link href="../Notiflix-2.3.3/dist/notiflix-2.3.3.min.css" rel="stylesheet" />
+    <script src="../Notiflix-2.3.3/dist/notiflix-2.3.3.min.js"></script>
 
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -148,7 +148,7 @@
         function successCB(data) {
             airportList = data;
             ajaxCall("GET", "../api/Airport", "", SCGetAirportTable, errFunc);
-
+           
 
         }
 
@@ -241,7 +241,8 @@
 
 
         function loadTrips() {
-            currentTrips=[]
+            currentTrips = []
+            Notiflix.Loading.Standard('Getting Data...');
             let url = "https://www.triposo.com/api/20200405/poi.json?account=GHJA9MHT&token=hirq8t8e96qfgwt9p6vxx8i0nfhhicjj&tag_labels=!hotels&distance=<" + $("#distance").val() + "&count=100&fields=id,name,score,intro,tag_labels,images,opening_hours,snippet&order_by=distance&tag_labels=!lunch&tag_labels=architectural_style|do|nightlife&tag_labels=!shopping&annotate=distance:" + airportArr[$(".airportFrom").val()][1] + "," + airportArr[$(".airportFrom").val()][0]
             console.log(url);
 
@@ -251,6 +252,7 @@
         }
         
         function successAPICB(data) {
+            
             str = ""
             currentTrips = data['results']
             document.getElementById('ph').innerHTML = "";
@@ -285,6 +287,7 @@
 
             str += '</div>';
             document.getElementById('ph').innerHTML = str;
+            Notiflix.Loading.Remove();
             
         }
 
