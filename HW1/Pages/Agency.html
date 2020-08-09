@@ -52,6 +52,7 @@
     <script>
         currentTrips = []
         airportList = [];
+        arr=[]
         airportArr = [];
         selectedTrips=[]
         itemsInCart = 0;
@@ -71,16 +72,13 @@
             $.get(url).fail(errFunc);
         }
 
-
-        $(document).on("keyup", ".price", function () { // Open the buy form.
-            currentPrice = $("#totalDealPrice").text();
-            currentPrice = parseInt(currentPrice);
-            var value = $(this).val();
-            value = parseInt(value);
-            $("#totalDealPrice").text(currentPrice+value);
-        }).keyup();
-
-
+        function findTotal() {
+            var tot = 0;
+            for (var i = 0; i < arr.length; i++) {
+                tot += parseInt(arr[i].value);
+            }
+            document.getElementById('totalDealPrice').textContent = tot;
+        }
      
 
         function cart() {
@@ -117,7 +115,11 @@
                
             }
 
-             document.getElementById('ph2').innerHTML = str;
+            document.getElementById('ph2').innerHTML = str;
+             arr = document.getElementsByClassName('price');
+            for (var i = 0; i < arr.length; i++) {
+                arr[i].addEventListener('keyup', findTotal);
+            }
         }
 
 
@@ -167,8 +169,8 @@
                             str += " To: " + place['opening_hours']['days'][day][i]['end']['hour'] + ":" + place['opening_hours']['days'][day][i]['end']['minute'] + "</p>"
                         }
                         else {
-                            str += "<p>" + day + ": Close" + "</p>"
-                            break;
+                            return "No Opening Hours Data";
+                            
                         }
                     }
                 else str+="<p>"+day+": Close"+"</p>"
@@ -202,9 +204,6 @@
 
         }
 
-        function a() {
-            console.log('long' + airportArr[$(".airportFrom").val()][0] + 'lat:+' + airportArr[$(".airportFrom").val()][1]);
-        }
 
         function loadTrips() {
             currentTrips=[]
@@ -258,6 +257,10 @@
         function errFunc(err) {
             console.log("Error: " + err);
         }
+
+        function clearPrice() {
+            document.getElementById('totalDealPrice').textContent = 0;
+        }
     </script>
 </head>
 <body>
@@ -294,7 +297,7 @@
                     <td><input type="number" id="distance" required /></td>
 
                     <td>
-                        <button type="button" class="btn btn-primary" onclick="cart()" data-toggle="modal" id="cartBtn" data-target="#exampleModal">
+                        <button type="button" class="btn btn-primary" onclick="cart()" data-toggle="modal" id="cartBtn" data-target=".bd-example-modal-lg">
                             View Cart
                         </button>
                     </td>
@@ -313,12 +316,12 @@
             </form>
 
             <div id="ph"></div>
-            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Cart</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <h5 class="modal-title" id="exampleModal">Cart</h5>
+                            <button type="button" onclick="clearPrice()" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
