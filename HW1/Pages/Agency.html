@@ -154,9 +154,7 @@
 
         function loadTrips() {
             currentTrips=[]
-            let url = "https://www.triposo.com/api/20200405/poi.json?account=GHJA9MHT&token=hirq8t8e96qfgwt9p6vxx8i0nfhhicjj&tag_labels=!hotels&distance=<" + $("#distance").val() + "&count=100&fields=id,name,score,intro,tag_labels,images,opening_hours&order_by=distance&tag_labels=!lunch&tag_labels=architectural_style|do|nightlife&tag_labels=!shopping&annotate=distance:" + airportArr[$(".airportFrom").val()][1] + "," + airportArr[$(".airportFrom").val()][0]
-
-            //let url = "https://www.triposo.com/api/20200405/day_planner.json?longitude=" + airportArr[$(".airportFrom").val()][1] + "&latitude=" + airportArr[$(".airportFrom").val()][0] + "&departure_time=16:55&arrival_time=14:33&max_distance=10000&location_id="+airportArr[$(".airportFrom").val()][2].replace(' ','') +"&account=GHJA9MHT&token=hirq8t8e96qfgwt9p6vxx8i0nfhhicjj"
+            let url = "https://www.triposo.com/api/20200405/poi.json?account=GHJA9MHT&token=hirq8t8e96qfgwt9p6vxx8i0nfhhicjj&tag_labels=!hotels&distance=<" + $("#distance").val() + "&count=100&fields=id,name,score,intro,tag_labels,images,opening_hours,snippet&order_by=distance&tag_labels=!lunch&tag_labels=architectural_style|do|nightlife&tag_labels=!shopping&annotate=distance:" + airportArr[$(".airportFrom").val()][1] + "," + airportArr[$(".airportFrom").val()][0]
             console.log(url);
 
             $.get(url).done(successAPICB);
@@ -184,7 +182,7 @@
                
                 str += "<div class='card-body'>";
                 str += "<h5 class='card-title'>"+data['results'][i]['name']+"</h5>";
-                str+=" <p class='card-text' style='width:250px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'>"+data['results'][i]['intro']+"</p>"
+                str += " <p class='card-text' style='width:250px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'>" + data['results'][i]['snippet']+"</p>"
                 str += " <h6 class='card-title'><b>Score:</b> " + data['results'][i]['score'] + "</p>"
                 str += " <h6 class='card-title'><b>Distance:</b> " + data['results'][i]['distance'] + " Meters</p>"
                 str += " <h6 class='card-title'><b>Opening Hours:</b><br>\n " + getOpeningHours(data['results'][i]) + "</p>"
