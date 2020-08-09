@@ -59,9 +59,9 @@
             updateCartNumber()
             loadAirports();
             $("#flightForm").submit(loadTrips)
+            $("#buildForm").submit(finishBuildDeal)
             $('#cartBtn').prop('disabled', true);
         });
-
         
         function loadAirports() { // Load the airports list from API
 
@@ -72,12 +72,23 @@
         }
 
 
+        $(document).on("keyup", ".price", function () { // Open the buy form.
+            currentPrice = $("#totalDealPrice").text();
+            currentPrice = parseInt(currentPrice);
+            var value = $(this).val();
+            value = parseInt(value);
+            $("#totalDealPrice").text(currentPrice+value);
+        }).keyup();
+
+
+     
+
         function cart() {
 
             str = ""
             trips = JSON.parse(localStorage.getItem('trips'));
             document.getElementById('ph2').innerHTML = "";
-            str += "<div class='container-fluid'>";
+            str += "<div class='container-fluid'> ";
             for (var i = 0; i < trips.length; i++) {
 
                 str += '<div class="row">';
@@ -96,9 +107,8 @@
                 str += " <p class='card-text' style='width:250px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'>" + currentTrips[trips[i]]['intro'] + "</p>"
                 str += " <h6 class='card-title'><b>Score:</b> " + currentTrips[trips[i]]['score'] + "</p>"
                 str += " <h6 class='card-title'><b>Distance:</b> " + currentTrips[trips[i]]['distance'] + " Meters</p>"
-                str += " <h6 class='card-title'><b>Opening Hours:</b><br>\n " + getOpeningHours(currentTrips[trips[i]]) + "</p>"
-                str += " <a id=" + i + " onclick='addToCart(this.id)' class='btn btn-primary'>Add</a>"
-
+                str += " <h6 class='card-title'><b>Opening Hours:</b><br>\n " + getOpeningHours(currentTrips[trips[i]]) + "</p>" 
+                str += "<b>Price: </b><input type='number' class='price' required />"
 
                 str += "</div></div></div>";
 
@@ -134,6 +144,7 @@
         function finishBuildDeal()
         {
 
+            return false
         }
 
         function defaultImage(img) {
@@ -311,13 +322,17 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <div class="modal-body">
-                            <div id="ph2"> </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Save changes</button>
-                        </div>
+                        <form autocomplete='off' action='' id='buildForm'>
+                            <div class="modal-body">
+                                <div id="ph2"> </div>
+                            </div>
+                            <div class="modal-footer">
+                                <p id="totalDealPrice">0</p>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+
+                            </div>
+                            </form>
                     </div>
                 </div>
             </div>
