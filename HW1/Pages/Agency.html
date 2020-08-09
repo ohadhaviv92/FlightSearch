@@ -52,7 +52,8 @@
     <script>
         currentTrips = []
         airportList = [];
-        arr=[]
+        arr = []
+        localStorage.setItem('trips', JSON.stringify([]))
         airportArr = [];
         selectedTrips=[]
         itemsInCart = 0;
@@ -80,6 +81,12 @@
             document.getElementById('totalDealPrice').textContent = tot;
         }
      
+        $(document).on("click", ".addCart", function () { // Open the buy form.
+
+            $(this).prop('disabled', true); //Disabled the btn
+
+
+        });
 
         function cart() {
 
@@ -107,13 +114,14 @@
                 str += " <h6 class='card-title'><b>Distance:</b> " + currentTrips[trips[i]]['distance'] + " Meters</p>"
                 str += " <h6 class='card-title'><b>Opening Hours:</b><br>\n " + getOpeningHours(currentTrips[trips[i]]) + "</p>" 
                 str += "<b>Price: </b><input type='number' class='price' required />"
-
+                str += "<a onclick='removeTrip("+trips[i]+")' class='btn btn-primary'>Remove</a>"
                 str += "</div></div></div>";
 
                 str += '</div>';
 
                
             }
+
 
             document.getElementById('ph2').innerHTML = str;
              arr = document.getElementsByClassName('price');
@@ -130,6 +138,18 @@
 
         }
 
+        function removeTrip(tripId) {
+            console.log(tripId)
+            trips = JSON.parse(localStorage.getItem('trips'));
+            var filteredAry = trips.filter(function (e) { return parseInt(e) !== tripId })
+            localStorage.setItem('trips', JSON.stringify(filteredAry))
+            cart()
+            itemsInCart--
+            updateCartNumber()
+
+
+        }
+
         function updateCartNumber() {
             document.getElementById("cartCounter").innerHTML = "Items In Cart: " + itemsInCart
 
@@ -138,6 +158,7 @@
         function addToCart(tripId) {
             itemsInCart++;
             updateCartNumber()
+            selectedTrips = JSON.parse(localStorage.getItem('trips'))
             selectedTrips.push(tripId)
             localStorage.setItem('trips', JSON.stringify(selectedTrips))
             $('#cartBtn').prop('disabled', false);
@@ -239,8 +260,8 @@
                 str += " <h6 class='card-title'><b>Score:</b> " + data['results'][i]['score'] + "</p>"
                 str += " <h6 class='card-title'><b>Distance:</b> " + data['results'][i]['distance'] + " Meters</p>"
                 str += " <h6 class='card-title'><b>Opening Hours:</b><br>\n " + getOpeningHours(data['results'][i]) + "</p>"
-                str += " <a id=" + i + " onclick='addToCart(this.id)' class='btn btn-primary'>Add</a>"
-                
+                str += " <button id="+i+" type='button' onclick='addToCart(this.id)' class='btn btn-primary addCart'> Add</button >"
+                   
 
                 str += "</div></div></div>";
                        if ((i+1) % 4 == 0) {
