@@ -9,7 +9,26 @@ namespace HW1.Models
     {
         int id;
         string agencyName;
-        string 
+        string tourName;
+        double tourPrice;
+        int duration;
+        List<Trip> trips;
 
+        public Tour(int id, string agencyName, string tourName, double tourPrice, int duration, List<Trip> trips)
+        {
+            this.id = id;
+            this.agencyName = agencyName;
+            this.tourName = tourName;
+            this.tourPrice = tourPrice;
+            this.duration = duration;
+            this.trips = trips;
+        }
+
+        public int Id { get => id; set => id = value; }
+        public string AgencyName { get => agencyName; set => agencyName = value; }
+        public string TourName { get => tourName; set => tourName = value; }
+        public double TourPrice { get => tourPrice; set => tourPrice = value; }
+        public int Duration { get => duration; set => duration = value; }
+        public List<Trip> Trips { get => trips; set => trips = value; }
     }
 }
