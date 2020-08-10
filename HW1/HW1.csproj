@@ -156,6 +156,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AgentController.cs" />
+    <Compile Include="Controllers\AgentLoginController.cs" />
     <Compile Include="Controllers\AirlineController.cs" />
     <Compile Include="Controllers\AirportController.cs" />
     <Compile Include="Controllers\DiscountController.cs" />
@@ -245,6 +246,7 @@
     <Content Include="Notiflix-2.3.3\src\notiflix.js" />
     <Content Include="Pages\admin.html" />
     <Content Include="Pages\Agency.html" />
+    <Content Include="Pages\AgencyLogin.html" />
     <Content Include="Pages\AgencyRegister.html" />
     <Content Include="Pages\index.html" />
     <Content Include="Pages\login.html" />

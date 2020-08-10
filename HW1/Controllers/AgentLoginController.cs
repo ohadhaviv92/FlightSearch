@@ -8,7 +8,7 @@ using HW1.Models;
 
 namespace HW1.Controllers
 {
-    public class AgentController : ApiController
+    public class AgentLoginController : ApiController
     {
         // GET api/<controller>
         public IEnumerable<string> Get()
@@ -23,11 +23,11 @@ namespace HW1.Controllers
         }
 
         // POST api/<controller>
-        public void Post([FromBody]Agent ag)
+        public string Post([FromBody] string[] logins)
         {
-            ag.register();
+            DBservices db = new DBservices();
+            return db.agentLogin(logins);
         }
-
 
         // PUT api/<controller>/5
         public void Put(int id, [FromBody] string value)

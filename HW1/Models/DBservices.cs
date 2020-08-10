@@ -409,6 +409,50 @@ namespace HW1.Models
             return null;
         }
 
+        public string agentLogin(string[] logins)
+        {
+
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+
+            String cStr = "select * from TourAgent_CS u where u.agentName='" + logins[0] + "' and u.pass='" + logins[1] + "'";      // helper method to build the insert string
+
+            cmd = CreateCommand(cStr, con);             // create the command
+
+            try
+            {
+                string numEffected = (string)cmd.ExecuteScalar(); // execute the command
+
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+                return "";
+                // write to log
+                throw (ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+
+        }
+
         public string login(string[] logins)
         {
 
@@ -745,7 +789,7 @@ namespace HW1.Models
             StringBuilder sb = new StringBuilder();
             //use a string builder to create the dynamic string
             sb.AppendFormat("Values('{0}', '{1}', '{2}')", ag.AgentName, ag.AgentImage, ag.Password);
-            String prefix = "INSERT INTO Tour_CS " + "(agentName,agentImage,pass) ";
+            String prefix = "INSERT INTO TourAgent_CS " + "(agentName,agentImage,pass) ";
             command = prefix + sb.ToString();
 
             return command;
