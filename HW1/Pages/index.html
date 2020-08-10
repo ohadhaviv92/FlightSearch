@@ -11,7 +11,7 @@
     <script src="../Scripts/ajaxCalls.js"></script>
     <script src="../Scripts/dateFunctions.js"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+
 
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
@@ -44,7 +44,7 @@
     <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
 
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
 
 
 
@@ -382,8 +382,8 @@
                 if (data['data'][i]['route'].length > 1) {
                     connectionsArr = []
                     getConnections(data['data'][i]['route'])
-                    for (var j = 1; j < connectionsArr.length ; j++) {
-                        conection += connectionsArr[j-1] + " (" + getCalcTimeInMinute(data['data'][i]['route'][j]['dTimeUTC'] , data['data'][i]['route'][j-1]['aTimeUTC'])   + " min) , ";
+                    for (var j = 1; j < connectionsArr.length; j++) {
+                        conection += connectionsArr[j - 1] + " (" + getCalcTimeInMinute(data['data'][i]['route'][j]['dTimeUTC'], data['data'][i]['route'][j - 1]['aTimeUTC']) + " min) , ";
 
                     }
                 }
@@ -458,8 +458,15 @@
         }
 
 
-     
-     function   getCalcTimeInMinute(d, a){
+
+        function getCalcTimeInMinute(d, a) {
+            a=convertDate(a)
+            d=convertDate(d)
+            var start = moment.utc(a);
+            var now = moment.utc(d);
+            var duration = moment.duration(now.diff(start));
+            console.log(duration.asHours());
+            return duration.hours() + duration.days() + duration.minutes()
 
         }
 
@@ -479,7 +486,7 @@
             swal("Error: " + err);
         }
 
-                                                                    //end error function -------------------------------
+                                                                        //end error function -------------------------------
 
 
     </script>
