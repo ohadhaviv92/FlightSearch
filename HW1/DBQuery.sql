@@ -92,6 +92,48 @@ FOREIGN KEY (AirlineCode) REFERENCES Airlines_CS(AirlineCode),
 
 )
 
+
+create table TourAgent_CS(
+     agentID int IDENTITY PRIMARY KEY,
+    agentName nvarchar(90),
+     agentImage  nvarchar(max)
+
+)
+
+create TABLE Tour_CS(
+TourID int IDENTITY (1,1) PRIMARY KEY,
+agentID int, 
+price float ,
+tourName NVARCHAR(100),
+durationInMinute int,
+FOREIGN KEY (agentID) REFERENCES TourAgent_CS(agentID)
+)
+
+
+create TABLE Trip_CS(
+tripID NVARCHAR(500) PRIMARY KEY,
+image NVARCHAR(500) ,
+intro NVARCHAR(500) ,
+title NVARCHAR(max) ,
+openingHour NVARCHAR(max) ,
+score float ,
+
+)
+
+
+
+create TABLE TripInTour_CS(
+TourID int,
+tripID NVARCHAR(500),
+durationInMinute int, 
+price float,
+ FOREIGN KEY (TourID) REFERENCES Tour_CS(TourID),
+ FOREIGN KEY (tripID) REFERENCES Trip_CS(tripID),
+ PRIMARY key (TourID,tripID)
+)
+
+
+
 UPDATE discounts
 SET col1 = constant_value1 , col2 =  constant_value2 , colN = constant_valueN
 
