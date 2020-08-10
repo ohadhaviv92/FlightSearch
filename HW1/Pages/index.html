@@ -467,7 +467,7 @@
             var now = moment.utc(d);
             var duration = moment.duration(now.diff(start));
             console.log(duration.asHours());
-            return duration.hours() + duration.days() + duration.minutes()
+            return (duration.hours()*60) + (duration.days()*24) + duration.minutes()
 
         }
 
