@@ -153,7 +153,7 @@
                 trip = { TripID: currentTrips[trips[i]]['id'], Duration: arrTime[i], Image: currentTrips[trips[i]]['images'][0]['sizes']['medium']['url'], Intro: currentTrips[trips[i]]['intro'], Title: currentTrips[trips[i]]['name'], Score: currentTrips[trips[i]]['score'], OpeningHour: currentTrips[trips[i]]['opening_hours'] }
                 tripsArr.push(trip)
             }
-            tour = { AgencyName: 1, TourName: document.getElementById('tripName').textContent, TourPrice: parseFloat(document.getElementById('totalDealPrice').textContent), Duration: parseInt(document.getElementById('totalTime').textContent),Trips: JSON.stringify(tripsArr) }
+            tour = { AgencyName: 1, TourName: document.getElementById('tripName').textContent, TourPrice: parseFloat(document.getElementById('totalDealPrice').textContent), DurationInMinute: parseInt(document.getElementById('totalTime').textContent),Trips: JSON.stringify(tripsArr) }
 
             return false;
         }
