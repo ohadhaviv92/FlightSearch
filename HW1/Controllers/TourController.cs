@@ -10,11 +10,7 @@ namespace HW1.Controllers
 {
     public class TourController : ApiController
     {
-        // GET: api/Tour
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
+  
 
         // GET: api/Tour/5
         public string Get(int id)

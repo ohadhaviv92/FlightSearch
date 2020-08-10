@@ -94,8 +94,7 @@ FOREIGN KEY (AirlineCode) REFERENCES Airlines_CS(AirlineCode),
 
 
 create table TourAgent_CS(
-     agentID int IDENTITY PRIMARY KEY,
-    agentName nvarchar(90),
+    agentName nvarchar(90) PRIMARY KEY,
      agentImage  nvarchar(max),
      pass nvarchar(90),
 )
@@ -104,12 +103,13 @@ create table TourAgent_CS(
 create TABLE Tour_CS(
 TourID int IDENTITY (1,1) PRIMARY KEY,
 city  NVARCHAR(100),
-agentID int, 
+agentName nvarchar(90), 
 price float ,
 tourName NVARCHAR(100),
 durationInMinute int,
-FOREIGN KEY (agentID) REFERENCES TourAgent_CS(agentID)
+FOREIGN KEY (agentName) REFERENCES TourAgent_CS(agentName)
 )
+
 
 
 
@@ -120,8 +120,8 @@ TourID int,
 tripID NVARCHAR(500),
 durationInMinute int, 
 price float,
-image NVARCHAR(500) ,
-intro NVARCHAR(500) ,
+image NVARCHAR(max) ,
+intro NVARCHAR(max) ,
 title NVARCHAR(max) ,
 openingHour NVARCHAR(max) ,
 score float ,
