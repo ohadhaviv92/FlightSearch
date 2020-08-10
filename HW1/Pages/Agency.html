@@ -150,10 +150,10 @@
             tripsArr=[]
             trips = JSON.parse(localStorage.getItem('trips'));
             for (var i = 0; i < trips.length; i++) {
-                trip = { tripID: currentTrips[trips[i]]['id'], duration: arrTime[i], image: currentTrips[trips[i]]['images'][0]['sizes']['medium']['url'], intro: currentTrips[trips[i]]['intro'], title: currentTrips[trips[i]]['name'], score: currentTrips[trips[i]]['score'], openingHour: currentTrips[trips[i]]['opening_hours'] }
+                trip = { TripID: currentTrips[trips[i]]['id'], Duration: arrTime[i], Image: currentTrips[trips[i]]['images'][0]['sizes']['medium']['url'], Intro: currentTrips[trips[i]]['intro'], Title: currentTrips[trips[i]]['name'], Score: currentTrips[trips[i]]['score'], OpeningHour: currentTrips[trips[i]]['opening_hours'] }
                 tripsArr.push(trip)
             }
-            tour = { agencyName: "test", tourName: document.getElementById('tripName').textContent, tourPrice: parseFloat(document.getElementById('totalDealPrice').textContent), parseInt(document.getElementById('totalTime').textContent),Trips: JSON.stringify(tripsArr) }
+            tour = { AgencyName: "test", TourName: document.getElementById('tripName').textContent, TourPrice: parseFloat(document.getElementById('totalDealPrice').textContent), Duration: parseInt(document.getElementById('totalTime').textContent),Trips: JSON.stringify(tripsArr) }
 
             return false;
         }
