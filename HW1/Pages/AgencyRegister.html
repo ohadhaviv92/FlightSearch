@@ -16,10 +16,10 @@
     <script>
         $(document).ready(function () {
             $("#register-form").submit(register);
-        }
+        });
 
-            function register() {
-                agency = {}
+        function register() {
+            agency = { AgentName: document.getElementById('name').textContent, AgentImage: "image link here", Password: document.getElementById('pass').textContent }
             }
     </script>
 </head>
