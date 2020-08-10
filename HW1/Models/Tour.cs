@@ -16,6 +16,7 @@ namespace HW1.Models
         int durationInMinute;
         List<Trip> trips;
 
+        public Tour() { }
         public Tour( string agencyName, string tourName, string city, double tourPrice, int durationInMinute, List<Trip> trips)
         {
             

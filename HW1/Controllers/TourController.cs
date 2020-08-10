@@ -13,9 +13,10 @@ namespace HW1.Controllers
   
 
         // GET: api/Tour/5
-        public string Get(int id)
+        public List<Tour> Get()
         {
-            return "value";
+            DBservices db = new DBservices();
+            return db.getAllTours();
         }
 
         // POST: api/Tour

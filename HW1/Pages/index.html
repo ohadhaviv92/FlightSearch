@@ -60,17 +60,22 @@
         countryCodes = [];
         Myflightsarr = [];
         discountsArr = []
+        toursArr = []
+        durationInMinArr=[]
         airportList = {};
         var airports = new Array();
         var airlines = new Array();
         airlinesList = {};
-        flag = 0; // 0 =>  there are already airport table on db
+        flag = 0; // 0 =>  there are already airports table on db
         dataArr = {} //Store the current search arr
         ajaxCall("GET", "../api/discount", "", saveDiscounts, errFunc);
 
+        function getAllTours(data) {
+            console.log(data)
+            toursArr = data;
+        }
 
-
-
+        ajaxCall("GET", "../api/tour", "", getAllTours, errFunc)
         $(document).ready(function () {
 
 
@@ -378,15 +383,27 @@
             for (var i in data['data']) {
                 let depTime = convertDate(data['data'][i]['dTime']);
                 let arrTime = convertDate(data['data'][i]['aTime']);
-
+                var flag = 0;
                 conection = "<p>";
                 if (data['data'][i]['route'].length > 1) {
                     connectionsArr = []
                     getConnections(data['data'][i]['route'])
                     for (var j = 1; j < connectionsArr.length; j++) {
-                        conection += "<b>"+connectionsArr[j - 1] + "</b> - " + getCalcTimeInMinute(data['data'][i]['route'][j]['dTimeUTC'], data['data'][i]['route'][j - 1]['aTimeUTC']) + "</p> ";
-
+                     
+                        var connetionTime = getCalcTimeInMinute(data['data'][i]['route'][j]['dTimeUTC'], data['data'][i]['route'][j - 1]['aTimeUTC'])
+                        for (var k = 0; k < toursArr.length; k++) {
+                            flag = 0;
+                            if (toursArr[k].DurationInMinute <= connetionTime && toursArr[k].City == data['data'][i]['route'][j - 1]['flyTo']) {
+                                conection += "<b>" + connectionsArr[j - 1] + "$&nbsp&nbsp<img class='sale-img' src='../images/travel.png'/></b> - " + timeConvert(connetionTime) + "</p> ";
+                                flag = 1;
+                                break;
+                              }
+                        
+                        }
+                            if(flag==0)
+                                 conection += "<b>" + connectionsArr[j - 1] + "</b> - " + timeConvert(connetionTime) + "</p> ";
                     }
+                    
                 }
 
 
@@ -466,7 +483,7 @@
             var start = moment.utc(a);
             var now = moment.utc(d);
             var duration = moment.duration(now.diff(start));
-            return timeConvert((duration.hours()*60) + (duration.days()*24) + duration.minutes())
+            return (duration.hours()*60) + (duration.days()*24) + duration.minutes()
             
         }
 

@@ -119,7 +119,7 @@
                 str += "<div class='card-body'>";
                 str += "<h5 class='card-title'>" + currentTrips[trips[i]]['name'] + "</h5>";
                 str += " <p class='card-text' style='width:250px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'>" + currentTrips[trips[i]]['intro'] + "</p>"
-                str += " <h6 class='card-title'><b>Score:</b> " + currentTrips[trips[i]]['score'] + "</p>"
+                str += " <h6 class='card-title'><b>Score:</b> " + currentTrips[trips[i]]['score'].toFixed(2) + "</p>"
                 str += " <h6 class='card-title'><b>Distance:</b> " + currentTrips[trips[i]]['distance'] + " Meters</p>"
                 str += " <h6 class='card-title'><b>Opening Hours:</b><br>\n " + getOpeningHours(currentTrips[trips[i]]) + "</p>" 
                 str += "<b>Price: </b><input type='number' class='price' required /><br>"
@@ -155,7 +155,7 @@
                 if (currentTrips[trips[i]]['images'][0] != undefined) {
                     img = currentTrips[trips[i]]['images'][0]['sizes']['medium']['url'];
                 }
-                trip = { TripID: currentTrips[trips[i]]['id'], DurationInMinute: parseInt(arrTime[i].value), Image: img, Intro: currentTrips[trips[i]]['intro'], Title: currentTrips[trips[i]]['name'], Score: currentTrips[trips[i]]['score'], OpeningHour: JSON.stringify(currentTrips[trips[i]]['opening_hours']), Price: parseFloat(arrPrice[i].value) }
+                trip = { TripID: currentTrips[trips[i]]['id'], DurationInMinute: parseInt(arrTime[i].value), Image: img, Intro: currentTrips[trips[i]]['intro'], Title: currentTrips[trips[i]]['name'], Score: currentTrips[trips[i]]['score'].toFixed(2), OpeningHour: JSON.stringify(currentTrips[trips[i]]['opening_hours']), Price: parseFloat(arrPrice[i].value) }
                 tripsArr.push(trip)
             }
             
@@ -296,7 +296,7 @@
                 str += "<div class='card-body'>";
                 str += "<h5 class='card-title'>"+data['results'][i]['name']+"</h5>";
                 str += " <p class='card-text' style='width:250px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'>" + data['results'][i]['snippet']+"</p>"
-                str += " <h6 class='card-title'><b>Score:</b> " + data['results'][i]['score'] + "</p>"
+                str += " <h6 class='card-title'><b>Score:</b> " + data['results'][i]['score'].toFixed(2) + "</p>"
                 str += " <h6 class='card-title'><b>Distance:</b> " + data['results'][i]['distance'] + " Meters</p>"
                 str += " <h6 class='card-title'><b>Opening Hours:</b><br>\n " + getOpeningHours(data['results'][i]) + "</p>"
                 str += " <button id="+i+" type='button' onclick='addToCart(this.id)' class='btn btn-primary addCart'> Add</button >"
