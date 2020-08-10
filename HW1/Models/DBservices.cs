@@ -682,7 +682,7 @@ namespace HW1.Models
 
             StringBuilder sb = new StringBuilder();
             //use a string builder to create the dynamic string
-            sb.AppendFormat("Values('{0}', '{1}', '{2}','{3}')", tour.AgentID, tour.TourName, tour.TourPrice,tour.Duration);
+            sb.AppendFormat("Values('{0}', '{1}', '{2}','{3}')", tour.AgencyName, tour.TourName, tour.TourPrice,tour.durationInMinute);
             String prefix = "INSERT INTO Tour_CS " + "(agentID, tourName,price,durationInMinute) ";
             command = prefix + sb.ToString();
             
