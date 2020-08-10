@@ -133,6 +133,7 @@
             }
 
 
+
             document.getElementById('ph2').innerHTML = str;
             arrPrice = document.getElementsByClassName('price');
             arrTime = document.getElementsByClassName('duration');
@@ -144,6 +145,17 @@
             }
         }
 
+
+        function finishBuildDeal() {
+            tripsArr=[]
+            trips = JSON.parse(localStorage.getItem('trips'));
+            for (var i = 0; i < trips.length; i++) {
+                trip = { tripID: currentTrips[trips[i]]['id'], duration: arrTime[i], image: currentTrips[trips[i]]['images'][0]['sizes']['medium']['url'], intro: currentTrips[trips[i]]['intro'], title: currentTrips[trips[i]]['name'], score: currentTrips[trips[i]]['score'], openingHour: currentTrips[trips[i]]['opening_hours'] }
+                tripsArr.push(trip)
+            }
+            tour { agencyName: "test", tourName: document.getElementById('tripName').textContent, tourPrice: parseFloat(document.getElementById('totalDealPrice').textContent), parseInt(document.getElementById('totalTime').textContent), JSON.stringify(tripsArr) }
+            return false
+        }
 
         function successCB(data) {
             airportList = data;
@@ -183,11 +195,7 @@
             $('#cartBtn').prop('disabled', false);
         }
 
-        function finishBuildDeal()
-        {
 
-            return false
-        }
 
         function defaultImage(img) {
             img.src = 'https://dilavr.com.ua/image/catalog/empty-img.png';
@@ -363,12 +371,13 @@
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModal">Cart</h5>
-                            <button type="button" onclick="clearPrice()" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+                            <form autocomplete='off' action='' id='buildForm'>
+                                <h5 class="modal-title" id="exampleModal">Trip Name: <input type="text" class="form-control" id="tripName" placeholder="Trip Name" required></h5>
+                                <button type="button" onclick="clearPrice()" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
                         </div>
-                        <form autocomplete='off' action='' id='buildForm'>
+                        
                             <div class="modal-body">
                                 <div id="ph2"> </div>
                             </div>
