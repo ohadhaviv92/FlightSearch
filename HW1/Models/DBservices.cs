@@ -548,7 +548,7 @@ namespace HW1.Models
 
             SqlConnection con;
             SqlCommand cmd;
-
+            
             try
             {
                 con = connect("DBConnectionString"); // create the connection
@@ -565,13 +565,30 @@ namespace HW1.Models
 
             try
             {
-                string numEffected = (string)cmd.ExecuteScalar(); // execute the command
+                Int32 id = Convert.ToInt32(cmd.ExecuteScalar()); // execute the command
 
-               
+
+                for (int i = 0; i < tour.Trips.Count; i++)
+                {
+                    try
+                    {
+                        cStr = BuildInsertCommand((Trip)tour.Trips[i], id);
+                        cmd = CreateCommand(cStr, con);             // create the command
+                        cmd.ExecuteNonQuery(); // execute the command
+
+                    }
+                    catch (Exception ex)
+                    {
+                        throw (ex);
+                    }
+                }
+                
+
+
             }
             catch (Exception ex)
             {
-                return ;
+                
                 // write to log
                 throw (ex);
             }
@@ -734,17 +751,27 @@ namespace HW1.Models
             return command;
         }
 
+        private String BuildInsertCommand(Trip trip , int id)
+        {
+            String command;
 
+            StringBuilder sb = new StringBuilder();
+            //use a string builder to create the dynamic string
+            sb.AppendFormat("Values('{0}', '{1}', '{2}','{3}','{4}', '{5}', '{6}','{7}','{8}')", id, trip.TripID, trip.Image, trip.Intro,trip.Title,trip.OpeningHour,trip.Score,trip.DurationInMinute,trip.Price);
+            String prefix = "INSERT INTO TripInTour_CS " + "(TourID, tripID,image,intro,title,openingHour,score,durationInMinute,price) ";
+            command = prefix + sb.ToString();
+            return command;
+        }
         private String BuildInsertCommand(Tour tour)
         {
             String command;
 
             StringBuilder sb = new StringBuilder();
             //use a string builder to create the dynamic string
-            sb.AppendFormat("Values('{0}', '{1}', '{2}','{3}')", tour.AgencyName, tour.TourName, tour.TourPrice,tour.DurationInMinute);
-            String prefix = "INSERT INTO Tour_CS " + "(agentID, tourName,price,durationInMinute) ";
+            sb.AppendFormat("Values('{0}', '{1}', '{2}','{3}','{4}')", tour.AgencyName, tour.TourName, tour.TourPrice,tour.DurationInMinute,tour.City);
+            String prefix = "INSERT INTO Tour_CS " + "(agentID, tourName,price,durationInMinute,city) ";
             command = prefix + sb.ToString();
-            
+            command += "SELECT SCOPE_IDENTITY()";
             return command;
         }
 

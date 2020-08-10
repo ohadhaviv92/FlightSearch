@@ -14,8 +14,9 @@ namespace HW1.Models
         string title;
         double score;
         string openingHour;
+        double price;
 
-        public Trip(string tripID, int durationInMinute, string image, string intro, string title, double score, string openingHour)
+        public Trip(string tripID, int durationInMinute, string image, string intro, string title, double score, string openingHour, double price)
         {
             this.tripID = tripID;
             this.durationInMinute = durationInMinute;
@@ -24,6 +25,7 @@ namespace HW1.Models
             this.title = title;
             this.score = score;
             this.openingHour = openingHour;
+            this.price = price;
         }
 
         public string TripID { get => tripID; set => tripID = value; }
@@ -33,5 +35,6 @@ namespace HW1.Models
         public string Title { get => title; set => title = value; }
         public double Score { get => score; set => score = value; }
         public string OpeningHour { get => openingHour; set => openingHour = value; }
+        public double Price { get => price; set => price = value; }
     }
 }

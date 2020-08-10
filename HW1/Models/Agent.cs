@@ -13,9 +13,9 @@ namespace HW1.Models
 
         public Agent(string agentName, string agentImage, string password)
         {
-            AgentName = agentName;
-            AgentImage = agentImage;
-            Password = password;
+            this.agentName = agentName;
+            this.agentImage = agentImage;
+            this.password = password;
         }
 
         public string AgentName { get => agentName; set => agentName = value; }

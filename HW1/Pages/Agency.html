@@ -155,11 +155,11 @@
                 if (currentTrips[trips[i]]['images'][0] != undefined) {
                     img = currentTrips[trips[i]]['images'][0]['sizes']['medium']['url'];
                 }
-                trip = { TripID: currentTrips[trips[i]]['id'], DurationInMinute: parseInt(arrTime[i].value), Image: img, Intro: currentTrips[trips[i]]['intro'], Title: currentTrips[trips[i]]['name'], Score: currentTrips[trips[i]]['score'], OpeningHour: currentTrips[trips[i]]['opening_hours'] }
+                trip = { TripID: currentTrips[trips[i]]['id'], DurationInMinute: parseInt(arrTime[i].value), Image: img, Intro: currentTrips[trips[i]]['intro'], Title: currentTrips[trips[i]]['name'], Score: currentTrips[trips[i]]['score'], OpeningHour: currentTrips[trips[i]]['opening_hours'], Price: parseFloat(arrPrice[i].value) }
                 tripsArr.push(trip)
             }
             
-            tour = { AgencyName: 1, TourName: document.getElementById('tripName').textContent, TourPrice: parseFloat(document.getElementById('totalDealPrice').textContent), DurationInMinute: parseInt(document.getElementById('totalTime').textContent),Trips: tripsArr }
+            tour = { AgencyName: 1, TourName: document.getElementById('tripName').value, TourPrice: parseFloat(document.getElementById('totalDealPrice').textContent), DurationInMinute: parseInt(document.getElementById('totalTime').textContent),Trips: tripsArr ,City:$(".airportFrom").val() }
              ajaxCall("POST", "../api/tour", JSON.stringify(tour), successAddTour, errFunc)
             return false;
         }
