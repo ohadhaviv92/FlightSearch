@@ -587,7 +587,7 @@ namespace HW1.Models
 
         }
 
-        public int insert(Tour tour)
+        public void insert(Tour tour)
         {
 
             SqlConnection con;
@@ -609,12 +609,13 @@ namespace HW1.Models
 
             try
             {
-                int numEffected = cmd.ExecuteNonQuery(); // execute the command
-                return numEffected;
+                string numEffected = (string)cmd.ExecuteScalar(); // execute the command
+
+               
             }
             catch (Exception ex)
             {
-                return 0;
+                return ;
                 // write to log
                 throw (ex);
             }
