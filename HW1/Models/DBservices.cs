@@ -516,7 +516,7 @@ namespace HW1.Models
                 throw (ex);
             }
 
-            String cStr = BuildInsertCommand(tour);      // helper method to build the insert string
+            String cStr = BuildInsertCommand(tour);      // add tour ang getId of tour
 
             cmd = CreateCommand(cStr, con);             // create the command
 
@@ -676,15 +676,16 @@ namespace HW1.Models
         // Build the Insert command String
         //--------------------------------------------------------------------
 
-        private String BuildInsertCommand(Discount discount)
+        private String BuildInsertCommand(Tour tour)
         {
             String command;
 
             StringBuilder sb = new StringBuilder();
             //use a string builder to create the dynamic string
-            sb.AppendFormat("Values('{0}', '{1}', '{2}','{3}','{4}','{5}')", discount.AirlineCode, discount.AirportCodeFrom, discount.AirportCodeTo, discount.DateFrom.ToShortDateString(), discount.DateTo.ToShortDateString(), discount.DiscountAmount);
-            String prefix = "INSERT INTO discounts " + "(AirlineCode, AirportCodeFrom,AirportCodeTo,DateFrom,DateTo,discount) ";
+            sb.AppendFormat("Values('{0}', '{1}', '{2}','{3}')", tour.AgentID, tour.TourName, tour.TourPrice,tour.Duration);
+            String prefix = "INSERT INTO Tour_CS " + "(agentID, tourName,price,durationInMinute) ";
             command = prefix + sb.ToString();
+            
             return command;
         }
 
