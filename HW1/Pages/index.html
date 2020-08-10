@@ -11,6 +11,7 @@
     <script src="../Scripts/ajaxCalls.js"></script>
     <script src="../Scripts/dateFunctions.js"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
 
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
@@ -203,7 +204,7 @@
                 }
 
                 ajaxCall('POST', "../api/Leg", JSON.stringify(l), function () {
-                   
+
                     Notiflix.Report.Success('Flight Has Been ordered!', "", 'Ok');
                     $('#editDiv').hide();
                     $('#flightTable').parents('div.dataTables_wrapper').first().show();
@@ -381,11 +382,12 @@
                 if (data['data'][i]['route'].length > 1) {
                     connectionsArr = []
                     getConnections(data['data'][i]['route'])
-                    for (var j = 0; j < connectionsArr.length - 1; j++) {
-                        conection += connectionsArr[j] + ", ";
+                    for (var j = 1; j < connectionsArr.length ; j++) {
+                        conection += connectionsArr[j-1] + " (" + getCalcTimeInMinute(data['data'][i]['route'][j]['dTimeUTC'] , data['data'][i]['route'][j-1]['aTimeUTC'])   + " min) , ";
 
                     }
                 }
+
 
                 flightData.push({
                     id: i, cityFrom: data['data'][i]['cityFrom'], cityTo: data['data'][i]['cityTo'], dTime: depTime.toISOString().split('T')[0] + " " + depTime.toISOString().split('T')[1].split('.')[0], aTime: arrTime.toISOString().split('T')[0] + " " + arrTime.toISOString().split('T')[1].split('.')[0], route: conection, airline: data['data'][i]['route'][0]['airline'], price: data['data'][i]['price'] + " $", fromShort: data['data'][i]["flyFrom"], toShort: data['data'][i]["flyTo"]
@@ -455,6 +457,12 @@
 
         }
 
+
+     
+     function   getCalcTimeInMinute(d, a){
+
+        }
+
         function postSuccess() {
             console.log('Flight added')
 
@@ -471,7 +479,7 @@
             swal("Error: " + err);
         }
 
-                                                                //end error function -------------------------------
+                                                                    //end error function -------------------------------
 
 
     </script>

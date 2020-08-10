@@ -801,7 +801,7 @@ namespace HW1.Models
 
             StringBuilder sb = new StringBuilder();
             //use a string builder to create the dynamic string
-            sb.AppendFormat("Values('{0}', '{1}', '{2}','{3}','{4}', '{5}', '{6}','{7}','{8}')", id, trip.TripID, trip.Image, trip.Intro,trip.Title,trip.OpeningHour,trip.Score,trip.DurationInMinute,trip.Price);
+            sb.AppendFormat("Values('{0}', '{1}', '{2}','{3}','{4}', '{5}', '{6}','{7}','{8}')", id, trip.TripID, trip.Image, trip.Intro.Replace("'",""),trip.Title,trip.OpeningHour,trip.Score,trip.DurationInMinute,trip.Price);
             String prefix = "INSERT INTO TripInTour_CS " + "(TourID, tripID,image,intro,title,openingHour,score,durationInMinute,price) ";
             command = prefix + sb.ToString();
             return command;
@@ -813,7 +813,7 @@ namespace HW1.Models
             StringBuilder sb = new StringBuilder();
             //use a string builder to create the dynamic string
             sb.AppendFormat("Values('{0}', '{1}', '{2}','{3}','{4}')", tour.AgencyName, tour.TourName, tour.TourPrice,tour.DurationInMinute,tour.City);
-            String prefix = "INSERT INTO Tour_CS " + "(agentID, tourName,price,durationInMinute,city) ";
+            String prefix = "INSERT INTO Tour_CS " + "(agentName,tourName,price,durationInMinute,city) ";
             command = prefix + sb.ToString();
             command += "SELECT SCOPE_IDENTITY()";
             return command;
