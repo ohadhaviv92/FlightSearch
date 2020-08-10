@@ -198,6 +198,49 @@ namespace HW1.Models
 
         }
 
+        public int registerAgent(Agent ag)
+        {
+
+            SqlConnection con;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("DBConnectionString"); // create the connection
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+
+            String cStr = BuildInsertCommand(ag);      // helper method to build the insert string
+
+            cmd = CreateCommand(cStr, con);             // create the command
+
+            try
+            {
+                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                return numEffected;
+            }
+            catch (Exception ex)
+            {
+
+                // write to log
+                throw (ex);
+            }
+
+            finally
+            {
+                if (con != null)
+                {
+                    // close the db connection
+                    con.Close();
+                }
+            }
+
+        }
+
 
         public List<Order> getOrders()
         {
@@ -675,6 +718,21 @@ namespace HW1.Models
         //--------------------------------------------------------------------
         // Build the Insert command String
         //--------------------------------------------------------------------
+
+
+        private String BuildInsertCommand(Agent ag)
+        {
+            String command;
+
+            StringBuilder sb = new StringBuilder();
+            //use a string builder to create the dynamic string
+            sb.AppendFormat("Values('{0}', '{1}', '{2}')", ag.AgentName, ag.AgentImage, ag.Password);
+            String prefix = "INSERT INTO Tour_CS " + "(agentName,agentImage,pass) ";
+            command = prefix + sb.ToString();
+
+            return command;
+        }
+
 
         private String BuildInsertCommand(Tour tour)
         {
