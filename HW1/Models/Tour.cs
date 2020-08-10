@@ -7,20 +7,21 @@ namespace HW1.Models
 {
     public class Tour
     {
-        
+
+        int agentID;
         string agencyName;
         string tourName;
         double tourPrice;
-        int duration;
+        int durationInMinute;
         List<Trip> trips;
 
-        public Tour(string agencyName, string tourName, double tourPrice, int duration, List<Trip> trips)
+        public Tour(string agencyName, string tourName, double tourPrice, int durationInMinute, List<Trip> trips)
         {
             
             this.agencyName = agencyName;
             this.tourName = tourName;
             this.tourPrice = tourPrice;
-            this.duration = duration;
+            this.durationInMinute = durationInMinute;
             this.trips = trips;
         }
 
@@ -28,7 +29,7 @@ namespace HW1.Models
         public string AgencyName { get => agencyName; set => agencyName = value; }
         public string TourName { get => tourName; set => tourName = value; }
         public double TourPrice { get => tourPrice; set => tourPrice = value; }
-        public int Duration { get => duration; set => duration = value; }
+        public int Duration { get => durationInMinute; set => durationInMinute = value; }
         public List<Trip> Trips { get => trips; set => trips = value; }
     }
 }
