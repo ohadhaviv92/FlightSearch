@@ -3,11 +3,10 @@
         type: method,
         url: api,
         data: data,
-        cache: true,
+        cache: false,
         contentType: "application/json",
         dataType: "json",
         success: successCB,
         error: errorCB
-       
     });
 }

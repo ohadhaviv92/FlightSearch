@@ -6,11 +6,28 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Sign Up Form by Colorlib</title>
 
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+
+    <link href="../Notiflix-2.3.3/dist/notiflix-2.3.3.min.css" rel="stylesheet" />
+    <script src="../Notiflix-2.3.3/dist/notiflix-2.3.3.min.js"></script>
+
     <!-- Font Icon -->
-   
+
     <link href="../fonts/material-icon/css/material-design-iconic-font.min.css" rel="stylesheet" />
     <!-- Main css -->
-
+    <script src="../Scripts/ajaxCalls.js"></script>
     <link href="../css/style.css" rel="stylesheet" />
 
     <script>
@@ -19,8 +36,18 @@
         });
 
         function register() {
-            agency = { AgentName: document.getElementById('name').textContent, AgentImage: "image link here", Password: document.getElementById('pass').textContent }
-            }
+            agency = { AgentName: document.getElementById('name').value, AgentImage: "image link here", Password: document.getElementById('pass').value }
+            ajaxCall("POST", "../api/agent", JSON.stringify(agency), successRegsiter, errFunc)
+        }
+
+
+        function errFunc(err) {
+            console.log("Error: " + err);
+        }
+
+        function successRegsiter() {
+
+        }
     </script>
 </head>
 <body>
@@ -36,12 +63,12 @@
                         <form method="POST" class="register-form" id="register-form">
                             <div class="form-group">
                                 <label for="name"><i class="zmdi zmdi-account material-icons-name"></i></label>
-                                <input type="text" name="name" id="name" placeholder="Agency Name" />
+                                <input type="text" name="name" id="name" placeholder="Agency Name" required/>
                             </div>
 
                             <div class="form-group">
                                 <label for="pass"><i class="zmdi zmdi-lock"></i></label>
-                                <input type="password" name="pass" id="pass" placeholder="Password" />
+                                <input type="password" name="pass" id="pass" placeholder="Password" required/>
                             </div>
                             <div class="form-group form-button">
                                 <input type="submit" name="signup" id="signup" class="form-submit" value="Register" />
