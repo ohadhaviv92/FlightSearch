@@ -25,11 +25,21 @@ namespace HW1.Models
             this.trips = trips;
         }
 
-        
+
+
         public string AgencyName { get => agencyName; set => agencyName = value; }
         public string TourName { get => tourName; set => tourName = value; }
         public double TourPrice { get => tourPrice; set => tourPrice = value; }
         public int Duration { get => durationInMinute; set => durationInMinute = value; }
         public List<Trip> Trips { get => trips; set => trips = value; }
+
+
+        public void insert()
+        {
+
+            DBservices db = new DBservices();
+            db.insert(this);
+            
+        }
     }
 }

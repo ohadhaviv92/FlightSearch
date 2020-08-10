@@ -96,9 +96,10 @@ FOREIGN KEY (AirlineCode) REFERENCES Airlines_CS(AirlineCode),
 create table TourAgent_CS(
      agentID int IDENTITY PRIMARY KEY,
     agentName nvarchar(90),
-     agentImage  nvarchar(max)
-
+     agentImage  nvarchar(max),
+     pass nvarchar(90),
 )
+
 
 create TABLE Tour_CS(
 TourID int IDENTITY (1,1) PRIMARY KEY,
