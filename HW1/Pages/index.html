@@ -151,8 +151,9 @@
 
         function loadFlights() {
             Notiflix.Loading.Standard('Getting Flights...');
+                        let url = "https://api.skypicker.com/flights?flyFrom=TLV&to=LGW&dateFrom=14/08/2020&dateTo=25/08/2020&partner=picky"
 
-            let url = "https://api.skypicker.com/flights?flyFrom=" + $(".airportFrom").val() + "&to=" + $(".airportTo").val() + "&dateFrom=" + fixDate($("#fromDate").val()) + "&dateTo=" + fixDate($("#toDate").val()) + "&partner=picky"
+            //let url = "https://api.skypicker.com/flights?flyFrom=" + $(".airportFrom").val() + "&to=" + $(".airportTo").val() + "&dateFrom=" + fixDate($("#fromDate").val()) + "&dateTo=" + fixDate($("#toDate").val()) + "&partner=picky"
             ajaxCall("GET", url, "", successAPICB, errFunc)
             return false;
         }
@@ -629,9 +630,9 @@ These Terms will be governed by and interpreted in accordance with the laws of t
                 <form autocomplete="off" action="" id="srcBTN">
                     <table>
                         <tr><td><b>Flight from:</b></td></tr>
-                        <tr><td>  <input name="airPort" list="airportFrom" class="airportFrom formelement" required />  <datalist id="airportFrom"></datalist></td><td><input required="required" type="date" id="fromDate" class="formelement" /></td></tr>
+                        <tr><td>  <input name="airPort" list="airportFrom" class="airportFrom formelement" <!--required--> />  <datalist id="airportFrom"></datalist></td><td><input <!--required="required"--> type="date" id="fromDate" class="formelement" /></td></tr>
                         <tr><td><b>To:</b></td></tr>
-                        <tr><td><input name="airPort" list="airportTo" class="airportTo formelement" required />  <datalist id="airportTo"></datalist></td><td><input required="required" type="date" id="toDate" class="formelement" /></td></tr>
+                        <tr><td><input name="airPort" list="airportTo" class="airportTo formelement" <!--required--> />  <datalist id="airportTo"></datalist></td><td><input <!--required="required"--> type="date" id="toDate" class="formelement" /></td></tr>
                         <tr>
                             <td colspan="2">
                                 <button class="btn btn-primary" type="submit" id="searchFlights" >Find Flights!</button>
