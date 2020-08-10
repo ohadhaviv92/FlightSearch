@@ -379,12 +379,12 @@
                 let depTime = convertDate(data['data'][i]['dTime']);
                 let arrTime = convertDate(data['data'][i]['aTime']);
 
-                conection = "";
+                conection = "<p>";
                 if (data['data'][i]['route'].length > 1) {
                     connectionsArr = []
                     getConnections(data['data'][i]['route'])
                     for (var j = 1; j < connectionsArr.length; j++) {
-                        conection += connectionsArr[j - 1] + " (" + getCalcTimeInMinute(data['data'][i]['route'][j]['dTimeUTC'], data['data'][i]['route'][j - 1]['aTimeUTC']) + " min) , ";
+                        conection += "<b>"+connectionsArr[j - 1] + "</b> - " + getCalcTimeInMinute(data['data'][i]['route'][j]['dTimeUTC'], data['data'][i]['route'][j - 1]['aTimeUTC']) + "</p> ";
 
                     }
                 }
@@ -414,7 +414,7 @@
                         {
                             data: "price",
                             render: function (data, type, row, meta) {
-                                console.log(flightData[row.id])
+                              
                                 for (var i = 0; i < discountsArr.length; i++) {
                                     deptime = new Date(flightData[row.id].dTime)
                                     arrtime = new Date(flightData[row.id].aTime)
@@ -466,9 +466,19 @@
             var start = moment.utc(a);
             var now = moment.utc(d);
             var duration = moment.duration(now.diff(start));
-            console.log(duration.asHours());
-            return (duration.hours()*60) + (duration.days()*24) + duration.minutes()
+            return timeConvert((duration.hours()*60) + (duration.days()*24) + duration.minutes())
+            
+        }
 
+
+
+        function timeConvert(n) {
+            var num = n;
+            var hours = (num / 60);
+            var rhours = Math.floor(hours);
+            var minutes = (hours - rhours) * 60;
+            var rminutes = Math.round(minutes);
+            return rhours + " hour(s) and " + rminutes + " minute(s).";
         }
 
         function postSuccess() {
