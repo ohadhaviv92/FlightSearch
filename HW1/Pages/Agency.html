@@ -153,8 +153,9 @@
                 trip = { tripID: currentTrips[trips[i]]['id'], duration: arrTime[i], image: currentTrips[trips[i]]['images'][0]['sizes']['medium']['url'], intro: currentTrips[trips[i]]['intro'], title: currentTrips[trips[i]]['name'], score: currentTrips[trips[i]]['score'], openingHour: currentTrips[trips[i]]['opening_hours'] }
                 tripsArr.push(trip)
             }
-            tour { agencyName: "test", tourName: document.getElementById('tripName').textContent, tourPrice: parseFloat(document.getElementById('totalDealPrice').textContent), parseInt(document.getElementById('totalTime').textContent), JSON.stringify(tripsArr) }
-            return false
+            tour = { agencyName: "test", tourName: document.getElementById('tripName').textContent, tourPrice: parseFloat(document.getElementById('totalDealPrice').textContent), parseInt(document.getElementById('totalTime').textContent),Trips: JSON.stringify(tripsArr) }
+
+            return false;
         }
 
         function successCB(data) {
