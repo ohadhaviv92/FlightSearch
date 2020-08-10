@@ -62,7 +62,7 @@
             updateCartNumber()
             loadAirports();
             $("#flightForm").submit(loadTrips)
-            $("#buildForm").submit(finishBuildDeal)
+            $("#buildForm").submit(finishBuildDeal);
             $('#cartBtn').prop('disabled', true);
         });
         
@@ -150,12 +150,22 @@
             tripsArr=[]
             trips = JSON.parse(localStorage.getItem('trips'));
             for (var i = 0; i < trips.length; i++) {
-                trip = { TripID: currentTrips[trips[i]]['id'], Duration: arrTime[i], Image: currentTrips[trips[i]]['images'][0]['sizes']['medium']['url'], Intro: currentTrips[trips[i]]['intro'], Title: currentTrips[trips[i]]['name'], Score: currentTrips[trips[i]]['score'], OpeningHour: currentTrips[trips[i]]['opening_hours'] }
+
+                img = "";
+                if (currentTrips[trips[i]]['images'][0] != undefined) {
+                    img = currentTrips[trips[i]]['images'][0]['sizes']['medium']['url'];
+                }
+                trip = { TripID: currentTrips[trips[i]]['id'], DurationInMinute: parseInt(arrTime[i].value), Image: img, Intro: currentTrips[trips[i]]['intro'], Title: currentTrips[trips[i]]['name'], Score: currentTrips[trips[i]]['score'], OpeningHour: currentTrips[trips[i]]['opening_hours'] }
                 tripsArr.push(trip)
             }
-            tour = { AgencyName: 1, TourName: document.getElementById('tripName').textContent, TourPrice: parseFloat(document.getElementById('totalDealPrice').textContent), DurationInMinute: parseInt(document.getElementById('totalTime').textContent),Trips: JSON.stringify(tripsArr) }
-
+            
+            tour = { AgencyName: 1, TourName: document.getElementById('tripName').textContent, TourPrice: parseFloat(document.getElementById('totalDealPrice').textContent), DurationInMinute: parseInt(document.getElementById('totalTime').textContent),Trips: tripsArr }
+             ajaxCall("POST", "../api/tour", JSON.stringify(tour), successAddTour, errFunc)
             return false;
+        }
+
+        function successAddTour() {
+            alert("added Tour");
         }
 
         function successCB(data) {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HW1.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -22,8 +23,9 @@ namespace HW1.Controllers
         }
 
         // POST: api/Tour
-        public void Post([FromBody]string value)
+        public void Post([FromBody]Tour tour)
         {
+            tour.insert();
         }
 
         // PUT: api/Tour/5
