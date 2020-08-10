@@ -11,6 +11,8 @@ namespace HW1.Models
          string agentImage;
          string password;
 
+        public Agent()
+        { }
         public Agent(string agentName, string agentImage, string password)
         {
             AgentName = agentName;
@@ -29,5 +31,6 @@ namespace HW1.Models
             db.registerAgent(this);
 
         }
+
     }
 }
