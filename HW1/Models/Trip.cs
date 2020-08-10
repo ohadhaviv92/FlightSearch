@@ -10,18 +10,16 @@ namespace HW1.Models
         string tripID;
         string duration;
         string image;
-        string tripSite;
         string intro;
         string title;
         double score;
         string openingHour;
 
-        public Trip(string tripID, string duration, string image, string tripSite, string intro, string title, double score, string openingHour)
+        public Trip(string tripID, string duration, string image, string intro, string title, double score, string openingHour)
         {
             this.tripID = tripID;
             this.duration = duration;
             this.image = image;
-            this.tripSite = tripSite;
             this.intro = intro;
             this.title = title;
             this.score = score;
@@ -31,7 +29,6 @@ namespace HW1.Models
         public string TripID { get => tripID; set => tripID = value; }
         public string Duration { get => duration; set => duration = value; }
         public string Image { get => image; set => image = value; }
-        public string TripSite { get => tripSite; set => tripSite = value; }
         public string Intro { get => intro; set => intro = value; }
         public string Title { get => title; set => title = value; }
         public double Score { get => score; set => score = value; }
