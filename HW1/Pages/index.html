@@ -88,6 +88,7 @@
             loadAirLines();
             $('#GetAirports').prop('disabled', true); //Disabled the btn
             $("#editDiv").hide() //Hide the buy flight form
+            $("#tourDiv").hide() //Hide the buy flight form
             $("#terms").prop("checked", false); // Make the check box unchecked on first seen
             $("#flightForm").submit(saveFlight)
             var now = new Date(),
@@ -142,7 +143,27 @@
         });
 
 
+        function loadTripToDiv(TourID) {
+            console.log(TourID)
+            var i = 0;
+            for (0; i < toursArr.length; i++) {
+                if (toursArr[i].TourID == TourID)
+                    break;
+            }
+            str = "<center><h2>" + toursArr[i].TourName + "</h2></center>"
+            str += "<div class='card text-center'>"
+            for (var j = 0; j < toursArr[i].Trips.length; j++) {
+                str += "<div class='card-header'><center>" + (j + 1) + "</center></div>"
+                str += "<img src='" + toursArr[i].Trips[j].Image+"' class='rounded mx-auto d-block'>"
+                str += "<div class='card-body'><h5 class='card-title'>" + toursArr[i].Trips[j].Title + "</h5>"
+                str += " <p class='card-text'>" + toursArr[i].Trips[j].Intro + "</p></div>"
+                str += " <div class='card-footer text-muted'>2 days ago</div ></div >"
+            }
+            document.getElementById("tourDiv").innerHTML = str;
+            $('#flightTable').parents('div.dataTables_wrapper').first().hide();
+            $("#tourDiv").show();
 
+        }
 
 
 
@@ -486,7 +507,7 @@
                             render: function (data, type, row, meta) {
                                 let dataflight = "data-flightId='" + row.id + "'";
                                 if (havePackage[parseInt(row.id)] != 0)
-                                    return "<button tour=" + havePackage[parseInt(row.id)]+" type='button' class = 'ViewTour btn btn-primary' " + dataflight + ">View Package</button><button  type='button' class = 'orderBTN btn btn-primary' " + dataflight + ">Order</button>";
+                                    return "<button onclick='loadTripToDiv(" + havePackage[parseInt(row.id)]+")' type='button' class = 'ViewTour btn btn-primary' " + dataflight + ">View Package</button><button  type='button' class = 'orderBTN btn btn-primary' " + dataflight + ">Order</button>";
                                 return "<button  type='button' class = 'orderBTN btn btn-primary' " + dataflight + ">Order</button>";
                             }
 
@@ -582,7 +603,7 @@
     <br />
 
     <div class="container">
-    
+
 
         <div id="editDiv">
             <form id="flightForm">
@@ -675,6 +696,10 @@ These Terms will be governed by and interpreted in accordance with the laws of t
             </form>
         </div>
 
+        <div id="tourDiv">
+            
+        </div>
+
         <table id="flightTable" class="display nowrap" style="width:100%">
             <thead>
                 <tr>
@@ -702,14 +727,14 @@ These Terms will be governed by and interpreted in accordance with the laws of t
                         <tr><td><input name="airPort" list="airportTo" class="airportTo formelement" <!--required--> />  <datalist id="airportTo"></datalist></td><td><input <!--required="required"--> type="date" id="toDate" class="formelement" /></td></tr>
                         <tr>
                             <td colspan="2">
-                                <button class="btn btn-primary" type="submit" id="searchFlights" >Find Flights!</button>
+                                <button class="btn btn-primary" type="submit" id="searchFlights">Find Flights!</button>
 
-                               
 
-                            </td> 
+
+                            </td>
 
                         </tr>
-                        
+
                     </table>
 
                 </form>
