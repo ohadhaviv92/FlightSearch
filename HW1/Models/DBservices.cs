@@ -313,7 +313,59 @@ namespace HW1.Models
                     t.TourName = (string)dr["tourName"];
                     t.TourPrice = (double)dr["price"];
                     t.DurationInMinute = (int)dr["durationInMinute"];
-                    t.Trips = null;
+                    t.Trips = getAllTrips((int)dr["TourID"]);
+                    list.Add(t);
+                }
+                
+                return list;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+
+
+
+
+            return null;
+        }
+
+
+        public List<Trip> getAllTrips(int tourID)
+        {
+            SqlConnection con = null;
+
+            try
+            {
+
+                con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+                String selectSTR = "select * from TripInTour_CS where TourID ='"+ tourID+"'";
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+                // get a reader
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+                List<Trip> list = new List<Trip>();
+                while (dr.Read())
+                {   // Read till the end of the data into a row
+                    Trip t = new Trip();
+                    t.TripID = (string)dr["tripID"];
+                    t.DurationInMinute = (int)dr["durationInMinute"];
+                    t.Price = (double)dr["price"];
+                    t.Image = (string)dr["image"];
+                    t.Score = (double)dr["score"];
+                    t.Intro = (string)dr["intro"];
+                    t.Title = (string)dr["title"];
+                    t.OpeningHour = (string)dr["openingHour"];
                     list.Add(t);
                 }
 

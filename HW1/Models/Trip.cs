@@ -27,7 +27,7 @@ namespace HW1.Models
             this.openingHour = openingHour;
             this.price = price;
         }
-
+        public Trip() { }
         public string TripID { get => tripID; set => tripID = value; }
         public int DurationInMinute { get => durationInMinute; set => durationInMinute = value; }
         public string Image { get => image; set => image = value; }
