@@ -56,6 +56,7 @@
 
 
     <script>
+        daysOfTheWeek = { "sun": 0, 1: "mon", 2: "tue", 3: "wed", 4: "thu", 5: "fri", 6: "sat"}
         var table = null;
         countryCodes = [];
         Myflightsarr = [];
@@ -391,12 +392,34 @@
                     for (var j = 1; j < connectionsArr.length; j++) {
                      
                         var connetionTime = getCalcTimeInMinute(data['data'][i]['route'][j]['dTimeUTC'], data['data'][i]['route'][j - 1]['aTimeUTC'])
+                        var startDate = convertDate(data['data'][i]['route'][j - 1]['aTimeUTC'])
+                        var endDate = convertDate(data['data'][i]['route'][j]['dTimeUTC'])
+                        var start = startDate.getHours() * 60 + startDate.getMinutes();
+                        var end = endDate.getHours() * 60 + endDate.getMinutes();
                         for (var k = 0; k < toursArr.length; k++) {
                             flag = 0;
                             if (toursArr[k].DurationInMinute <= connetionTime && toursArr[k].City == data['data'][i]['route'][j - 1]['flyTo']) {
-                                conection += "<b>" + connectionsArr[j - 1] + "$&nbsp&nbsp<img class='sale-img' src='../images/travel.png'/></b> - " + timeConvert(connetionTime) + "</p> ";
-                                flag = 1;
-                                break;
+                                for (var y = 0; y < toursArr[k].Trips.length; y++) {
+                                    if (toursArr[k].Trips[y]['OpeningHour'] != "null") {
+                                        var openingHours = JSON.parse(toursArr[k].Trips[y]['OpeningHour'])
+                                        var attStart = openingHours.days[daysOfTheWeek[startDate.getDay()]][0].start.hour * 60 + openingHours.days[daysOfTheWeek[startDate.getDay()]][0].start.minute
+                                        var attEnd = openingHours.days[daysOfTheWeek[startDate.getDay()]][0].end.hour * 60 + openingHours.days[daysOfTheWeek[startDate.getDay()]][0].end.minute
+                                        if ((attStart < start && start < attEnd) && attEnd > end && end > attStart) {
+                                            conection += "<b>" + connectionsArr[j - 1] + "&nbsp&nbsp<img class='sale-img' src='../images/travel.png'/></b> - " + timeConvert(connetionTime) + "</p> ";
+                                            flag = 1;
+                                            break;
+                                        }
+
+                                    }
+                                    else {
+                                        conection += "<b>" + connectionsArr[j - 1] + "&nbsp&nbsp<img class='sale-img' src='../images/travel.png'/></b> - " + timeConvert(connetionTime) + "</p> ";
+                                        flag = 1;
+                                        break;
+                                        
+                                    }
+                                }
+                                
+                                
                               }
                         
                         }
