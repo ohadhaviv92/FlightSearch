@@ -60,7 +60,8 @@
         var table = null;
         countryCodes = [];
         Myflightsarr = [];
-        discountsArr = []
+        discountsArr = [];
+        havePackage=[]
         toursArr = []
         durationInMinArr=[]
         airportList = {};
@@ -385,6 +386,7 @@
                 let depTime = convertDate(data['data'][i]['dTime']);
                 let arrTime = convertDate(data['data'][i]['aTime']);
                 var flag = 0;
+                var package = 0;
                 conection = "<p>";
                 if (data['data'][i]['route'].length > 1) {
                     connectionsArr = []
@@ -407,6 +409,8 @@
                                         if ((attStart < start && start < attEnd) && attEnd > end && end > attStart) {
                                             conection += "<b>" + connectionsArr[j - 1] + "&nbsp&nbsp<img class='sale-img' src='../images/travel.png'/></b> - " + timeConvert(connetionTime) + "</p> ";
                                             flag = 1;
+                                            package = 1;
+                                            havePackage[parseInt(i)] = toursArr[k].TourID;
                                             break;
                                         }
 
@@ -417,14 +421,17 @@
                                         break;
                                         
                                     }
+                                    
                                 }
                                 
                                 
                               }
-                        
+                          
                         }
-                            if(flag==0)
-                                 conection += "<b>" + connectionsArr[j - 1] + "</b> - " + timeConvert(connetionTime) + "</p> ";
+                        if (flag == 0) {
+                            conection += "<b>" + connectionsArr[j - 1] + "</b> - " + timeConvert(connetionTime) + "</p> ";
+                            
+                        }
                     }
                     
                 }
@@ -433,6 +440,8 @@
                 flightData.push({
                     id: i, cityFrom: data['data'][i]['cityFrom'], cityTo: data['data'][i]['cityTo'], dTime: depTime.toISOString().split('T')[0] + " " + depTime.toISOString().split('T')[1].split('.')[0], aTime: arrTime.toISOString().split('T')[0] + " " + arrTime.toISOString().split('T')[1].split('.')[0], route: conection, airline: data['data'][i]['route'][0]['airline'], price: data['data'][i]['price'] + " $", fromShort: data['data'][i]["flyFrom"], toShort: data['data'][i]["flyTo"]
                 })
+                if (package == 0)
+                    havePackage[parseInt(i)] = 0;
             }
 
 
@@ -476,7 +485,8 @@
                         {
                             render: function (data, type, row, meta) {
                                 let dataflight = "data-flightId='" + row.id + "'";
-
+                                if (havePackage[parseInt(row.id)] != 0)
+                                    return "<button tour=" + havePackage[parseInt(row.id)]+" type='button' class = 'ViewTour btn btn-primary' " + dataflight + ">View Package</button><button  type='button' class = 'orderBTN btn btn-primary' " + dataflight + ">Order</button>";
                                 return "<button  type='button' class = 'orderBTN btn btn-primary' " + dataflight + ">Order</button>";
                             }
 
@@ -537,7 +547,7 @@
             swal("Error: " + err);
         }
 
-                                                                        //end error function -------------------------------
+       //end error function -------------------------------
 
 
     </script>

@@ -312,6 +312,7 @@ namespace HW1.Models
                     t.City= (string)dr["city"];
                     t.TourName = (string)dr["tourName"];
                     t.TourPrice = (double)dr["price"];
+                    t.TourID= (int)dr["TourID"];
                     t.DurationInMinute = (int)dr["durationInMinute"];
                     t.Trips = getAllTrips((int)dr["TourID"]);
                     list.Add(t);
