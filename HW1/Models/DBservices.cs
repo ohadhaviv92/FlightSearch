@@ -936,8 +936,9 @@ namespace HW1.Models
 
             StringBuilder sb = new StringBuilder();
             //use a string builder to create the dynamic string
-            sb.AppendFormat("Values('{0}', '{1}', '{2}','{3}')", order[0], order[1],order[2], order[3]);
-            String prefix = "INSERT INTO orders " + "(flightid, passengersNames,userEmail,orderDate) ";
+            
+            sb.AppendFormat("Values('{0}', '{1}', '{2}','{3}','{4}')", order[0], order[1],order[2], order[3],order[4]);
+            String prefix = "INSERT INTO orders " + "(flightid, passengersNames,userEmail,orderDate,packages) ";
             command = prefix + sb.ToString();
             return command;
         }

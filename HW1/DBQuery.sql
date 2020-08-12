@@ -49,6 +49,7 @@ flightId nvarchar(500),
 passengersNames nvarchar(100),
 userEmail nvarchar(70),
 orderDate datetime,
+packages nvarchar(100),
 
 FOREIGN KEY (flightId) REFERENCES MyFlights_CS(FlightPath),
 primary key(userEmail,flightId)

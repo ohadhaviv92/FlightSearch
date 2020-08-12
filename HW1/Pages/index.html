@@ -11,6 +11,13 @@
     <script src="../Scripts/ajaxCalls.js"></script>
     <script src="../Scripts/dateFunctions.js"></script>
 
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.17.2/firebase.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+         https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/7.17.2/firebase-analytics.js"></script>
+
 
 
     <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
@@ -21,7 +28,7 @@
     <link href="../Notiflix-2.3.3/dist/notiflix-2.3.3.min.css" rel="stylesheet" />
     <script src="../Notiflix-2.3.3/dist/notiflix-2.3.3.min.js"></script>
 
-
+    <script src="../js/fireBaseConfig.js"></script>
 
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -56,18 +63,21 @@
 
 
     <script>
-        daysOfTheWeek = { "sun": 0, 1: "mon", 2: "tue", 3: "wed", 4: "thu", 5: "fri", 6: "sat"}
+        var firebaseOrders
+        daysOfTheWeek = { "sun": 0, 1: "mon", 2: "tue", 3: "wed", 4: "thu", 5: "fri", 6: "sat" }
         var table = null;
         countryCodes = [];
+        inCart = []
         Myflightsarr = [];
         discountsArr = [];
-        havePackage=[]
+        havePackage = []
         toursArr = []
-        durationInMinArr=[]
+        durationInMinArr = []
         airportList = {};
         var airports = new Array();
         var airlines = new Array();
         airlinesList = {};
+
         flag = 0; // 0 =>  there are already airports table on db
         dataArr = {} //Store the current search arr
         ajaxCall("GET", "../api/discount", "", saveDiscounts, errFunc);
@@ -80,7 +90,7 @@
         ajaxCall("GET", "../api/tour", "", getAllTours, errFunc)
         $(document).ready(function () {
 
-
+            localStorage.removeItem('incart')
             $("#srcBTN").submit(loadFlights);
             $("#MyFlights").click(MyFlights)
             $("#fromDate").min = new Date().toISOString().split("T")[0];
@@ -142,30 +152,76 @@
             }, errFunc);
         });
 
+        function init() {
+            firebaseOrders = firebase.database().ref("orders");
+            listenToNewOrders()
+        }
 
-        function loadTripToDiv(TourID) {
-            console.log(TourID)
-            var i = 0;
-            for (0; i < toursArr.length; i++) {
-                if (toursArr[i].TourID == TourID)
-                    break;
-            }
-            str = "<center><h2>" + toursArr[i].TourName + "</h2></center>"
-            str += "<div class='card text-center'>"
-            for (var j = 0; j < toursArr[i].Trips.length; j++) {
-                str += "<div class='card-header'><center>" + (j + 1) + "</center></div>"
-                str += "<img src='" + toursArr[i].Trips[j].Image+"' class='rounded mx-auto d-block'>"
-                str += "<div class='card-body'><h5 class='card-title'>" + toursArr[i].Trips[j].Title + "</h5>"
-                str += " <p class='card-text'>" + toursArr[i].Trips[j].Intro + "</p></div>"
-                str += " <div class='card-footer text-muted'>2 days ago</div ></div >"
-            }
-            document.getElementById("tourDiv").innerHTML = str;
-            $('#flightTable').parents('div.dataTables_wrapper').first().hide();
-            $("#tourDiv").show();
-
+        function listenToNewOrders() {
+            // child_added will be evoked for every child that was added
+            // on the first entry, it will bring all the childs
+            firebaseOrders.on("child_added", snapshot => {
+                order = {
+                    passengersNames: snapshot.val().passengersNames,
+                }
+                Notiflix.Notify.Success('Sol lucet omnibus');
+            })
         }
 
 
+        function loadTripToDiv(TourID) {
+            console.log(TourID)
+            str = ""
+            for (var k = 0; k < TourID.length; k++) {
+                var i = 0;
+                for (; i < toursArr.length; i++) {
+                    if (toursArr[i].TourID == TourID[k])
+                        break;
+                }
+                str += "<center><h2>" + toursArr[i].TourName + "</h2>Add To Cart: <input tour=" + toursArr[i].TourID + " onclick='addToCart(this)' type='checkbox' aria-label='Checkbox for following text input'></center>"
+
+                for (var j = 0; j < toursArr[i].Trips.length; j++) {
+                    str += "<div class='card text-center'>"
+                    str += "<div class='card-header'><center>" + toursArr[i].Trips[j].Title + "</center></div>"
+                    str += "<img src='" + toursArr[i].Trips[j].Image + "' class='rounded mx-auto d-block'>"
+                    str += "<div class='card-body'><h5 class='card-title'>" + toursArr[i].Trips[j].Intro + "</h5>"
+                    str += " <p class='card-text'>Score: " + toursArr[i].Trips[j].Score + "</p></div>"
+                    str += " <div class='card-footer text-muted'></div ></div ><br><br>"
+                }
+
+            }
+
+            document.getElementById("tourDiv").innerHTML = str;
+            $('#flightTable').parents('div.dataTables_wrapper').first().hide();
+            $("#tourDiv").show();
+        }
+
+        function addToCart(checkBox) {
+            if (checkBox.checked) {
+                if (!inCart.includes(parseInt($(checkBox).attr("tour")))) {
+                    inCart.push(parseInt($(checkBox).attr("tour")));
+                    localStorage.setItem('incart', JSON.stringify(inCart))
+                }
+            }
+            else {
+                inCart = removeValue(inCart, parseInt($(checkBox).attr("tour")))
+                if (inCart.length == 0)
+                    localStorage.removeItem('incart')
+                else
+                    localStorage.setItem('incart', JSON.stringify(inCart))
+            }
+
+        }
+
+        function removeValue(arr, value) {
+            for (var i = 0; i < arr.length; i++) {
+                if (arr[i] === value) {
+                    arr.splice(i, 1);
+                    break;
+                }
+            }
+            return arr;
+        }
 
         // API call ---------------------------------------------------------------
 
@@ -179,7 +235,7 @@
 
         function loadFlights() {
             Notiflix.Loading.Standard('Getting Flights...');
-                        let url = "https://api.skypicker.com/flights?flyFrom=TLV&to=LGW&dateFrom=14/08/2020&dateTo=25/08/2020&partner=picky"
+            let url = "https://api.skypicker.com/flights?flyFrom=TLV&to=LGW&dateFrom=1/09/2020&dateTo=11/09/2020&partner=picky"
 
             //let url = "https://api.skypicker.com/flights?flyFrom=" + $(".airportFrom").val() + "&to=" + $(".airportTo").val() + "&dateFrom=" + fixDate($("#fromDate").val()) + "&dateTo=" + fixDate($("#toDate").val()) + "&partner=picky"
             ajaxCall("GET", url, "", successAPICB, errFunc)
@@ -248,20 +304,25 @@
             useremail = $("#email").val()
             orderDate = new Date()
             var date = orderDate.getFullYear() + '-' + orderDate.getDate() + '-' + (orderDate.getMonth() + 1);
-
-            ajaxCall("POST", "../api/order", JSON.stringify([flightId, passengersNames, useremail, orderDate]), successMyFlights, errFunc)
-
+            if (localStorage.getItem('incart'))
+                ajaxCall("POST", "../api/order", JSON.stringify([flightId, passengersNames, useremail, orderDate, JSON.stringify(localStorage.getItem('incart'))]), successMyFlights, errFunc)
+            else
+                ajaxCall("POST", "../api/order", JSON.stringify([flightId, passengersNames, useremail, orderDate, "No Packge"]), successMyFlights, errFunc)
+            firebaseOrders.push().set({ "flightId": flightId, "passengersNames": passengersNames, "useremail": useremail, "orderDate": orderDate, "tour": "test" });
             return false;
         }
 
 
 
         $(document).on("click", ".orderBTN", function () { // Open the buy form.
-
+            trips = $(this).attr("trips");
             $('#flightTable').parents('div.dataTables_wrapper').first().hide();
+            if (trips != null)
+                document.getElementById('packageDiv').innerHTML = "<button onclick='loadTripToDiv([" + trips + "])' type='button' class = 'ViewTour btn btn-primary'>View Package</button>"
             $("#editDiv").show();
             row = $(this).attr("data-flightid");
-            console.log(row)
+
+
 
 
         });
@@ -408,12 +469,13 @@
                 let arrTime = convertDate(data['data'][i]['aTime']);
                 var flag = 0;
                 var package = 0;
+                var packageArr = []
                 conection = "<p>";
                 if (data['data'][i]['route'].length > 1) {
                     connectionsArr = []
                     getConnections(data['data'][i]['route'])
                     for (var j = 1; j < connectionsArr.length; j++) {
-                     
+
                         var connetionTime = getCalcTimeInMinute(data['data'][i]['route'][j]['dTimeUTC'], data['data'][i]['route'][j - 1]['aTimeUTC'])
                         var startDate = convertDate(data['data'][i]['route'][j - 1]['aTimeUTC'])
                         var endDate = convertDate(data['data'][i]['route'][j]['dTimeUTC'])
@@ -431,7 +493,8 @@
                                             conection += "<b>" + connectionsArr[j - 1] + "&nbsp&nbsp<img class='sale-img' src='../images/travel.png'/></b> - " + timeConvert(connetionTime) + "</p> ";
                                             flag = 1;
                                             package = 1;
-                                            havePackage[parseInt(i)] = toursArr[k].TourID;
+                                            packageArr.push(toursArr[k].TourID)
+                                            havePackage[parseInt(i)] = packageArr;
                                             break;
                                         }
 
@@ -440,23 +503,24 @@
                                         conection += "<b>" + connectionsArr[j - 1] + "&nbsp&nbsp<img class='sale-img' src='../images/travel.png'/></b> - " + timeConvert(connetionTime) + "</p> ";
                                         flag = 1;
                                         package = 1;
-                                        havePackage[parseInt(i)] = toursArr[k].TourID;
+                                        packageArr.push(toursArr[k].TourID)
+                                        havePackage[parseInt(i)] = packageArr;
                                         break;
-                                        
+
                                     }
-                                    
+
                                 }
-                                
-                                
-                              }
-                          
+
+
+                            }
+
                         }
                         if (flag == 0) {
                             conection += "<b>" + connectionsArr[j - 1] + "</b> - " + timeConvert(connetionTime) + "</p> ";
-                            
+
                         }
                     }
-                    
+
                 }
 
 
@@ -486,7 +550,7 @@
                         {
                             data: "price",
                             render: function (data, type, row, meta) {
-                              
+
                                 for (var i = 0; i < discountsArr.length; i++) {
                                     deptime = new Date(flightData[row.id].dTime)
                                     arrtime = new Date(flightData[row.id].aTime)
@@ -509,8 +573,8 @@
                             render: function (data, type, row, meta) {
                                 let dataflight = "data-flightId='" + row.id + "'";
                                 if (havePackage[parseInt(row.id)] != 0)
-                                    return "<button onclick='loadTripToDiv(" + havePackage[parseInt(row.id)]+")' type='button' class = 'ViewTour btn btn-primary' " + dataflight + ">View Package</button><button  type='button' class = 'orderBTN btn btn-primary' " + dataflight + ">Order</button>";
-                                return "<button  type='button' class = 'orderBTN btn btn-primary' " + dataflight + ">Order</button>";
+                                    return "<button onclick='loadTripToDiv([" + havePackage[parseInt(row.id)] + "])' type='button' class = 'ViewTour btn btn-primary' " + dataflight + ">View Package</button><button trips='[" + havePackage[parseInt(row.id)] + "]'" + " type='button' class = 'orderBTN btn btn-primary' " + dataflight + ">Order</button>";
+                                return "<button type='button' class='orderBTN btn btn-primary' " + dataflight + ">Order</button>";
                             }
 
                         },
@@ -534,13 +598,13 @@
 
 
         function getCalcTimeInMinute(d, a) {
-            a=convertDate(a)
-            d=convertDate(d)
+            a = convertDate(a)
+            d = convertDate(d)
             var start = moment.utc(a);
             var now = moment.utc(d);
             var duration = moment.duration(now.diff(start));
-            return (duration.hours()*60) + (duration.days()*24) + duration.minutes()
-            
+            return (duration.hours() * 60) + (duration.days() * 24) + duration.minutes()
+
         }
 
 
@@ -570,7 +634,7 @@
             swal("Error: " + err);
         }
 
-       //end error function -------------------------------
+        //end error function -------------------------------
 
 
     </script>
@@ -580,7 +644,7 @@
 
 
 
-<body>
+<body onload="init()">
 
     <div class="header">
         <img src="../images/—Pngtree—blue and red airplane vector_4235031.png" />
@@ -696,6 +760,7 @@ These Terms will be governed by and interpreted in accordance with the laws of t
                 <button type="submit" class="btn btn-primary btn-lg" id="saveBTN">Save</button>
                 <input type="button" class="btn btn-warning btn-lg" id="cancelSaveBTN" value="Cancel" />
             </form>
+            <div id="packageDiv"></div>
         </div>
 
         <div id="tourDiv">
@@ -746,6 +811,7 @@ These Terms will be governed by and interpreted in accordance with the laws of t
         </div>
     </div>
         <div id="ph"></div>
+
 </body>
 </html>
 
