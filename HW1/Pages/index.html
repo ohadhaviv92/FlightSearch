@@ -66,8 +66,12 @@
         var firebaseOrders
         daysOfTheWeek = { "sun": 0, 1: "mon", 2: "tue", 3: "wed", 4: "thu", 5: "fri", 6: "sat" }
         var table = null;
+
         countryCodes = [];
         inCart = []
+        var lastFromFlightLocation;
+        var lastToFlightLocation;
+        var lastPrice;
         Myflightsarr = [];
         discountsArr = [];
         havePackage = []
@@ -158,14 +162,22 @@
         }
 
         function listenToNewOrders() {
+            var ignoreItems = true;
             // child_added will be evoked for every child that was added
             // on the first entry, it will bring all the childs
-            firebaseOrders.on("child_added", snapshot => {
-                order = {
-                    passengersNames: snapshot.val().passengersNames,
+            firebaseOrders.limitToLast(1).on("child_added", snapshot => {
+                if (!ignoreItems) {
+                    order = {
+                        passengersNames: snapshot.val().passengersNames,
+                    }
+                    console.log(order.passengersNames + " Just booked a flight from: " + lastFromFlightLocation + " To: " + lastToFlightLocation + " For ONLY " + lastPrice)
+                    Notiflix.Notify.Success(order.passengersNames + " Just booked a flight from: " + lastFromFlightLocation + " To: " + lastToFlightLocation + " For ONLY " + lastPrice);
+
                 }
-                Notiflix.Notify.Success('Sol lucet omnibus');
             })
+            firebaseOrders.once('value', function (snapshot) {
+                ignoreItems = false;
+            });
         }
 
 
@@ -279,7 +291,9 @@
 
 
             flight = { FlightPath1: dataArr['data'][parseInt(row)]['id'], AirportFrom1: dataArr['data'][parseInt(row)]['flyFrom'], AirportTo1: dataArr['data'][parseInt(row)]['flyTo'], DepTime1: convertDate(dataArr['data'][parseInt(row)]['dTime']), ArriveTime1: convertDate(dataArr['data'][parseInt(row)]['aTime']), Duration1: dataArr['data'][parseInt(row)]['duration']['total'], price: parseFloat(dataArr['data'][parseInt(row)]['price']), LegsNumber1: dataArr['data'][parseInt(row)]['route'].length }
-
+            lastFromFlightLocation = dataArr['data'][parseInt(row)]['cityFrom']
+            lastToFlightLocation = dataArr['data'][parseInt(row)]['cityTo']
+            lastPrice = dataArr['data'][parseInt(row)]['price'] +"$"
             ajaxCall('POST', "../api/flight", JSON.stringify(flight), postSuccess, errFunc)
             for (i = 0; i < dataArr['data'][parseInt(row)]['route'].length; i++) {//Count how many legs in the flight
                 legs.push(dataArr['data'][parseInt(row)]['route'][i]['cityTo'])
@@ -299,16 +313,8 @@
 
 
 
-            flightId = dataArr['data'][parseInt(row)]['id']
-            passengersNames = $("#Passengers").val()
-            useremail = $("#email").val()
-            orderDate = new Date()
-            var date = orderDate.getFullYear() + '-' + orderDate.getDate() + '-' + (orderDate.getMonth() + 1);
-            if (localStorage.getItem('incart'))
-                ajaxCall("POST", "../api/order", JSON.stringify([flightId, passengersNames, useremail, orderDate, JSON.stringify(localStorage.getItem('incart'))]), successMyFlights, errFunc)
-            else
-                ajaxCall("POST", "../api/order", JSON.stringify([flightId, passengersNames, useremail, orderDate, "No Packge"]), successMyFlights, errFunc)
-            firebaseOrders.push().set({ "flightId": flightId, "passengersNames": passengersNames, "useremail": useremail, "orderDate": orderDate, "tour": "test" });
+
+            
             return false;
         }
 
@@ -447,6 +453,7 @@
             }
             str += "</tbody></table>"
             document.getElementById('ph').innerHTML = str;
+            
         }
 
 
@@ -619,11 +626,27 @@
         }
 
         function postSuccess() {
-            console.log('Flight added')
+            flightId = dataArr['data'][parseInt(row)]['id']
 
+            console.log('Flight added') 
+            passengersNames = $("#Passengers").val()
+            useremail = $("#email").val()
+            orderDate = new Date()
+            var date = orderDate.getFullYear() + '-' + (orderDate.getDate() - 2) + '-' + (orderDate.getMonth() + 1);
+            if (localStorage.getItem('incart'))
+                ajaxCall("POST", "../api/order", JSON.stringify([flightId, passengersNames, useremail, date, JSON.stringify(localStorage.getItem('incart'))]), addNotification, errFunc)
+            else
+                ajaxCall("POST", "../api/order", JSON.stringify([flightId, passengersNames, useremail, date, "No Packge"]), addNotification(), errFunc)
 
         }
-
+        function addNotification() {
+            
+            passengersNames = $("#Passengers").val()
+            useremail = $("#email").val()
+            orderDate = new Date()
+            var date = orderDate.getFullYear() + '-' + (orderDate.getDate() - 2) + '-' + (orderDate.getMonth() + 1);
+            firebaseOrders.push().set({ "passengersNames": passengersNames, "useremail": useremail, "orderDate": orderDate, "tour": "test" });
+        }
         // end success functions -----------------------------------
 
 
