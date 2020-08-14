@@ -353,7 +353,7 @@
 
         function getConnections(connectionsList) {
             for (var j = 0; j < connectionsList.length; j++) {
-                connectionsArr.push(connectionsList[j]['cityTo'])
+                connectionsArr.push(connectionsList[j]['cityTo'] + "(" + connectionsList[j]['flyTo'] + ")");
             }
 
         }
@@ -489,17 +489,19 @@
                     for (var j = 1; j < connectionsArr.length; j++) {
 
                         var connetionTime = getCalcTimeInMinute(data['data'][i]['route'][j]['dTimeUTC'], data['data'][i]['route'][j - 1]['aTimeUTC'])
+                        var conectionHour = getCalcTime(data['data'][i]['route'][j]['dTimeUTC'], data['data'][i]['route'][j - 1]['aTimeUTC']);
                         var startDate = convertDate(data['data'][i]['route'][j - 1]['aTimeUTC'])
                         var endDate = convertDate(data['data'][i]['route'][j]['dTimeUTC'])
                         var start = startDate.getHours() * 60 + startDate.getMinutes();
                         var end = endDate.getHours() * 60 + endDate.getMinutes();
+                        flag = 0;
                         for (var k = 0; k < toursArr.length; k++) {
-                            flag = 0;
-                            if (toursArr[k].DurationInMinute <= connetionTime && toursArr[k].City == data['data'][i]['route'][j - 1]['flyTo']) {
+                            
+                            if (toursArr[k].DurationInMinute <= connetionTime && toursArr[k].City == data['data'][i]['route'][j - 1]['flyTo']) {  
                                 for (var y = 0; y < toursArr[k].Trips.length; y++) {
                                     if (toursArr[k].Trips[y]['OpeningHour'] != "null") {
                                         if (toursArr[k].Trips[y]['OpeningHour']['open_24_7'] == true) {
-                                            conection += "<b>" + connectionsArr[j - 1] + "&nbsp&nbsp<img class='sale-img' src='../images/travel.png'/></b> - " + timeConvert(connetionTime) + "</p>"
+                                            //conection += "<b>" + connectionsArr[j - 1] + "&nbsp&nbsp<img class='sale-img' src='../images/travel.png'/></b> - " + timeConvert(connetionTime) + "</p>"
                                                   flag = 1;
                                             package = 1;
                                             packageArr.push(toursArr[k].TourID)
@@ -507,9 +509,9 @@
                                             break;
                                         }
                                         
-                                            var openingHours = JSON.parse(toursArr[k].Trips[y]['OpeningHour'])
+                                         var openingHours = JSON.parse(toursArr[k].Trips[y]['OpeningHour'])
                                         if (openingHours.days[daysOfTheWeek[startDate.getDay()]][0].start == null || openingHours.days[daysOfTheWeek[startDate.getDay()]][0].end == null) {
-                                            conection += "<b>" + connectionsArr[j - 1] + "&nbsp&nbsp<img class='sale-img' src='../images/travel.png'/></b> - " + timeConvert(connetionTime) + "</p> ";
+                                            //conection += "<b>" + connectionsArr[j - 1] + "&nbsp&nbsp<img class='sale-img' src='../images/travel.png'/></b> - " + timeConvert(connetionTime) + "</p> ";
                                                              flag = 1;
                                             package = 1;
                                             packageArr.push(toursArr[k].TourID)
@@ -519,7 +521,7 @@
                                         var attStart = openingHours.days[daysOfTheWeek[startDate.getDay()]][0].start.hour * 60 + openingHours.days[daysOfTheWeek[startDate.getDay()]][0].start.minute
                                         var attEnd = openingHours.days[daysOfTheWeek[startDate.getDay()]][0].end.hour * 60 + openingHours.days[daysOfTheWeek[startDate.getDay()]][0].end.minute
                                         if ((attStart < start && start < attEnd) && attEnd > end && end > attStart) {
-                                            conection += "<b>" + connectionsArr[j - 1] + "&nbsp&nbsp<img class='sale-img' src='../images/travel.png'/></b> - " + timeConvert(connetionTime) + "</p> ";
+                                           // conection += "<b>" + connectionsArr[j - 1] + "&nbsp&nbsp<img class='sale-img' src='../images/travel.png'/></b> - " + timeConvert(connetionTime) + "</p> ";
                                             flag = 1;
                                             package = 1;
                                             packageArr.push(toursArr[k].TourID)
@@ -529,7 +531,7 @@
 
                                     }
                                     else {
-                                        conection += "<b>" + connectionsArr[j - 1] + "&nbsp&nbsp<img class='sale-img' src='../images/travel.png'/></b> - " + timeConvert(connetionTime) + "</p> ";
+                                       // conection += "<b>" + connectionsArr[j - 1] + "&nbsp&nbsp<img class='sale-img' src='../images/travel.png'/></b> - " + timeConvert(connetionTime) + "</p> ";
                                         flag = 1;
                                         package = 1;
                                         packageArr.push(toursArr[k].TourID)
@@ -544,10 +546,17 @@
                             }
 
                         }
+
                         if (flag == 0) {
-                            conection += "<b>" + connectionsArr[j - 1] + "</b> - " + timeConvert(connetionTime) + "</p> ";
+                            conection += "<b>" + connectionsArr[j - 1] + "</b> - " + timeConvert(connetionTime) + "&nbsp" + conectionHour+"</p> ";
 
                         }
+                        else {
+                            conection += "<b>" + connectionsArr[j - 1] + "&nbsp&nbsp<img class='sale-img' src='../images/travel.png'/></b> - " + timeConvert(connetionTime) +  "&nbsp" + conectionHour+  "</p> ";
+
+                        }
+                        
+                        
                     }
 
                 }
@@ -634,6 +643,13 @@
             var duration = moment.duration(now.diff(start));
             return (duration.hours() * 60) + (duration.days() * 24) + duration.minutes()
 
+        }
+
+
+        function getCalcTime(d, a) {
+            a = convertDate(a)
+            d = convertDate(d)
+            return a.toTimeString().slice(0,9) + " - " + d.toTimeString().slice(0,9);
         }
 
 
