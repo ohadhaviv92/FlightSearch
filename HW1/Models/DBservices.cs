@@ -290,6 +290,54 @@ namespace HW1.Models
             return null;
         }
 
+
+        public List<Tour> getTours(string agencyID)
+        {
+            SqlConnection con = null;
+
+            try
+            {
+
+                con = connect("DBConnectionString"); // create a connection to the database using the connection String defined in the web config file
+
+                String selectSTR = "select * from Tour_CS where agentName="+agencyID;
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+                // get a reader
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+                List<Tour> list = new List<Tour>();
+                while (dr.Read())
+                {   // Read till the end of the data into a row
+                    Tour tour = new Tour();
+                    tour.TourID = (int)dr["tourID"];
+                    tour.TourName = (string)dr["tourName"];
+                    tour.City = (string)dr["city"];
+                    tour.TourPrice = (double)dr["price"];
+                    tour.DurationInMinute = (int)dr["durationInMinute"];
+                    list.Add(tour);
+
+                }
+
+                return list;
+            }
+            catch (Exception ex)
+            {
+                // write to log
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+
+            }
+
+
+            return null;
+        }
+
         public List<Tour> getAllTours()
         {
             SqlConnection con = null;
