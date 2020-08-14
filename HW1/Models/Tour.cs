@@ -44,5 +44,7 @@ namespace HW1.Models
             db.insert(this);
             
         }
+
+
     }
 }

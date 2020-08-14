@@ -134,7 +134,6 @@
                 str += "<b>Duration(min): </b><input type='number' class='duration' required /><br>"
                 str += "<a onclick='removeTrip("+trips[i]+")' class='btn btn-primary'>Remove</a>"
                 str += "</div></div></div>";
-
                 str += '</div>';
 
                
@@ -169,17 +168,18 @@
             
             tour = { AgencyName: localStorage.getItem('agency'), TourName: document.getElementById('tripName').value, TourPrice: parseFloat(document.getElementById('totalDealPrice').textContent), DurationInMinute: parseInt(document.getElementById('totalTime').textContent),Trips: tripsArr ,City:$(".airportFrom").val() }
             ajaxCall("POST", "../api/tour", JSON.stringify(tour), successAddTour, errFunc)
-
+            
             return false;
         }
 
         function successAddTour() {
             alert("added Tour");
             itemsInCart = 0
-            localStorage.removeItem('trips')
+            localStorage.setItem('trips', JSON.stringify([]))
             document.getElementById('tripName').value = ""
             updateCartNumber()
-            cart();
+            document.getElementById('ph2').innerHTML = "Cart Is Empty";
+
         }
 
         function successCB(data) {
@@ -279,6 +279,7 @@
 
 
         function loadTrips() {
+            $("#toursTable").parents('div.dataTables_wrapper').first().hide() // Hide the table
             currentTrips = []
             Notiflix.Loading.Standard('Getting Data...');
             let url = "https://www.triposo.com/api/20200405/poi.json?account=GHJA9MHT&token=hirq8t8e96qfgwt9p6vxx8i0nfhhicjj&tag_labels=!hotels&distance=<" + $("#distance").val() + "&count=100&fields=id,name,score,intro,tag_labels,images,opening_hours,snippet&order_by=distance&tag_labels=!lunch&tag_labels=architectural_style|do|nightlife&tag_labels=!shopping&annotate=distance:" + airportArr[$(".airportFrom").val()][1] + "," + airportArr[$(".airportFrom").val()][0]
@@ -337,6 +338,48 @@
         function clearPrice() {
             document.getElementById('totalDealPrice').textContent = 0;
         }
+
+        ajaxCall("GET", "../api/Tour", "", function (tours) {
+
+            console.log(tours)
+            toursArr = [];
+            for (var i in tours) {
+                toursArr.push({ TourID: tours[i]["TourID"], City: tours[i]["City"], Price: tours[i]["TourPrice"], TourName: tours[i]["TourName"], Duration: tours[i]["DurationInMinute"]});
+            }
+
+            try {
+
+                ordersTable = $('#toursTable').DataTable({
+                    data: toursArr,
+                    pageLength: 5,
+                    columns: [
+                        { data: "TourID" },
+                        { data: "City" },
+                        { data: "Price" },
+                        { data: "TourName" },
+                        { data: "Duration" },
+
+                    ],
+                });
+
+            }
+
+            catch (err) {
+                alert(err);
+            }
+
+        }, errFunc);
+      
+        function showTable() {
+            document.getElementById('ph').innerHTML=""
+            $("#toursTable").parents('div.dataTables_wrapper').first().show()
+            itemsInCart = 0
+            localStorage.setItem('trips', JSON.stringify([]))
+            document.getElementById('tripName').value = ""
+            updateCartNumber()
+            document.getElementById('ph2').innerHTML = "Cart Is Empty";
+        }
+
     </script>
 </head>
 <body>
@@ -362,10 +405,10 @@
             </div>
         </nav>
 
-        
+
         <form autocomplete="off" action="" id="flightForm">
             <table>
-              
+
                 <tr>
                     <td><b>Choose Airport:</b></td>
                     <td>  <input name="airPort" list="airportFrom" class="airportFrom formelement" required />  <datalist id="airportFrom"></datalist></td>
@@ -379,46 +422,62 @@
                     </td>
                     <td><p id="cartCounter">Items In Cart:</p></td>
                 </tr>
-                    <tr>
-                        <td colspan="2">
-                            <button class="btn btn-primary" type="submit">Find Trips!</button>
+                <tr>
+                    <td colspan="2">
+                        <button class="btn btn-primary" type="submit">Find Trips!</button>
 
-                        </td>
+                    </td>
 
-                    </tr>
+                </tr>
 
-                </table>
+            </table>
 
-            </form>
+        </form>
+        <button class="btn btn-primary" onclick="showTable()">Show Deals</button>
 
-            <div id="ph"></div>
-            <div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <form autocomplete='off' action='' id='buildForm'>
-                                <h5 class="modal-title" id="exampleModal">Trip Name: <input type="text" class="form-control" id="tripName" placeholder="Trip Name" required></h5>
-                                <button type="button" onclick="clearPrice()" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                        </div>
-                        
-                            <div class="modal-body">
-                                <div id="ph2"> </div>
-                            </div>
-                            <div class="modal-footer">
-                                <p><b>Total Time: </b></p>
-                                <p id="totalTime">0</p>
-                                <p><b>Total Price: </b></p>
-                                <p id="totalDealPrice">0</p>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary">Save changes</button>
-
-                            </div>
-                            </form>
+        <div id="ph"></div>
+        <div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <form autocomplete='off' action='' id='buildForm'>
+                            <h5 class="modal-title" id="exampleModal">Trip Name: <input type="text" class="form-control" id="tripName" placeholder="Trip Name" required></h5>
+                            <button type="button" onclick="clearPrice()" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
                     </div>
+
+                    <div class="modal-body">
+                        <div id="ph2"> </div>
+                    </div>
+                    <div class="modal-footer">
+                        <p><b>Total Time: </b></p>
+                        <p id="totalTime">0</p>
+                        <p><b>Total Price: </b></p>
+                        <p id="totalDealPrice">0</p>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+
+                    </div>
+                    </form>
+
                 </div>
             </div>
         </div>
+        <table id="toursTable" class="display nowrap" style="width:100%">
+            <thead>
+
+                <tr>
+                    <th>TourID</th>
+                    <th>City</th>
+                    <th>TourPrice</th>
+                    <th>TourName</th>
+                    <th>Duration</th>
+
+                </tr>
+
+            </thead>
+        </table>
+    </div>
     </body>
     </html>

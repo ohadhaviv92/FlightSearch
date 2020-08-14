@@ -31,6 +31,10 @@ namespace HW1.Models
             db.registerAgent(this);
 
         }
-
+        public List<Tour> getTours(string agentName)
+        {
+            DBservices db = new DBservices();
+            return db.getTours(agentName);
+        }
     }
 }
