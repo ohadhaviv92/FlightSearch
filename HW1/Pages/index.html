@@ -224,16 +224,21 @@
                     if (toursArr[i].TourID == TourID[k])
                         break;
                 }
-                str += "<center><h2>" + toursArr[i].TourName + "</h2>Add To Cart: <input tour=" + toursArr[i].TourID + " onclick='addToCart(this)' type='checkbox' aria-label='Checkbox for following text input'></center>"
+                str += "<div class='card text-center'>"
+                str += "<center><h2>Tour name : " + toursArr[i].TourName + "</center>"
+
 
                 for (var j = 0; j < toursArr[i].Trips.length; j++) {
-                    str += "<div class='card text-center'>"
-                    str += "<div class='card-header'><center>" + toursArr[i].Trips[j].Title + "</center></div>"
-                    str += "<img src='" + toursArr[i].Trips[j].Image + "' class='rounded mx-auto d-block'>"
+                    
+                    str += "<div class='card-header'></div>"
+                    if (toursArr[i].Trips[j].Image !="")
+                    str += "<img style='width:250px;height:250px' src='" + toursArr[i].Trips[j].Image + "' class='rounded mx-auto d-block'> <center>" + toursArr[i].Trips[j].Title + "</center>"
                     str += "<div class='card-body'><h5 class='card-title'>" + toursArr[i].Trips[j].Intro + "</h5>"
                     str += " <p class='card-text'>Score: " + toursArr[i].Trips[j].Score + "</p></div>"
-                    str += " <div class='card-footer text-muted'></div ></div ><br><br>"
+                    
                 }
+                str += " <div class='card-footer text-muted'></h2>Add To Cart: <input tour=" + toursArr[i].TourID + " onclick='addToCart(this)' type='checkbox' aria-label='Checkbox for following text input'> </div >"
+                str+="</div ><br><br>";
 
             }
 
