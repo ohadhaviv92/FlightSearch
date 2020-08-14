@@ -24,11 +24,11 @@ namespace HW1.Controllers
         }
 
         // POST api/<controller>
-        public void Post([FromBody]Flight flight)
+        public int Post([FromBody]Flight flight)
         {
 
             Flight.FlightList.Add(flight);
-            flight.insert();
+            return flight.insert();
         }
 
         // PUT api/<controller>/5

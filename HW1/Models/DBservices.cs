@@ -857,15 +857,9 @@ namespace HW1.Models
             String cStr = BuildInsertCommand(flight);      // helper method to build the insert string
 
             cmd = CreateCommand(cStr, con);             // create the command
-
-         
-
             try
             {
-                Int32 id = Convert.ToInt32(cmd.ExecuteScalar()); // execute the command 
-
-                int id2 = id;
-                return id2;
+                 return cmd.ExecuteNonQuery(); // execute the command
 
             }
             catch (Exception ex)
