@@ -93,7 +93,7 @@
 
         ajaxCall("GET", "../api/tour", "", getAllTours, errFunc)
         $(document).ready(function () {
-
+            
             localStorage.removeItem('incart')
             $("#srcBTN").submit(loadFlights);
             $("#MyFlights").click(MyFlights)
@@ -184,30 +184,64 @@
         function loadTripToDivOrder(TourID) {
             var openOrClose = 0;
             str = "<button type='button' onclick='backToFlightSearch()' class = 'btn btn-success'> Back </button>"
+              str += " <div class='accordion' id='accordionExample'>"
             for (var k = 0; k < TourID.length; k++) {
-                
-                for (var i=0; i < toursArr.length; i++) {
+
+                for (var i = 0; i < toursArr.length; i++) {
                     if (toursArr[i].TourID == TourID[k])
                         break;
                 }
-                str += "<center><h2>" + toursArr[i].TourName + "</h2>Add To Cart: <input tour=" + toursArr[i].TourID + " onclick='addToCart(this)' type='checkbox' aria-label='Checkbox for following text input'></center>"
+                //str += "<center><h2>" + toursArr[i].TourName + "</h2>Add To Cart: <input tour=" + toursArr[i].TourID + " onclick='addToCart(this)' type='checkbox' aria-label='Checkbox for following text input'></center>"
 
+                //for (var j = 0; j < toursArr[i].Trips.length; j++) {
+                //    str += "<div class='card text-center'>"
+                //    str += "<div class='card-header'><center>" + toursArr[i].Trips[j].Title + "</center></div>"
+                //    str += "<img src='" + toursArr[i].Trips[j].Image + "' class='rounded mx-auto d-block'>"
+                //    str += "<div class='card-body'><h5 class='card-title'>" + toursArr[i].Trips[j].Intro + "</h5>"
+                //    str += " <p class='card-text'>Score: " + toursArr[i].Trips[j].Score + "</p></div>"
+                //    str += " <div class='card-footer text-muted'></div ></div ><br><br>"
+                //}
+
+              
+                str += " <div class='card'> <div class='card-header' id='heading" + i + "'><h2 class='mb-0'><button class='btn btn-link btn-block text-left' type='button' data-toggle='collapse' data-target='#collapse" + i + "' aria-expanded='true' aria-controls='collapse" + i + "'>Tour name: " + toursArr[i].TourName +  "   Add To Cart: <input tour=" + toursArr[i].TourID + " onclick='addToCart(this)' type='checkbox' aria-label='Checkbox for following text input'></button></h2></div>"
+                          if (i == 0) {
+                        str += " <div id='collapse" +i +"' class='collapse show' aria-labelledby='heading" + i + "' data-parent='#accordionExample'>"
+                    }
+                    else {
+                       str += " <div id='collapse" +i +"' class='collapse' aria-labelledby='heading" + i + "' data-parent='#accordionExample'>"
+
+                    }
                 for (var j = 0; j < toursArr[i].Trips.length; j++) {
-                    str += "<div class='card text-center'>"
-                    str += "<div class='card-header'><center>" + toursArr[i].Trips[j].Title + "</center></div>"
-                    str += "<img src='" + toursArr[i].Trips[j].Image + "' class='rounded mx-auto d-block'>"
-                    str += "<div class='card-body'><h5 class='card-title'>" + toursArr[i].Trips[j].Intro + "</h5>"
-                    str += " <p class='card-text'>Score: " + toursArr[i].Trips[j].Score + "</p></div>"
-                    str += " <div class='card-footer text-muted'></div ></div ><br><br>"
+                    
+                    str += "<div class='container'><div class='row'>"
+                    str += "<div class='col-sm'>"
+                     str += "<img src='" + toursArr[i].Trips[j].Image + "' class='rounded mx-auto d-block'> "
+                    str += "</div>"
+                    str += "<div class='col-sm'>"
+                    str += "<h5 class='card-title'>" + toursArr[i].Trips[j].Intro + "</h5> <center>" + toursArr[i].Trips[j].Title + "</center> "
+                    str += " <p class='card-text'>Score: " + toursArr[i].Trips[j].Score + "</p>"
+                    str += "</div></div>"
+
                 }
+                str += "</div></div>";
 
             }
+             str += "</div>";
+            
+        
 
             document.getElementById("tourDiv").innerHTML = str;
+           
             $('#flightTable').parents('div.dataTables_wrapper').first().hide();
 
             $("#tourDiv").show();
         }
+
+     
+
+
+   
+  
 
         function loadTripToDivMain(TourID) {
             console.log(TourID)
@@ -219,6 +253,9 @@
                     if (toursArr[i].TourID == TourID[k])
                         break;
                 }
+
+
+
                 str += "<div class='card text-center'>"
                 str += "<center><h2>Tour name : " + toursArr[i].TourName + "</center>"
 
