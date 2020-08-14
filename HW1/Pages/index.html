@@ -173,10 +173,13 @@
                         passengersNames: snapshot.val().passengersNames,
                         from: snapshot.val().from,
                         to: snapshot.val().to,
-                        price: snapshot.val().price
+                        price: snapshot.val().price,
+                        flightDeal:snapshot.val().flightData,
                     }
                     console.log(order.passengersNames + " Just booked a flight from: " + order.from + " To: " + order.to + " For ONLY " + order.price)
-                    Notiflix.Notify.Success(order.passengersNames + " Just booked a flight from: " + order.from + " To: " + order.to + " For ONLY " + order.price);
+                    Notiflix.Notify.Success(order.passengersNames + " Just booked a flight from: " + order.from + " To: " + order.to + " For ONLY " + order.price, function () {
+
+                    }, { timeout: 3000 });
 
                 }
             })
@@ -185,6 +188,9 @@
             });
         }
 
+        function showDeal() {
+            alert("ok")
+        }
 
         function loadTripToDivOrder(TourID) {
             var openOrClose = 0;
@@ -703,27 +709,28 @@
             return rhours + " hour(s) and " + rminutes + " minute(s).";
         }
 
-        function postSuccess() {
+        function postSuccess(data) {
             flightId = dataArr['data'][parseInt(row)]['id']
-
+            console.log(data)
             console.log('Flight added') 
             passengersNames = $("#Passengers").val()
             useremail = $("#email").val()
             orderDate = new Date()
+            cartTours=JSON.parse(localStorage.getItem('incart'))
             var date = orderDate.getFullYear() + '-' + (orderDate.getDate() - 2) + '-' + (orderDate.getMonth() + 1);
             if (localStorage.getItem('incart'))
-                ajaxCall("POST", "../api/order", JSON.stringify([flightId, passengersNames, useremail, date, JSON.stringify(localStorage.getItem('incart'))]), addNotification, errFunc)
+                ajaxCall("POST", "../api/order", JSON.stringify([flightId, passengersNames, useremail, date, cartTours]), addNotification(dataArr['data'][parseInt(row)], cartTours), errFunc)
             else
-                ajaxCall("POST", "../api/order", JSON.stringify([flightId, passengersNames, useremail, date, "No Packge"]), addNotification(), errFunc)
+                ajaxCall("POST", "../api/order", JSON.stringify([flightId, passengersNames, useremail, date, "No Package"]), addNotification(dataArr['data'][parseInt(row)], null), errFunc)
 
         }
-        function addNotification() {
+        function addNotification(flightData,currentTours) {
             
             passengersNames = $("#Passengers").val()
             useremail = $("#email").val()
             orderDate = new Date()
             var date = orderDate.getFullYear() + '-' + (orderDate.getDate() - 2) + '-' + (orderDate.getMonth() + 1);
-            firebaseOrders.push().set({ "passengersNames": passengersNames, "useremail": useremail, "orderDate": orderDate, "tour": "test", "from": lastFromFlightLocation, "to": lastToFlightLocation, "price": lastPrice });
+            firebaseOrders.push().set({ "passengersNames": passengersNames, "useremail": useremail, "orderDate": orderDate, "tours": currentTours, "from": lastFromFlightLocation, "to": lastToFlightLocation, "price": lastPrice, "flightData": flightData});
         }
         // end success functions -----------------------------------
 
