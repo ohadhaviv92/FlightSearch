@@ -854,27 +854,54 @@ namespace HW1.Models
                 throw (ex);
             }
 
-            String cStr = BuildInsertCommand(flight);      // helper method to build the insert string
-
-            cmd = CreateCommand(cStr, con);             // create the command
+            int flag = 0;
+            
             try
             {
-                 return cmd.ExecuteNonQuery(); // execute the command
+                String cStr2 = "select * from MyFlights_CS where FlightPath='" + flight.FlightPath1.ToString()+"'";
+                SqlCommand cmd2 = new SqlCommand(cStr2, con);
 
-            }
-            catch (Exception ex)
-            {
-               
-                // write to log
-                throw (ex);
-            }
-
-            finally
-            {
-                if (con != null)
+                // get a reader
+                SqlDataReader dr = cmd2.ExecuteReader(CommandBehavior.CloseConnection); // CommandBehavior.CloseConnection: the connection will be closed after reading has reached the end
+                
+                while (dr.Read())
                 {
-                    // close the db connection
-                    con.Close();
+                    flag = 1;
+                }
+                return 0;
+                    
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+            if (flag == 0)
+            {
+                String cStr = BuildInsertCommand(flight);      // helper method to build the insert string
+
+                cmd = CreateCommand(cStr, con);             // create the command
+                try
+                {
+
+                    return cmd.ExecuteNonQuery(); // execute the command
+
+                }
+                catch (Exception ex)
+                {
+
+                    // write to log
+                    throw (ex);
+                }
+
+                finally
+                {
+                    if (con != null)
+                    {
+                        // close the db connection
+                        con.Close();
+                    }
                 }
             }
 
