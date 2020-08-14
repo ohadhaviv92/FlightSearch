@@ -40,7 +40,7 @@ namespace HW1.Models
         public float Price { get => price; set => price = value; }
         public int LegsNumber1 { get => LegsNumber; set => LegsNumber = value; }
 
-        public string insert()
+        public int insert()
         {
             
             DBservices db = new DBservices();

@@ -838,7 +838,7 @@ namespace HW1.Models
 
         }
 
-        public string insert(Flight flight)
+        public int insert(Flight flight)
         {
 
             SqlConnection con;

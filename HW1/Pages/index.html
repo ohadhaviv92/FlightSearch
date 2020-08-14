@@ -266,38 +266,68 @@
   
 
         function loadTripToDivMain(TourID) {
-            console.log(TourID)
-
+            var openOrClose = 0;
             str = ""
+            str += " <div class='accordion' id='accordionExample'>"
             for (var k = 0; k < TourID.length; k++) {
 
                 for (var i = 0; i < toursArr.length; i++) {
                     if (toursArr[i].TourID == TourID[k])
                         break;
                 }
+                //str += "<center><h2>" + toursArr[i].TourName + "</h2>Add To Cart: <input tour=" + toursArr[i].TourID + " onclick='addToCart(this)' type='checkbox' aria-label='Checkbox for following text input'></center>"
+
+                //for (var j = 0; j < toursArr[i].Trips.length; j++) {
+                //    str += "<div class='card text-center'>"
+                //    str += "<div class='card-header'><center>" + toursArr[i].Trips[j].Title + "</center></div>"
+                //    str += "<img src='" + toursArr[i].Trips[j].Image + "' class='rounded mx-auto d-block'>"
+                //    str += "<div class='card-body'><h5 class='card-title'>" + toursArr[i].Trips[j].Intro + "</h5>"
+                //    str += " <p class='card-text'>Score: " + toursArr[i].Trips[j].Score + "</p></div>"
+                //    str += " <div class='card-footer text-muted'></div ></div ><br><br>"
+                //}
 
 
-
-                str += "<div class='card text-center'>"
-                str += "<center><h2>Tour name : " + toursArr[i].TourName + "</center>"
-
-
-                for (var j = 0; j < toursArr[i].Trips.length; j++) {
-                    
-                    str += "<div class='card-header'></div>"
-                    if (toursArr[i].Trips[j].Image !="")
-                    str += "<img style='width:250px;height:250px' src='" + toursArr[i].Trips[j].Image + "' class='rounded mx-auto d-block'> <center>" + toursArr[i].Trips[j].Title + "</center>"
-                    str += "<div class='card-body'><h5 class='card-title'>" + toursArr[i].Trips[j].Intro + "</h5>"
-                    str += " <p class='card-text'>Score: " + toursArr[i].Trips[j].Score + "</p></div>"
-                    
+                str += " <div class='card'> <div class='card-header' id='heading" + i + "'><h2 class='mb-0'><button class='btn btn-link btn-block text-left' type='button' data-toggle='collapse' data-target='#collapse" + i + "' aria-expanded='true' aria-controls='collapse" + i + "'>Tour name: " + toursArr[i].TourName + "   Add To Cart: <input tour=" + toursArr[i].TourID + " onclick='addToCart(this)' type='checkbox' aria-label='Checkbox for following text input'></button></h2></div>"
+                if (i == 0) {
+                    str += " <div id='collapse" + i + "' class='collapse show' aria-labelledby='heading" + i + "' data-parent='#accordionExample'>"
                 }
-                str += " <div class='card-footer text-muted'></h2>Add To Cart: <input tour=" + toursArr[i].TourID + " onclick='addToCart(this)' type='checkbox' aria-label='Checkbox for following text input'> </div >"
-                str+="</div ><br><br>";
+                else {
+                    str += " <div id='collapse" + i + "' class='collapse' aria-labelledby='heading" + i + "' data-parent='#accordionExample'>"
+
+                }
+                for (var j = 0; j < toursArr[i].Trips.length; j++) {
+
+                    str += "<div class='container'><div class='row'>"
+
+                    str += "<div class='col-sm'>"
+                    str += "<h2> " + toursArr[i].Trips[j].Title + "</h2> <h5 class='card-title'>" + toursArr[i].Trips[j].Intro + "</h5> "
+                    str += " <p class='card-text'>Score: " + toursArr[i].Trips[j].Score + "</p></hr>"
+                    str += "</div>"
+
+                    if (toursArr[i].Trips[j].Image != "") {
+                        str += "<div class='col-sm'>"
+                        str += "<img style='width:215px;height:215px;' src='" + toursArr[i].Trips[j].Image + "' class='rounded mx-auto d-block'> "
+                        str += "</div>"
+                    }
+                    else {
+                        str += "<div class='col-sm'>"
+                        str += "<img style='width:215px;height:215px;' src='https://dilavr.com.ua/image/catalog/empty-img.png' " + toursArr[i].Trips[j].Image + "' class='rounded mx-auto d-block'> "
+                        str += "</div>"
+                    }
+                    str += "</hr></br></div></br>"
+
+                }
+                str += "</div></div>";
 
             }
+            str += "</div>";
+
+
 
             document.getElementById("tourDiv").innerHTML = str;
+
             $('#flightTable').parents('div.dataTables_wrapper').first().hide();
+
             $("#tourDiv").show();
         }
 
@@ -767,7 +797,7 @@
             cartTours=JSON.parse(localStorage.getItem('incart'))
             var date = orderDate.getFullYear() + '-' + (orderDate.getDate() - 2) + '-' + (orderDate.getMonth() + 1);
             if (localStorage.getItem('incart'))
-                ajaxCall("POST", "../api/order", JSON.stringify([flightId, passengersNames, useremail, date, cartTours]), addNotification(dataArr['data'][parseInt(row)], cartTours), errFunc)
+                ajaxCall("POST", "../api/order", JSON.stringify([flightId, passengersNames, useremail, date, JSON.stringify(cartTours)]), addNotification(dataArr['data'][parseInt(row)], cartTours), errFunc)
             else
                 ajaxCall("POST", "../api/order", JSON.stringify([flightId, passengersNames, useremail, date, "No Package"]), addNotification(dataArr['data'][parseInt(row)], null), errFunc)
 
