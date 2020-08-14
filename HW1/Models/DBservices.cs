@@ -900,7 +900,7 @@ namespace HW1.Models
 
             StringBuilder sb = new StringBuilder();
             //use a string builder to create the dynamic string
-            sb.AppendFormat("Values('{0}', '{1}', '{2}','{3}','{4}', '{5}', '{6}','{7}','{8}')", id, trip.TripID, trip.Image, trip.Intro.Replace("'",""),trip.Title,trip.OpeningHour,trip.Score,trip.DurationInMinute,trip.Price);
+            sb.AppendFormat("Values('{0}', '{1}', '{2}','{3}','{4}', '{5}', '{6}','{7}','{8}')", id, trip.TripID, trip.Image, trip.Intro.Replace("'",""),trip.Title.Replace("'", ""), trip.OpeningHour,trip.Score,trip.DurationInMinute,trip.Price);
             String prefix = "INSERT INTO TripInTour_CS " + "(TourID, tripID,image,intro,title,openingHour,score,durationInMinute,price) ";
             command = prefix + sb.ToString();
             return command;
