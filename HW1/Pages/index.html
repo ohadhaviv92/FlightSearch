@@ -183,7 +183,7 @@
 
         function loadTripToDiv(TourID) {
             console.log(TourID)
-            str = ""
+            str = "<button type='button' onclick='backToFlightSearch()' class = 'btn btn-success'> Back </button>"
             for (var k = 0; k < TourID.length; k++) {
                 var i = 0;
                 for (; i < toursArr.length; i++) {
@@ -206,6 +206,11 @@
             document.getElementById("tourDiv").innerHTML = str;
             $('#flightTable').parents('div.dataTables_wrapper').first().hide();
             $("#tourDiv").show();
+        }
+
+        function backToFlightSearch() {
+            $('#flightTable').parents('div.dataTables_wrapper').first().show();
+            $("#tourDiv").hide();
         }
 
         function addToCart(checkBox) {
@@ -336,7 +341,7 @@
 
         $(document).on("click", "#cancelSaveBTN", function () { // Close the buy form.
             $("#editDiv").hide();
-            $('#flightTable').show();
+            $("#flightTable").parents('div.dataTables_wrapper').first().show()
 
         });
 
