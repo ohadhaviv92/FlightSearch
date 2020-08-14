@@ -168,12 +168,18 @@
             }
             
             tour = { AgencyName: localStorage.getItem('agency'), TourName: document.getElementById('tripName').value, TourPrice: parseFloat(document.getElementById('totalDealPrice').textContent), DurationInMinute: parseInt(document.getElementById('totalTime').textContent),Trips: tripsArr ,City:$(".airportFrom").val() }
-             ajaxCall("POST", "../api/tour", JSON.stringify(tour), successAddTour, errFunc)
+            ajaxCall("POST", "../api/tour", JSON.stringify(tour), successAddTour, errFunc)
+
             return false;
         }
 
         function successAddTour() {
             alert("added Tour");
+            itemsInCart = 0
+            localStorage.removeItem('trips')
+            document.getElementById('tripName').value = ""
+            updateCartNumber()
+            cart();
         }
 
         function successCB(data) {
@@ -183,17 +189,11 @@
         }
 
         function removeTrip(tripId) {
-            console.log(tripId)
             trips = JSON.parse(localStorage.getItem('trips'));
             var filteredAry = trips.filter(function (e) { return parseInt(e) !== tripId })
             localStorage.setItem('trips', JSON.stringify(filteredAry))
             cart()
             itemsInCart--
-            if (itemsInCart == 0) {
-                document.getElementById('totalDealPrice').textContent = 0;
-                document.getElementById('totalTime').textContent = 0;
-            }
-
             updateCartNumber()
 
 
@@ -201,7 +201,10 @@
 
         function updateCartNumber() {
             document.getElementById("cartCounter").innerHTML = "Items In Cart: " + itemsInCart
-
+            if (itemsInCart == 0) {
+                document.getElementById('totalDealPrice').textContent = 0;
+                document.getElementById('totalTime').textContent = 0;
+            }
         }
 
         function addToCart(tripId) {
@@ -211,6 +214,10 @@
             selectedTrips.push(tripId)
             localStorage.setItem('trips', JSON.stringify(selectedTrips))
             $('#cartBtn').prop('disabled', false);
+            if (itemsInCart == 0) {
+                document.getElementById('totalDealPrice').textContent = 0;
+                document.getElementById('totalTime').textContent = 0;
+            }
         }
 
 
