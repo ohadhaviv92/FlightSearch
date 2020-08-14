@@ -862,7 +862,10 @@ namespace HW1.Models
 
             try
             {
-                return  Convert.ToInt32(cmd.ExecuteScalar()); // execute the command 
+                Int32 id = Convert.ToInt32(cmd.ExecuteScalar()); // execute the command 
+
+                int id2 = id;
+                return id2;
 
             }
             catch (Exception ex)
