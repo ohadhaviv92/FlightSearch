@@ -44,8 +44,8 @@ namespace HW1.Models
         {
             
             DBservices db = new DBservices();
-            db.insert(this);
-            return 0;
+            return db.insert(this);
+            
         }   
     }
 
