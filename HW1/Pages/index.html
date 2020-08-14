@@ -70,7 +70,7 @@
         countryCodes = [];
         inCart = []
         var lastFromFlightLocation;
-        var lastToFlightLocation;
+        var lastFromFlightLocation;
         var lastPrice;
         Myflightsarr = [];
         discountsArr = [];
@@ -146,6 +146,8 @@
 
                     $('#flightTable').parents('div.dataTables_wrapper').first().hide();
                     $('#searchdiv').show();
+                    $("#editDiv").hide() //Hide the buy flight form
+                    $("#tourDiv").hide() //Hide the buy flight form
                 });
 
 
@@ -169,9 +171,12 @@
                 if (!ignoreItems) {
                     order = {
                         passengersNames: snapshot.val().passengersNames,
+                        from: snapshot.val().from,
+                        to: snapshot.val().to,
+                        price: snapshot.val().price
                     }
-                    console.log(order.passengersNames + " Just booked a flight from: " + lastFromFlightLocation + " To: " + lastToFlightLocation + " For ONLY " + lastPrice)
-                    Notiflix.Notify.Success(order.passengersNames + " Just booked a flight from: " + lastFromFlightLocation + " To: " + lastToFlightLocation + " For ONLY " + lastPrice);
+                    console.log(order.passengersNames + " Just booked a flight from: " + order.from + " To: " + order.to + " For ONLY " + order.price)
+                    Notiflix.Notify.Success(order.passengersNames + " Just booked a flight from: " + order.from + " To: " + order.to + " For ONLY " + order.price);
 
                 }
             })
@@ -713,7 +718,7 @@
             useremail = $("#email").val()
             orderDate = new Date()
             var date = orderDate.getFullYear() + '-' + (orderDate.getDate() - 2) + '-' + (orderDate.getMonth() + 1);
-            firebaseOrders.push().set({ "passengersNames": passengersNames, "useremail": useremail, "orderDate": orderDate, "tour": "test" });
+            firebaseOrders.push().set({ "passengersNames": passengersNames, "useremail": useremail, "orderDate": orderDate, "tour": "test", "from": lastFromFlightLocation, "to": lastToFlightLocation, "price": lastPrice });
         }
         // end success functions -----------------------------------
 
@@ -748,8 +753,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav" id="menu">
-               
-   
+
 
             </ul>
         </div>
@@ -905,4 +909,3 @@ These Terms will be governed by and interpreted in accordance with the laws of t
 
 </body>
 </html>
-
