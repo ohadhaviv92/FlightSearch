@@ -858,10 +858,12 @@ namespace HW1.Models
 
             cmd = CreateCommand(cStr, con);             // create the command
 
+         
+
             try
             {
-                int numEffected = cmd.ExecuteNonQuery(); // execute the command
-                return numEffected;
+                return  Convert.ToInt32(cmd.ExecuteScalar()); // execute the command 
+
             }
             catch (Exception ex)
             {
@@ -1023,6 +1025,7 @@ namespace HW1.Models
             sb.AppendFormat("Values('{0}', '{1}' ,'{2}', '{3}', '{4}', '{5}', '{6}', '{7}')", flight.FlightPath1, flight.AirportFrom1, flight.AirportTo1, flight.DepTime1, flight.ArriveTime1, flight.Duration1, flight.Price, flight.LegsNumber1);
             String prefix = "INSERT INTO MyFlights_CS " + "(FlightPath, AirportFrom, AirportTo, DepTime, ArriveTime, Duration, Price, LegsNumber) ";
             command = prefix + sb.ToString();
+            command += "SELECT SCOPE_IDENTITY()";
             return command;
         }
 
