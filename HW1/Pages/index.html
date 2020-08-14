@@ -181,12 +181,41 @@
         }
 
 
-        function loadTripToDiv(TourID) {
+        function loadTripToDivOrder(TourID) {
             console.log(TourID)
+       
             str = "<button type='button' onclick='backToFlightSearch()' class = 'btn btn-success'> Back </button>"
             for (var k = 0; k < TourID.length; k++) {
-                var i = 0;
-                for (; i < toursArr.length; i++) {
+                
+                for (var i=0; i < toursArr.length; i++) {
+                    if (toursArr[i].TourID == TourID[k])
+                        break;
+                }
+                str += "<center><h2>" + toursArr[i].TourName + "</h2>Add To Cart: <input tour=" + toursArr[i].TourID + " onclick='addToCart(this)' type='checkbox' aria-label='Checkbox for following text input'></center>"
+
+                for (var j = 0; j < toursArr[i].Trips.length; j++) {
+                    str += "<div class='card text-center'>"
+                    str += "<div class='card-header'><center>" + toursArr[i].Trips[j].Title + "</center></div>"
+                    str += "<img src='" + toursArr[i].Trips[j].Image + "' class='rounded mx-auto d-block'>"
+                    str += "<div class='card-body'><h5 class='card-title'>" + toursArr[i].Trips[j].Intro + "</h5>"
+                    str += " <p class='card-text'>Score: " + toursArr[i].Trips[j].Score + "</p></div>"
+                    str += " <div class='card-footer text-muted'></div ></div ><br><br>"
+                }
+
+            }
+
+            document.getElementById("tourDiv").innerHTML = str;
+            $('#flightTable').parents('div.dataTables_wrapper').first().hide();
+            $("#tourDiv").show();
+        }
+
+        function loadTripToDivMain(TourID) {
+            console.log(TourID)
+
+            str = ""
+            for (var k = 0; k < TourID.length; k++) {
+
+                for (var i = 0; i < toursArr.length; i++) {
                     if (toursArr[i].TourID == TourID[k])
                         break;
                 }
@@ -329,7 +358,7 @@
             trips = $(this).attr("trips");
             $('#flightTable').parents('div.dataTables_wrapper').first().hide();
             if (trips != null)
-                document.getElementById('packageDiv').innerHTML = "<button onclick='loadTripToDiv([" + trips + "])' type='button' class = 'ViewTour btn btn-primary'>View Package</button>"
+                document.getElementById('packageDiv').innerHTML = "<button onclick='loadTripToDivMain(" + trips + ")' type='button' class = 'ViewTour btn btn-primary'>View Package</button>"
             $("#editDiv").show();
             row = $(this).attr("data-flightid");
 
@@ -611,7 +640,7 @@
                             render: function (data, type, row, meta) {
                                 let dataflight = "data-flightId='" + row.id + "'";
                                 if (havePackage[parseInt(row.id)] != 0)
-                                    return "<button onclick='loadTripToDiv([" + havePackage[parseInt(row.id)] + "])' type='button' class = 'ViewTour btn btn-primary' " + dataflight + ">View Package</button><button trips='[" + havePackage[parseInt(row.id)] + "]'" + " type='button' class = 'orderBTN btn btn-primary' " + dataflight + ">Order</button>";
+                                    return "<button onclick='loadTripToDivOrder([" + havePackage[parseInt(row.id)] + "])' type='button' class = 'ViewTour btn btn-primary' " + dataflight + ">View Package</button><button trips='[" + havePackage[parseInt(row.id)] + "]'" + " type='button' class = 'orderBTN btn btn-primary' " + dataflight + ">Order</button>";
                                 return "<button type='button' class='orderBTN btn btn-primary' " + dataflight + ">Order</button>";
                             }
 
