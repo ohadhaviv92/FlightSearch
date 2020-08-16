@@ -179,8 +179,7 @@
                     console.log(order.passengersNames + " Just booked a flight from: " + order.from + " To: " + order.to + " For ONLY " + order.price)
                     Notiflix.Notify.Success(order.passengersNames + " Just booked a flight from: " + order.from + " To: " + order.to + " For ONLY " + order.price+" CLICK HERE TO VIEW THE DEAL!", function () {
                         updateDealsModal(order)
-                        jQuery.noConflict
-                        $('#showDeal').modal('show');
+           
                     });
 
                    
@@ -192,9 +191,8 @@
         }
 
         function buyHotDeal() {
-            jQuery.noConflict();
-            $('#showDeal').modal('hide');
-            $('#exampleModal').modal('show');
+            
+    
         }
 
         function updateDealsModal(flight) {
@@ -203,7 +201,9 @@
             document.getElementById('depTimeDeal').value = convertDate(flight.flightDeal['dTime'])
             document.getElementById('arrTimeDeal').value = convertDate(flight.flightDeal['aTime'])
             document.getElementById('airlineDeal').value = flight.flightDeal['route'][0]['airline']
-            document.getElementById('priceDeal').value = flight.flightDeal['price']+"$"
+            document.getElementById('priceDeal').value = flight.flightDeal['price'] + "$"
+            jQuery.noConflict();
+            $('#showDeal').modal('show');
         }
 
         
