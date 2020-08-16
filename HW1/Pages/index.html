@@ -179,7 +179,7 @@
                     console.log(order.passengersNames + " Just booked a flight from: " + order.from + " To: " + order.to + " For ONLY " + order.price)
                     Notiflix.Notify.Success(order.passengersNames + " Just booked a flight from: " + order.from + " To: " + order.to + " For ONLY " + order.price+" CLICK HERE TO VIEW THE DEAL!", function () {
                         updateDealsModal(order)
-                        jQuery.noConflict();
+                        jQuery.noConflict
                         $('#showDeal').modal('show');
                     });
 
@@ -189,6 +189,12 @@
             firebaseOrders.once('value', function (snapshot) {
                 ignoreItems = false;
             });
+        }
+
+        function buyHotDeal() {
+            jQuery.noConflict();
+            $('#showDeal').modal('hide');
+            $('#exampleModal').modal('show');
         }
 
         function updateDealsModal(flight) {
@@ -204,7 +210,6 @@
 
         function loadTripToDivOrder(TourID) {
             trips = $(this).attr("trips");
-            //$('#flightTable').parents('div.dataTables_wrapper').first().hide();
             if (trips != null)
                 document.getElementById('packageDiv').innerHTML = "<button onclick='loadTripToDivMain(" + trips + ")' type='button' class = 'ViewTour btn btn-primary'>View Package</button>"
             //$("#editDiv").show();
@@ -278,7 +283,7 @@
 
         function loadTripToDivMain(TourID) {
             var openOrClose = 0;
-            str = ""
+            str = "<button type='button' onclick='backToFlightSearch()' class = 'btn btn-success'> Back </button>"
             str += " <div class='accordion' id='accordionExample'>"
             for (var k = 0; k < TourID.length; k++) {
 
@@ -449,7 +454,6 @@
 
 
 
-
             return false;
         }
 
@@ -457,9 +461,11 @@
 
         $(document).on("click", ".orderBTN", function () { // Open the buy form.
             trips = $(this).attr("trips");
+
             //$('#flightTable').parents('div.dataTables_wrapper').first().hide();
             if (trips != null)
                 document.getElementById('packageDiv').innerHTML = "<button onclick='loadTripToDivMain(" + trips + ")' type='button' class = 'ViewTour btn btn-primary'>View Package</button>"
+            else document.getElementById('packageDiv').innerHTML = ""
             //$("#editDiv").show();
             row = $(this).attr("data-flightid");
 
@@ -469,12 +475,6 @@
         });
 
 
-        $(document).on("click", "#cancelSaveBTN", function () { // Close the buy form.
-            //$("#editDiv").hide();
-            //$("#flightTable").parents('div.dataTables_wrapper').first().show()
-            $("#tourDiv").hide();
-
-        });
 
 
         function MyFlights() {
@@ -743,7 +743,7 @@
                             render: function (data, type, row, meta) {
                                 let dataflight = "data-flightId='" + row.id + "'";
                                 if (havePackage[parseInt(row.id)] != 0)
-                                    return "<button onclick='loadTripToDivOrder([" + havePackage[parseInt(row.id)] + "])' type='button' class = 'ViewTour btn btn-primary' " + dataflight + ">View Package</button><button trips='[" + havePackage[parseInt(row.id)] + "]'" + " type='button' data-toggle='modal' data-target='#exampleModal' class='orderBTN btn btn-primary' " + dataflight + ">Order</button>";
+                                    return "<button onclick='loadTripToDivMain([" + havePackage[parseInt(row.id)] + "])' type='button' class = 'ViewTour btn btn-primary' " + dataflight + ">View Package</button><button trips='[" + havePackage[parseInt(row.id)] + "]'" + " type='button' data-toggle='modal' data-target='#exampleModal' class='orderBTN btn btn-primary' " + dataflight + ">Order</button>";
                                 return "<button type='button' data-toggle='modal' data-target='#exampleModal' class='orderBTN btn btn-primary' " + dataflight + ">Order</button>";
                             }
 
@@ -817,7 +817,9 @@
             orderDate = new Date()
             var date = orderDate.getFullYear() + '-' + (orderDate.getDate()) + '-' + (orderDate.getMonth() + 1);
             firebaseOrders.push().set({ "passengersNames": passengersNames, "useremail": useremail, "orderDate": date, "tours": currentTours, "from": lastFromFlightLocation, "to": lastToFlightLocation, "price": lastPrice, "flightData": flightData });
+            localStorage.removeItem('incart')
             Notiflix.Report.Success('Flight Has Been ordered!', "", 'Ok');
+            
         }
         // end success functions -----------------------------------
 
@@ -1107,7 +1109,7 @@ These Terms will be governed by and interpreted in accordance with the laws of t
                         <p><b>Price:</b></p><input type="text" class="form-control" id="priceDeal" readonly>
                     </div>
                     <div id="packageHotDeal"></div>
-                    <button type="button" class="btn btn-primary">Buy Deal!</button>
+                    <button onclick="buyHotDeal()" type="button" class="btn btn-primary">Buy Deal!</button>
                 </div>
                 </div>
         </div>
