@@ -203,6 +203,12 @@
         
 
         function loadTripToDivOrder(TourID) {
+            trips = $(this).attr("trips");
+            //$('#flightTable').parents('div.dataTables_wrapper').first().hide();
+            if (trips != null)
+                document.getElementById('packageDiv').innerHTML = "<button onclick='loadTripToDivMain(" + trips + ")' type='button' class = 'ViewTour btn btn-primary'>View Package</button>"
+            //$("#editDiv").show();
+            row = $(this).attr("data-flightid");
             var openOrClose = 0;
             str = "<button type='button' onclick='backToFlightSearch()' class = 'btn btn-success'> Back </button>"
             str += " <div class='accordion' id='accordionExample'>"
