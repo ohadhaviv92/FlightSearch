@@ -440,8 +440,7 @@
 
                 ajaxCall('POST', "../api/Leg", JSON.stringify(l), function () {
 
-                    Notiflix.Report.Success('Flight Has Been ordered!', "", 'Ok');
-                    $('#editDiv').hide();
+                    
                     $('#flightTable').parents('div.dataTables_wrapper').first().show();
 
                 }, errFunc)
@@ -809,7 +808,7 @@
                 ajaxCall("POST", "../api/order", JSON.stringify([flightId, passengersNames, useremail, date, JSON.stringify(cartTours)]), addNotification(dataArr['data'][parseInt(row)], cartTours), errFunc)
             else
                 ajaxCall("POST", "../api/order", JSON.stringify([flightId, passengersNames, useremail, date, "No Package"]), addNotification(dataArr['data'][parseInt(row)], null), errFunc)
-
+            
         }
         function addNotification(flightData, currentTours) {
 
@@ -818,6 +817,7 @@
             orderDate = new Date()
             var date = orderDate.getFullYear() + '-' + (orderDate.getDate()) + '-' + (orderDate.getMonth() + 1);
             firebaseOrders.push().set({ "passengersNames": passengersNames, "useremail": useremail, "orderDate": date, "tours": currentTours, "from": lastFromFlightLocation, "to": lastToFlightLocation, "price": lastPrice, "flightData": flightData });
+            Notiflix.Report.Success('Flight Has Been ordered!', "", 'Ok');
         }
         // end success functions -----------------------------------
 
@@ -963,8 +963,6 @@ These Terms will be governed by and interpreted in accordance with the laws of t
                             <input type="button" class="btn btn-warning btn-lg" id="cancelSaveBTN" data-dismiss="modal" value="Cancel" />
                         </form>
                         <div id="packageDiv"></div>
-
-
 
 
                     </div>
