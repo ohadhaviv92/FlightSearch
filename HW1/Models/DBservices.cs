@@ -868,25 +868,28 @@ namespace HW1.Models
                 {
                     flag = 1;
                 }
-                return 0;
-                    
+                con.Close();
+
+
             }
             catch (Exception)
             {
-
+                return 0;
                 throw;
+                
             }
 
             if (flag == 0)
             {
                 String cStr = BuildInsertCommand(flight);      // helper method to build the insert string
 
-                cmd = CreateCommand(cStr, con);             // create the command
+                
                 try
                 {
-
+                    con = connect("DBConnectionString"); // create the connection
+                    cmd = CreateCommand(cStr, con);             // create the command
                     return cmd.ExecuteNonQuery(); // execute the command
-
+                    
                 }
                 catch (Exception ex)
                 {
@@ -901,9 +904,12 @@ namespace HW1.Models
                     {
                         // close the db connection
                         con.Close();
+                        
                     }
+                    
                 }
             }
+            return 1;
 
         }
 
