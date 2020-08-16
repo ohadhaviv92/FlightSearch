@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
     <title></title>
 
-
     <!--SCRIPTS-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="../Scripts/autoComplte.js"></script>
@@ -181,7 +180,7 @@
         }
 
         function successAddTour() {
-            alert("added Tour");
+            Notiflix.Report.Success('The tour has been added!', "", 'Ok');
             itemsInCart = 0
             localStorage.setItem('trips', JSON.stringify([]))
             document.getElementById('tripName').value = ""
@@ -367,7 +366,11 @@
                         { data: "City" },
                         { data: "Price" },
                         { data: "TourName" },
-                        { data: "Duration" },
+                        {
+                            render: function (data, type, row, meta) {
+                                return timeConvert(row.Duration)
+                            }
+                        },
 
                     ],
                 });
@@ -388,6 +391,17 @@
             document.getElementById('tripName').value = ""
             updateCartNumber()
             document.getElementById('ph2').innerHTML = "Cart Is Empty";
+        }
+
+        function timeConvert(n) {
+            var num = n;
+            var hours = (num / 60);
+            var rhours = Math.floor(hours);
+            var minutes = (hours - rhours) * 60;
+            var rminutes = Math.round(minutes);
+            if (rhours == 0)
+                return rminutes + " minute(s)."
+            return rhours + " hour(s) and " + rminutes + " minute(s).";
         }
 
     </script>
