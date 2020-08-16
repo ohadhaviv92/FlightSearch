@@ -81,7 +81,7 @@
         var airports = new Array();
         var airlines = new Array();
         airlinesList = {};
-        lastDealId;
+        var lastDealId;
 
         flag = 0; // 0 =>  there are already airports table on db
         dataArr = {} //Store the current search arr
@@ -448,7 +448,19 @@
 
             let legs = [];
 
-            flight = { FlightPath1: dataArr['data'][parseInt(row)]['id'], AirportFrom1: dataArr['data'][parseInt(row)]['flyFrom'], AirportTo1: dataArr['data'][parseInt(row)]['flyTo'], DepTime1: convertDate(dataArr['data'][parseInt(row)]['dTime']), ArriveTime1: convertDate(dataArr['data'][parseInt(row)]['aTime']), Duration1: dataArr['data'][parseInt(row)]['duration']['total'], price: parseFloat(dataArr['data'][parseInt(row)]['price']), LegsNumber1: dataArr['data'][parseInt(row)]['route'].length }
+            if (hotDeal == 1) {
+                hotDeal = 0;
+                jQuery.noConflict();
+                $.noConflict();
+                            useremail = $("#email").val()
+            orderDate = new Date()
+            //cartTours = JSON.parse(localStorage.getItem('incart'))
+                var date = orderDate.getFullYear() + '-' + (orderDate.getDate() - 5) + '-' + (orderDate.getMonth() + 1);
+                ajaxCall("POST", "../api/order", JSON.stringify([lastDealId, passengersNames, useremail, date, JSON.stringify(cartTours)]), addNotification(order.flightData, null), errFunc)
+
+            }
+            else {
+                 flight = { FlightPath1: dataArr['data'][parseInt(row)]['id'], AirportFrom1: dataArr['data'][parseInt(row)]['flyFrom'], AirportTo1: dataArr['data'][parseInt(row)]['flyTo'], DepTime1: convertDate(dataArr['data'][parseInt(row)]['dTime']), ArriveTime1: convertDate(dataArr['data'][parseInt(row)]['aTime']), Duration1: dataArr['data'][parseInt(row)]['duration']['total'], price: parseFloat(dataArr['data'][parseInt(row)]['price']), LegsNumber1: dataArr['data'][parseInt(row)]['route'].length }
             lastFromFlightLocation = dataArr['data'][parseInt(row)]['cityFrom']
             lastToFlightLocation = dataArr['data'][parseInt(row)]['cityTo']
             lastPrice = dataArr['data'][parseInt(row)]['price'] + "$"
@@ -467,6 +479,9 @@
 
                 }, errFunc)
             }
+            }
+
+           
 
 
 
