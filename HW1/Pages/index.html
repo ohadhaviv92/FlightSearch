@@ -81,6 +81,7 @@
         var airports = new Array();
         var airlines = new Array();
         airlinesList = {};
+        lastDealId;
 
         flag = 0; // 0 =>  there are already airports table on db
         dataArr = {} //Store the current search arr
@@ -188,7 +189,7 @@
                     console.log(order.passengersNames + " Just booked a flight from: " + order.from + " To: " + order.to + " For ONLY " + order.price)
                     Notiflix.Notify.Success(order.passengersNames + " Just booked a flight from: " + order.from + " To: " + order.to + " For ONLY " + order.price+" CLICK HERE TO VIEW THE DEAL!", function () {
                         updateDealsModal(order)
-           
+                        lastDealId = order.flightDeal['id'];
                     });
 
                    
@@ -211,8 +212,8 @@
             document.getElementById('arrTimeDeal').value = convertDate(flight.flightDeal['aTime'])
             document.getElementById('airlineDeal').value = flight.flightDeal['route'][0]['airline']
             document.getElementById('priceDeal').value = flight.flightDeal['price'] + "$"
-            jQuery.noConflict();
-            $('#showDeal').modal('show');
+
+            
         }
 
         
@@ -752,7 +753,7 @@
                             render: function (data, type, row, meta) {
                                 let dataflight = "data-flightId='" + row.id + "'";
                                 if (havePackage[parseInt(row.id)] != 0)
-                                    return "<button onclick='loadTripToDivMain([" + havePackage[parseInt(row.id)] + "])' type='button' class = 'ViewTour btn btn-primary' " + dataflight + ">View Package</button><button trips='[" + havePackage[parseInt(row.id)] + "]'" + " type='button' data-toggle='modal' data-target='#exampleModal' class='orderBTN btn btn-primary' " + dataflight + ">Order</button>";
+                                    return "<button onclick='loadTripToDivMain([" + havePackage[parseInt(row.id)] + "])' type='button' class = 'ViewTour btn btn-primary' " + dataflight + ">View Package</button>&nbsp<button trips='[" + havePackage[parseInt(row.id)] + "]'" + " type='button' data-toggle='modal' data-target='#exampleModal' class='orderBTN btn btn-primary' " + dataflight + ">Order</button>";
                                 return "<button type='button' data-toggle='modal' data-target='#exampleModal' class='orderBTN btn btn-primary' " + dataflight + ">Order</button>";
                             }
 
@@ -981,10 +982,6 @@ These Terms will be governed by and interpreted in accordance with the laws of t
                 </div>
             </div>
         </div>
-
-
-
-
 
 
 
