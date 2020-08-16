@@ -284,7 +284,8 @@
 
                     str += "<div class='col-sm'>"
                     str += "<h2> " + toursArr[i].Trips[j].Title + "</h2> <h5 class='card-title'>" + toursArr[i].Trips[j].Intro + "</h5> "
-                    str += " <p class='card-text'>Score: " + toursArr[i].Trips[j].Score + "</p></hr>"
+                    str += " <p class='card-text'>Score: " + toursArr[i].Trips[j].Score + "</p>"
+                    str += " <p class='card-text'>Trip Duration: " + timeConvert(toursArr[i].Trips[j].DurationInMinute) + "</p>"
                     str += "</div>"
 
                     if (toursArr[i].Trips[j].Image != "") {
@@ -332,7 +333,7 @@
                 }
 
 
-                str += " <div class='card'> <div class='card-header' id='heading" + i + "'><h2 class='mb-0'><button class='btn btn-link btn-block text-left' type='button' data-toggle='collapse' data-target='#collapse" + i + "' aria-expanded='true' aria-controls='collapse" + i + "'>Tour name: " + toursArr[i].TourName + "   Add To Cart: <input tour=" + toursArr[i].TourID + " onclick='addToCart(this)' type='checkbox' aria-label='Checkbox for following text input'></button></h2></div>"
+                str += " <div class='card'> <div class='card-header' id='heading" + i + "'><h2 class='mb-0'><button class='btn btn-link btn-block text-left' type='button' data-toggle='collapse' data-target='#collapse" + i + "' aria-expanded='true' aria-controls='collapse" + i + "'>Tour name: " + toursArr[i].TourName + ", Tour Duration: " + timeConvert(toursArr[i].DurationInMinute) + "&nbsp&nbsp&nbsp&nbsp&nbsp&nbspAdd To Cart: <input tour=" + toursArr[i].TourID + " onclick='addToCart(this)' type='checkbox' aria-label='Checkbox for following text input'></button></h2></div>"
                 if (i == 0) {
                     str += " <div id='collapse" + i + "' class='collapse show' aria-labelledby='heading" + i + "' data-parent='#accordionExample'>"
                 }
@@ -346,7 +347,8 @@
 
                     str += "<div class='col-sm'>"
                     str += "<h2> " + toursArr[i].Trips[j].Title + "</h2> <h5 class='card-title'>" + toursArr[i].Trips[j].Intro + "</h5> "
-                    str += " <p class='card-text'>Score: " + toursArr[i].Trips[j].Score + "</p></hr>"
+                    str += " <p class='card-text'>Score: " + toursArr[i].Trips[j].Score + "</p>"
+                    str += " <p class='card-text'>Trip Duration: " + timeConvert(toursArr[i].Trips[j].DurationInMinute) + "</p>"
                     str += "</div>"
 
                     if (toursArr[i].Trips[j].Image != "") {
@@ -882,6 +884,8 @@
             var rhours = Math.floor(hours);
             var minutes = (hours - rhours) * 60;
             var rminutes = Math.round(minutes);
+            if (rhours == 0)
+                return rminutes + " minute(s)."
             return rhours + " hour(s) and " + rminutes + " minute(s).";
         }
 
