@@ -140,7 +140,7 @@
             $("#discountsTab").click(hideOrdersTable)
             $("#addDiscountForm").submit(chooseAddOrUpdate)
             $("#newDiscountBTN").click(function () {
-                $("#editDiv").show();
+              
                 mode="add"
             });
             $("#editDiv").hide();
@@ -363,8 +363,90 @@
                 </ul>
             </div>
         </nav>
-        <div class="container">
-            <div class="row" id="editDiv">
+
+
+
+
+
+
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">New Discount</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        <form id="addDiscountForm">
+                            <div class="form-group row">
+                                <div class="form-group col-sm-3">
+                                    <label for="Passengers"><span class="red-star"></span>Airline Code</label>
+                                    <input type="text" class="airlineList form-control" list="airlineList" id="Airline" placeholder="Enter the Airline Code:" required>
+                                    <datalist id="airlineList"></datalist>
+
+                                </div>
+
+
+                                <div class="form-group col-sm-3">
+                                    <label for="Email"><span class="red-star"></span>From Airport</label>
+                                    <input type="text" class="fromairport form-control" list="fromairportList" id="fromairport" placeholder="Enter The From Airport" required>
+                                    <datalist id="fromairportList"></datalist>
+                                </div>
+                                <div class="form-group col-sm-3">
+                                    <label for="Email"><span class="red-star"></span>To Airport</label>
+                                    <input type="text" class="toairport form-control" list="toairportList" id="toairport" placeholder="Enter The To Airport" required>
+                                    <datalist id="toairportList"></datalist>
+                                </div>
+                                <div class="form-group col-sm-3">
+                                    <label for="Email"><span class="red-star"></span>From date</label>
+                                    <input type="date" class="form-control" id="fromdate" placeholder="Insert date DD/MM/YYYY" required>
+                                </div>
+                                <div class="form-group col-sm-3">
+                                    <label for="Email"><span class="red-star"></span>To date</label>
+                                    <input type="date" class="form-control" id="todate" placeholder="Insert date DD/MM/YYYY" required>
+                                </div>
+                                <div class="form-group col-sm-3">
+                                    <label for="Email"><span class="red-star"></span>Discount</label>
+                                    <input type="number" max="100" min="0" class="form-control" id="discount" placeholder="Enter discount in % (without %)" required>
+                                </div>
+
+                            </div>
+
+                           
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" id="cancelSaveBTN" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary" id="saveBTN">Save</button>
+
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        <div class="container-fluid">
+
+
+
+
+            <!--<div class="row" id="editDiv">
 
                 <form id="addDiscountForm">
                     <div class="form-group row">
@@ -374,7 +456,7 @@
                             <datalist id="airlineList"></datalist>
 
                         </div>
-                        
+
 
                         <div class="form-group col-sm-3">
                             <label for="Email"><span class="red-star"></span>From Airport</label>
@@ -405,7 +487,7 @@
                     <input type="button" class="btn btn-warning btn-lg" id="cancelSaveBTN" value="Cancel" />
                 </form>
 
-            </div>
+            </div>-->
             <hr />
             <table id="flightTable" class="display nowrap" style="width:100%">
                 <thead>
@@ -427,9 +509,10 @@
                 </thead>
             </table>
             <hr />
-            <table id="discountsTable" class="display nowrap" style="width:100%">
+            <table id="discountsTable" class="display nowrap" style="width:100%;table-layout: fixed;overflow-wrap: break-word;">
                 <thead>
-                    <input type="button" value="New Discount" class="btn btn-primary btn-md" id="newDiscountBTN" />
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" id="newDiscountBTN">New Discount</button>
+                    
                     <br />
                     <br />
                     <tr>
@@ -447,6 +530,6 @@
                 </thead>
             </table>
         </div>
-        </div>
+    </div>
 </body>
 </html>

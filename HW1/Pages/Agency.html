@@ -351,6 +351,7 @@
 
                 ordersTable = $('#toursTable').DataTable({
                     data: toursArr,
+                    
                     pageLength: 5,
                     columns: [
                         { data: "TourID" },
@@ -433,11 +434,12 @@
             </table>
 
         </form>
+        <br />
         <button class="btn btn-primary" onclick="showTable()">Show Deals</button>
 
         <div id="ph"></div>
         <div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
+            <div class="modal-dialog-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <form autocomplete='off' action='' id='buildForm'>
@@ -464,7 +466,9 @@
                 </div>
             </div>
         </div>
-        <table id="toursTable" class="display nowrap" style="width:100%">
+
+        <br />
+        <table id="toursTable" class="display nowrap" style="width:100%;table-layout: fixed;overflow-wrap: break-word;">
             <thead>
 
                 <tr>
@@ -478,6 +482,7 @@
 
             </thead>
         </table>
+
     </div>
-    </body>
+</body>
     </html>
