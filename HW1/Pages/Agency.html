@@ -5,24 +5,33 @@
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
     <title></title>
 
-    <!--SCRIPTS-->
 
+    <!--SCRIPTS-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="../Scripts/autoComplte.js"></script>
     <script src="../Scripts/ajaxCalls.js"></script>
     <script src="../Scripts/dateFunctions.js"></script>
 
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.17.2/firebase.js"></script>
 
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+         https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/7.17.2/firebase-analytics.js"></script>
+
+
+
+    <!--<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>-->
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-
 
     <link href="../Notiflix-2.3.3/dist/notiflix-2.3.3.min.css" rel="stylesheet" />
     <script src="../Notiflix-2.3.3/dist/notiflix-2.3.3.min.js"></script>
 
+    <script src="../js/fireBaseConfig.js"></script>
+
     <!-- jQuery library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <!-- Popper JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <!-- Latest compiled JavaScript -->
@@ -31,7 +40,7 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link href="Style.css" rel="stylesheet" />
+
 
 
     <!--//data table-->
@@ -41,22 +50,21 @@
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
-    <script src="../Scripts/ajaxCalls.js"></script>
-    <script src="../Scripts/dateFunctions.js"></script>
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+
 
 
     <!--CSS-->
     <link href="Style.css" rel="stylesheet" />
-
     <script>
         currentTrips = []
         airportList = [];
         arrPrice = []
-        arrTime=[]
+        arrTime = []
         localStorage.setItem('trips', JSON.stringify([]))
         airportArr = [];
-        selectedTrips=[]
+        selectedTrips = []
         itemsInCart = 0;
         $(document).ready(function () {
             updateCartNumber()
@@ -64,14 +72,14 @@
             $("#flightForm").submit(loadTrips)
             $("#buildForm").submit(finishBuildDeal);
             $('#cartBtn').prop('disabled', true);
-                    if (localStorage.getItem("agency") == undefined) {
+            if (localStorage.getItem("agency") == undefined) {
                 window.location.pathname = window.location.pathname.replace('Agency.html', 'AgencyLogin.html');
             }
         });
 
 
- 
-        
+
+
 
 
         function loadAirports() { // Load the airports list from API
@@ -97,7 +105,7 @@
             }
             document.getElementById('totalTime').textContent = tot;
         }
-     
+
         $(document).on("click", ".addCart", function () { // Open the buy form.
 
             $(this).prop('disabled', true); //Disabled the btn
@@ -129,14 +137,14 @@
                 str += " <p class='card-text' style='width:250px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'>" + currentTrips[trips[i]]['intro'] + "</p>"
                 str += " <h6 class='card-title'><b>Score:</b> " + currentTrips[trips[i]]['score'].toFixed(2) + "</p>"
                 str += " <h6 class='card-title'><b>Distance:</b> " + currentTrips[trips[i]]['distance'] + " Meters</p>"
-                str += " <h6 class='card-title'><b>Opening Hours:</b><br>\n " + getOpeningHours(currentTrips[trips[i]]) + "</p>" 
+                str += " <h6 class='card-title'><b>Opening Hours:</b><br>\n " + getOpeningHours(currentTrips[trips[i]]) + "</p>"
                 str += "<b>Price: </b><input type='number' class='price' required /><br>"
                 str += "<b>Duration(min): </b><input type='number' class='duration' required /><br>"
-                str += "<a onclick='removeTrip("+trips[i]+")' class='btn btn-primary'>Remove</a>"
+                str += "<a onclick='removeTrip(" + trips[i] + ")' class='btn btn-primary'>Remove</a>"
                 str += "</div></div></div>";
                 str += '</div>';
 
-               
+
             }
 
 
@@ -154,7 +162,7 @@
 
 
         function finishBuildDeal() {
-            tripsArr=[]
+            tripsArr = []
             trips = JSON.parse(localStorage.getItem('trips'));
             for (var i = 0; i < trips.length; i++) {
 
@@ -165,10 +173,10 @@
                 trip = { TripID: currentTrips[trips[i]]['id'], DurationInMinute: parseInt(arrTime[i].value), Image: img, Intro: currentTrips[trips[i]]['intro'], Title: currentTrips[trips[i]]['name'], Score: currentTrips[trips[i]]['score'].toFixed(2), OpeningHour: JSON.stringify(currentTrips[trips[i]]['opening_hours']), Price: parseFloat(arrPrice[i].value) }
                 tripsArr.push(trip)
             }
-            
-            tour = { AgencyName: localStorage.getItem('agency'), TourName: document.getElementById('tripName').value, TourPrice: parseFloat(document.getElementById('totalDealPrice').textContent), DurationInMinute: parseInt(document.getElementById('totalTime').textContent),Trips: tripsArr ,City:$(".airportFrom").val() }
+
+            tour = { AgencyName: localStorage.getItem('agency'), TourName: document.getElementById('tripName').value, TourPrice: parseFloat(document.getElementById('totalDealPrice').textContent), DurationInMinute: parseInt(document.getElementById('totalTime').textContent), Trips: tripsArr, City: $(".airportFrom").val() }
             ajaxCall("POST", "../api/tour", JSON.stringify(tour), successAddTour, errFunc)
-            
+
             return false;
         }
 
@@ -178,6 +186,7 @@
             localStorage.setItem('trips', JSON.stringify([]))
             document.getElementById('tripName').value = ""
             updateCartNumber()
+            $('#exampleModal').modal('hide');
             document.getElementById('ph2').innerHTML = "Cart Is Empty";
 
         }
@@ -224,7 +233,7 @@
 
         function defaultImage(img) {
             img.src = 'https://dilavr.com.ua/image/catalog/empty-img.png';
-             }
+        }
 
 
         function getOpeningHours(place) {
@@ -243,11 +252,11 @@
                         }
                         else {
                             return "No Opening Hours Data";
-                            
+
                         }
                     }
-                else str+="<p>"+day+": Close"+"</p>"
-                  
+                else str += "<p>" + day + ": Close" + "</p>"
+
             }
             return str;
         }
@@ -289,9 +298,9 @@
             $.get(url).fail(errFunc);
             return false;
         }
-        
+
         function successAPICB(data) {
-            
+
             str = ""
             currentTrips = data['results']
             document.getElementById('ph').innerHTML = "";
@@ -299,35 +308,35 @@
             for (var i = 0; i < data['results'].length; i++) {
                 if (i % 4 == 0) {
                     str += '<div class="row">';
-                } 
-                str+='<div class="col-sm-3">'
-                str += " <div class='card' style='width:18rem;'>";
-                 if (data['results'][i]['images'][0]== undefined)
-                str += "<img src='https://dilavr.com.ua/image/catalog/empty-img.png' class='card-img-top' alt='...' style='width:100%;height:215px;'> ";
-                else {
-                    
-                     str += "<img onerror=defaultImage(this) src='" + data['results'][i]['images'][0]['sizes']['medium']['url'] + "' class='card-img-top' alt='...' style='width:100%;height:215px;'>";
                 }
-               
+                str += '<div class="col-sm-3">'
+                str += " <div class='card' style='width:18rem;'>";
+                if (data['results'][i]['images'][0] == undefined)
+                    str += "<img src='https://dilavr.com.ua/image/catalog/empty-img.png' class='card-img-top' alt='...' style='width:100%;height:215px;'> ";
+                else {
+
+                    str += "<img onerror=defaultImage(this) src='" + data['results'][i]['images'][0]['sizes']['medium']['url'] + "' class='card-img-top' alt='...' style='width:100%;height:215px;'>";
+                }
+
                 str += "<div class='card-body'>";
-                str += "<h5 class='card-title'>"+data['results'][i]['name']+"</h5>";
-                str += " <p class='card-text' style='width:250px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'>" + data['results'][i]['snippet']+"</p>"
+                str += "<h5 class='card-title'>" + data['results'][i]['name'] + "</h5>";
+                str += " <p class='card-text' style='width:250px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;'>" + data['results'][i]['snippet'] + "</p>"
                 str += " <h6 class='card-title'><b>Score:</b> " + data['results'][i]['score'].toFixed(2) + "</p>"
                 str += " <h6 class='card-title'><b>Distance:</b> " + data['results'][i]['distance'] + " Meters</p>"
                 str += " <h6 class='card-title'><b>Opening Hours:</b><br>\n " + getOpeningHours(data['results'][i]) + "</p>"
-                str += " <button id="+i+" type='button' onclick='addToCart(this.id)' class='btn btn-primary addCart'> Add</button >"
-                   
+                str += " <button id=" + i + " type='button' onclick='addToCart(this.id)' class='btn btn-primary addCart'> Add</button >"
+
 
                 str += "</div></div></div>";
-                       if ((i+1) % 4 == 0) {
+                if ((i + 1) % 4 == 0) {
                     str += '</div>';
-                } 
+                }
             }
 
             str += '</div>';
             document.getElementById('ph').innerHTML = str;
             Notiflix.Loading.Remove();
-            
+
         }
 
 
@@ -344,14 +353,14 @@
             console.log(tours)
             toursArr = [];
             for (var i in tours) {
-                toursArr.push({ TourID: tours[i]["TourID"], City: tours[i]["City"], Price: tours[i]["TourPrice"], TourName: tours[i]["TourName"], Duration: tours[i]["DurationInMinute"]});
+                toursArr.push({ TourID: tours[i]["TourID"], City: tours[i]["City"], Price: tours[i]["TourPrice"], TourName: tours[i]["TourName"], Duration: tours[i]["DurationInMinute"] });
             }
 
             try {
 
                 ordersTable = $('#toursTable').DataTable({
                     data: toursArr,
-                    
+
                     pageLength: 5,
                     columns: [
                         { data: "TourID" },
@@ -370,9 +379,9 @@
             }
 
         }, errFunc);
-      
+
         function showTable() {
-            document.getElementById('ph').innerHTML=""
+            document.getElementById('ph').innerHTML = ""
             $("#toursTable").parents('div.dataTables_wrapper').first().show()
             itemsInCart = 0
             localStorage.setItem('trips', JSON.stringify([]))
@@ -442,7 +451,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <form autocomplete='off' action='' id='buildForm'>
-                            <h5 class="modal-title" id="exampleModal">Trip Name: <input type="text" class="form-control" id="tripName" placeholder="Trip Name" required></h5>
+                            <h5 class="modal-title">Trip Name: <input type="text" class="form-control" id="tripName" placeholder="Trip Name" required></h5>
                             <button type="button" onclick="clearPrice()" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
