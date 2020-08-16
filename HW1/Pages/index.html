@@ -738,8 +738,8 @@
                             render: function (data, type, row, meta) {
                                 let dataflight = "data-flightId='" + row.id + "'";
                                 if (havePackage[parseInt(row.id)] != 0)
-                                    return "<button onclick='loadTripToDivOrder([" + havePackage[parseInt(row.id)] + "])' type='button' class = 'ViewTour btn btn-primary' " + dataflight + ">View Package</button><button trips='[" + havePackage[parseInt(row.id)] + "]'" + " type='button' data-toggle='modal' data-target='#exampleModal' class = 'orderBTN  btn btn-primary' " + dataflight + ">Order</button>";
-                                return "<button type='button' class='orderBTN btn btn-primary' " + dataflight + ">Order</button>";
+                                    return "<button onclick='loadTripToDivOrder([" + havePackage[parseInt(row.id)] + "])' type='button' class = 'ViewTour btn btn-primary' " + dataflight + ">View Package</button><button trips='[" + havePackage[parseInt(row.id)] + "]'" + " type='button' data-toggle='modal' data-target='#exampleModal' class='orderBTN btn btn-primary' " + dataflight + ">Order</button>";
+                                return "<button type='button' data-toggle='modal' data-target='#exampleModal' class='orderBTN btn btn-primary' " + dataflight + ">Order</button>";
                             }
 
                         },
