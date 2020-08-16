@@ -64,7 +64,7 @@
 
     <script>
         var firebaseOrders
-        daysOfTheWeek = { "sun": 0, 1: "mon", 2: "tue", 3: "wed", 4: "thu", 5: "fri", 6: "sat" }
+        daysOfTheWeek = { 0: "sun", 1: "mon", 2: "tue", 3: "wed", 4: "thu", 5: "fri", 6: "sat" }
         var table = null;
 
         countryCodes = [];
@@ -178,7 +178,7 @@
                     }
                     console.log(order.passengersNames + " Just booked a flight from: " + order.from + " To: " + order.to + " For ONLY " + order.price)
                     Notiflix.Notify.Success(order.passengersNames + " Just booked a flight from: " + order.from + " To: " + order.to + " For ONLY " + order.price, function () {
-
+                        flightDeal = { FlightPath1: dataArr['data'][parseInt(row)]['id'], AirportFrom1: dataArr['data'][parseInt(row)]['flyFrom'], AirportTo1: dataArr['data'][parseInt(row)]['flyTo'], DepTime1: convertDate(dataArr['data'][parseInt(row)]['dTime']), ArriveTime1: convertDate(dataArr['data'][parseInt(row)]['aTime']), Duration1: dataArr['data'][parseInt(row)]['duration']['total'], price: parseFloat(dataArr['data'][parseInt(row)]['price']), LegsNumber1: dataArr['data'][parseInt(row)]['route'].length }
                     }, { timeout: 3000 });
                     
 
@@ -189,9 +189,7 @@
             });
         }
 
-        function showDeal() {
-            alert("ok")
-        }
+    
 
         function loadTripToDivOrder(TourID) {
             var openOrClose = 0;
@@ -415,9 +413,6 @@
 
             let legs = [];
 
-
-
-
             flight = { FlightPath1: dataArr['data'][parseInt(row)]['id'], AirportFrom1: dataArr['data'][parseInt(row)]['flyFrom'], AirportTo1: dataArr['data'][parseInt(row)]['flyTo'], DepTime1: convertDate(dataArr['data'][parseInt(row)]['dTime']), ArriveTime1: convertDate(dataArr['data'][parseInt(row)]['aTime']), Duration1: dataArr['data'][parseInt(row)]['duration']['total'], price: parseFloat(dataArr['data'][parseInt(row)]['price']), LegsNumber1: dataArr['data'][parseInt(row)]['route'].length }
             lastFromFlightLocation = dataArr['data'][parseInt(row)]['cityFrom']
             lastToFlightLocation = dataArr['data'][parseInt(row)]['cityTo']
@@ -624,19 +619,20 @@
                             if (toursArr[k].DurationInMinute <= connetionTime && toursArr[k].City == data['data'][i]['route'][j - 1]['flyTo']) {  
                                 for (var y = 0; y < toursArr[k].Trips.length; y++) {
                                     if (toursArr[k].Trips[y]['OpeningHour'] != "null") {
+                                        var openingHours = JSON.parse(toursArr[k].Trips[y]['OpeningHour'])
                                         if (toursArr[k].Trips[y]['OpeningHour']['open_24_7'] == true) {
                                             //conection += "<b>" + connectionsArr[j - 1] + "&nbsp&nbsp<img class='sale-img' src='../images/travel.png'/></b> - " + timeConvert(connetionTime) + "</p>"
-                                                  flag = 1;
+                                            flag = 1;
                                             package = 1;
                                             packageArr.push(toursArr[k].TourID)
                                             havePackage[parseInt(i)] = packageArr;
                                             break;
                                         }
                                         
-                                         var openingHours = JSON.parse(toursArr[k].Trips[y]['OpeningHour'])
-                                        if (openingHours.days[daysOfTheWeek[startDate.getDay()]][0].start == null || openingHours.days[daysOfTheWeek[startDate.getDay()]][0].end == null) {
+                                        
+                                        else if (openingHours.days[daysOfTheWeek[startDate.getDay()]][0].start == null || openingHours.days[daysOfTheWeek[startDate.getDay()]][0].end == null) {
                                             //conection += "<b>" + connectionsArr[j - 1] + "&nbsp&nbsp<img class='sale-img' src='../images/travel.png'/></b> - " + timeConvert(connetionTime) + "</p> ";
-                                                             flag = 1;
+                                            flag = 1;
                                             package = 1;
                                             packageArr.push(toursArr[k].TourID)
                                             havePackage[parseInt(i)] = packageArr;
