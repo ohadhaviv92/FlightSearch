@@ -208,6 +208,13 @@
 
         }
 
+        function buyWithPack() {
+            $('#showDeal').modal('hide');
+            $('#exampleModal').modal('show');
+
+
+        }
+
         function updateDealsModal(flight) {
             document.getElementById('flightFromDeal').value = flight.from
             document.getElementById('flightToDeal').value = flight.to
@@ -233,6 +240,7 @@
             row = $(this).attr("data-flightid");
             var openOrClose = 0;
             str = "<button type='button' onclick='backToFlightSearch()' class = 'btn btn-success'> Back </button>"
+            str += "<button type='button' onclick='' class = 'btn btn-success'> Continue Order </button>"
             str += " <div class='accordion' id='accordionExample'>"
             for (var k = 0; k < TourID.length; k++) {
 
@@ -287,7 +295,7 @@
             }
             str += "</div>";
 
-
+            $('#exampleModal').modal('hide');
 
             document.getElementById("tourDiv").innerHTML = str;
 
@@ -298,9 +306,13 @@
 
 
 
-        function loadTripToDivMain(TourID) {
+        function loadTripToDivMain(TourID,id) {
             var openOrClose = 0;
             str = "<button type='button' onclick='backToFlightSearch()' class = 'btn btn-success'> Back </button>"
+            row = id
+            str += "&nbsp&nbsp<button data-flightid=" + id +" type='button' onclick='buyWithPack()' class = 'btn btn-success'> Continue Order </button>"
+            
+         
             str += " <div class='accordion' id='accordionExample'>"
             for (var k = 0; k < TourID.length; k++) {
 
@@ -356,7 +368,7 @@
             str += "</div>";
 
 
-
+            $('#exampleModal').modal('hide');
             document.getElementById("tourDiv").innerHTML = str;
 
             $('#flightTable').parents('div.dataTables_wrapper').first().hide();
@@ -365,6 +377,7 @@
         }
 
         function backToFlightSearch() {
+            localStorage.removeItem('incart')
             $('#flightTable').parents('div.dataTables_wrapper').first().show();
             $("#tourDiv").hide();
         }
@@ -493,13 +506,13 @@
 
         $(document).on("click", ".orderBTN", function () { // Open the buy form.
             trips = $(this).attr("trips");
-
+            row = $(this).attr("data-flightid");
             //$('#flightTable').parents('div.dataTables_wrapper').first().hide();
             if (trips != null)
-                document.getElementById('packageDiv').innerHTML = "<button onclick='loadTripToDivMain(" + trips + ")' type='button' class = 'ViewTour btn btn-primary'>View Package</button>"
+                document.getElementById('packageDiv').innerHTML = "<button onclick='loadTripToDivMain(" + trips + "," + row + ")' type='button' class = 'ViewTour btn btn-primary'>View Package</button>"
             else document.getElementById('packageDiv').innerHTML = ""
             //$("#editDiv").show();
-            row = $(this).attr("data-flightid");
+            
 
 
 
@@ -775,7 +788,7 @@
                             render: function (data, type, row, meta) {
                                 let dataflight = "data-flightId='" + row.id + "'";
                                 if (havePackage[parseInt(row.id)] != 0)
-                                    return "<button onclick='loadTripToDivMain([" + havePackage[parseInt(row.id)] + "])' type='button' class = 'ViewTour btn btn-primary' " + dataflight + ">View Package</button>&nbsp<button trips='[" + havePackage[parseInt(row.id)] + "]'" + " type='button' data-toggle='modal' data-target='#exampleModal' class='orderBTN btn btn-primary' " + dataflight + ">Order</button>";
+                                    return "<button onclick='loadTripToDivMain([" + havePackage[parseInt(row.id)] + "]," + parseInt(row.id) + ")' type='button' class = 'ViewTour btn btn-primary' " + dataflight + ">View Package</button>&nbsp<button trips='[" + havePackage[parseInt(row.id)] + "]'" + " type='button' data-toggle='modal' data-target='#exampleModal' class='orderBTN btn btn-primary' " + dataflight + ">Order</button>";
                                 return "<button type='button' data-toggle='modal' data-target='#exampleModal' class='orderBTN btn btn-primary' " + dataflight + ">Order</button>";
                             }
 
@@ -1026,9 +1039,6 @@ These Terms will be governed by and interpreted in accordance with the laws of t
                 </tr>
             </thead>
         </table>
-
-        <!--Same deal modal-->
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">View Deal</button>
 
         <div class="modal fade bd-example-modal-lg" id="showDeal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg">
