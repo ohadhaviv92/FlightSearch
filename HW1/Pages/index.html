@@ -6,7 +6,7 @@
     <title></title>
 
     <!--SCRIPTS-->
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="../Scripts/autoComplte.js"></script>
     <script src="../Scripts/ajaxCalls.js"></script>
     <script src="../Scripts/dateFunctions.js"></script>
@@ -20,8 +20,8 @@
 
 
 
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <!--<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>-->
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
@@ -31,7 +31,6 @@
     <script src="../js/fireBaseConfig.js"></script>
 
     <!-- jQuery library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <!-- Popper JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <!-- Latest compiled JavaScript -->
@@ -94,7 +93,7 @@
 
         ajaxCall("GET", "../api/tour", "", getAllTours, errFunc)
         $(document).ready(function () {
-            Notiflix.Notify.Init({ closeButton: true, fontFamily: "Quicksand", useGoogleFont: true, useFontAwesome: true, }); 
+            Notiflix.Notify.Init({ closeButton: true, fontFamily: "Quicksand", useGoogleFont: true, useFontAwesome: true, });
             localStorage.removeItem('incart')
             $("#srcBTN").submit(loadFlights);
             $("#MyFlights").click(MyFlights)
@@ -142,14 +141,14 @@
                 document.getElementById("menu").innerHTML += str;
                 $('#logout').click(function () {
                     localStorage.clear();
-                    window.location.pathname =window.location.pathname.replace('index.html','login.html')
-                   
+                    window.location.pathname = window.location.pathname.replace('index.html', 'login.html')
+
                 });
 
-                       $('#Agency').click(function () {
-                           
-                           window.location.pathname =window.location.pathname.replace('index.html','Agency.html')
-                    
+                $('#Agency').click(function () {
+
+                    window.location.pathname = window.location.pathname.replace('index.html', 'Agency.html')
+
                 });
 
                 $('#search').click(function () {
@@ -187,12 +186,12 @@
                         flightDeal: snapshot.val().flightData,
                     }
                     console.log(order.passengersNames + " Just booked a flight from: " + order.from + " To: " + order.to + " For ONLY " + order.price)
-                    Notiflix.Notify.Success(order.passengersNames + " Just booked a flight from: " + order.from + " To: " + order.to + " For ONLY " + order.price+" CLICK HERE TO VIEW THE DEAL!", function () {
+                    Notiflix.Notify.Success(order.passengersNames + " Just booked a flight from: " + order.from + " To: " + order.to + " For ONLY " + order.price + " CLICK HERE TO VIEW THE DEAL!", function () {
                         updateDealsModal(order)
                         lastDealId = order.flightDeal['id'];
                     });
 
-                   
+
                 }
             })
             firebaseOrders.once('value', function (snapshot) {
@@ -203,9 +202,9 @@
         function buyHotDeal() {
             $('#showDeal').modal('hide');
             hotDeal = 1;
-                 $('#exampleModal').modal('show');
+            $('#exampleModal').modal('show');
 
-    
+
         }
 
         function updateDealsModal(flight) {
@@ -217,13 +216,13 @@
             document.getElementById('priceDeal').value = flight.flightDeal['price'] + "$"
             jQuery.noConflict();
 
-           
+
 
             $('#showDeal').modal('show');
             jQuery.noConflict();
         }
 
-        
+
 
         function loadTripToDivOrder(TourID) {
             trips = $(this).attr("trips");
@@ -474,7 +473,7 @@
 
                 ajaxCall('POST', "../api/Leg", JSON.stringify(l), function () {
 
-                    
+
                     $('#flightTable').parents('div.dataTables_wrapper').first().show();
 
                 }, errFunc)
@@ -840,7 +839,7 @@
                 ajaxCall("POST", "../api/order", JSON.stringify([flightId, passengersNames, useremail, date, JSON.stringify(cartTours)]), addNotification(dataArr['data'][parseInt(row)], cartTours), errFunc)
             else
                 ajaxCall("POST", "../api/order", JSON.stringify([flightId, passengersNames, useremail, date, "No Package"]), addNotification(dataArr['data'][parseInt(row)], null), errFunc)
-            
+
         }
         function addNotification(flightData, currentTours) {
 
@@ -851,7 +850,7 @@
             firebaseOrders.push().set({ "passengersNames": passengersNames, "useremail": useremail, "orderDate": date, "tours": currentTours, "from": lastFromFlightLocation, "to": lastToFlightLocation, "price": lastPrice, "flightData": flightData });
             localStorage.removeItem('incart')
             Notiflix.Report.Success('Flight Has Been ordered!', "", 'Ok');
-            
+
         }
         // end success functions -----------------------------------
 
