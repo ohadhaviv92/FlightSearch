@@ -200,7 +200,10 @@
         }
 
         function buyHotDeal() {
-            
+            $('#showDeal').modal('hide');
+            hotDeal = 1;
+                 $('#exampleModal').modal('show');
+
     
         }
 
@@ -212,7 +215,11 @@
             document.getElementById('airlineDeal').value = flight.flightDeal['route'][0]['airline']
             document.getElementById('priceDeal').value = flight.flightDeal['price'] + "$"
             jQuery.noConflict();
+
+           
+
             $('#showDeal').modal('show');
+            jQuery.noConflict();
         }
 
         
