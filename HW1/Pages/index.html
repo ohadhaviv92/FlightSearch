@@ -93,7 +93,7 @@
 
         ajaxCall("GET", "../api/tour", "", getAllTours, errFunc)
         $(document).ready(function () {
-            
+            Notiflix.Notify.Init({ closeButton: true, fontFamily: "Quicksand", useGoogleFont: true, useFontAwesome: true, }); 
             localStorage.removeItem('incart')
             $("#srcBTN").submit(loadFlights);
             $("#MyFlights").click(MyFlights)
@@ -174,14 +174,16 @@
                         from: snapshot.val().from,
                         to: snapshot.val().to,
                         price: snapshot.val().price,
-                        flightDeal:snapshot.val().flightData,
+                        flightDeal: snapshot.val().flightData,
                     }
                     console.log(order.passengersNames + " Just booked a flight from: " + order.from + " To: " + order.to + " For ONLY " + order.price)
-                    Notiflix.Notify.Success(order.passengersNames + " Just booked a flight from: " + order.from + " To: " + order.to + " For ONLY " + order.price, function () {
-                        flightDeal = { FlightPath1: dataArr['data'][parseInt(row)]['id'], AirportFrom1: dataArr['data'][parseInt(row)]['flyFrom'], AirportTo1: dataArr['data'][parseInt(row)]['flyTo'], DepTime1: convertDate(dataArr['data'][parseInt(row)]['dTime']), ArriveTime1: convertDate(dataArr['data'][parseInt(row)]['aTime']), Duration1: dataArr['data'][parseInt(row)]['duration']['total'], price: parseFloat(dataArr['data'][parseInt(row)]['price']), LegsNumber1: dataArr['data'][parseInt(row)]['route'].length }
-                    }, { timeout: 3000 });
-                    
+                    Notiflix.Notify.Success(order.passengersNames + " Just booked a flight from: " + order.from + " To: " + order.to + " For ONLY " + order.price+" CLICK HERE TO VIEW THE DEAL!", function () {
+                        updateDealsModal(order)
+                        jQuery.noConflict();
+                        $('#showDeal').modal('show');
+                    });
 
+                   
                 }
             })
             firebaseOrders.once('value', function (snapshot) {
@@ -189,12 +191,21 @@
             });
         }
 
-    
+        function updateDealsModal(flight) {
+            document.getElementById('flightFromDeal').value = flight.from
+            document.getElementById('flightToDeal').value = flight.to
+            document.getElementById('depTimeDeal').value = convertDate(flight.flightDeal['dTime'])
+            document.getElementById('arrTimeDeal').value = convertDate(flight.flightDeal['aTime'])
+            document.getElementById('airlineDeal').value = flight.flightDeal['route'][0]['airline']
+            document.getElementById('priceDeal').value = flight.flightDeal['price']+"$"
+        }
+
+        
 
         function loadTripToDivOrder(TourID) {
             var openOrClose = 0;
             str = "<button type='button' onclick='backToFlightSearch()' class = 'btn btn-success'> Back </button>"
-              str += " <div class='accordion' id='accordionExample'>"
+            str += " <div class='accordion' id='accordionExample'>"
             for (var k = 0; k < TourID.length; k++) {
 
                 for (var i = 0; i < toursArr.length; i++) {
@@ -212,31 +223,31 @@
                 //    str += " <div class='card-footer text-muted'></div ></div ><br><br>"
                 //}
 
-              
-                str += " <div class='card'> <div class='card-header' id='heading" + i + "'><h2 class='mb-0'><button class='btn btn-link btn-block text-left' type='button' data-toggle='collapse' data-target='#collapse" + i + "' aria-expanded='true' aria-controls='collapse" + i + "'>Tour name: " + toursArr[i].TourName +  "   Add To Cart: <input tour=" + toursArr[i].TourID + " onclick='addToCart(this)' type='checkbox' aria-label='Checkbox for following text input'></button></h2></div>"
-                          if (i == 0) {
-                        str += " <div id='collapse" +i +"' class='collapse show' aria-labelledby='heading" + i + "' data-parent='#accordionExample'>"
-                    }
-                    else {
-                       str += " <div id='collapse" +i +"' class='collapse' aria-labelledby='heading" + i + "' data-parent='#accordionExample'>"
 
-                    }
+                str += " <div class='card'> <div class='card-header' id='heading" + i + "'><h2 class='mb-0'><button class='btn btn-link btn-block text-left' type='button' data-toggle='collapse' data-target='#collapse" + i + "' aria-expanded='true' aria-controls='collapse" + i + "'>Tour name: " + toursArr[i].TourName + "   Add To Cart: <input tour=" + toursArr[i].TourID + " onclick='addToCart(this)' type='checkbox' aria-label='Checkbox for following text input'></button></h2></div>"
+                if (i == 0) {
+                    str += " <div id='collapse" + i + "' class='collapse show' aria-labelledby='heading" + i + "' data-parent='#accordionExample'>"
+                }
+                else {
+                    str += " <div id='collapse" + i + "' class='collapse' aria-labelledby='heading" + i + "' data-parent='#accordionExample'>"
+
+                }
                 for (var j = 0; j < toursArr[i].Trips.length; j++) {
-                    
+
                     str += "<div class='container'><div class='row'>"
-  
+
                     str += "<div class='col-sm'>"
                     str += "<h2> " + toursArr[i].Trips[j].Title + "</h2> <h5 class='card-title'>" + toursArr[i].Trips[j].Intro + "</h5> "
                     str += " <p class='card-text'>Score: " + toursArr[i].Trips[j].Score + "</p></hr>"
                     str += "</div>"
 
-                                      if (toursArr[i].Trips[j].Image != "") {
+                    if (toursArr[i].Trips[j].Image != "") {
                         str += "<div class='col-sm'>"
                         str += "<img style='width:215px;height:215px;' src='" + toursArr[i].Trips[j].Image + "' class='rounded mx-auto d-block'> "
                         str += "</div>"
                     }
                     else {
-                             str += "<div class='col-sm'>"
+                        str += "<div class='col-sm'>"
                         str += "<img style='width:215px;height:215px;' src='https://dilavr.com.ua/image/catalog/empty-img.png' " + toursArr[i].Trips[j].Image + "' class='rounded mx-auto d-block'> "
                         str += "</div>"
                     }
@@ -246,22 +257,18 @@
                 str += "</div></div>";
 
             }
-             str += "</div>";
-            
-        
+            str += "</div>";
+
+
 
             document.getElementById("tourDiv").innerHTML = str;
-           
+
             $('#flightTable').parents('div.dataTables_wrapper').first().hide();
 
             $("#tourDiv").show();
         }
 
-     
 
-
-   
-  
 
         function loadTripToDivMain(TourID) {
             var openOrClose = 0;
@@ -416,7 +423,7 @@
             flight = { FlightPath1: dataArr['data'][parseInt(row)]['id'], AirportFrom1: dataArr['data'][parseInt(row)]['flyFrom'], AirportTo1: dataArr['data'][parseInt(row)]['flyTo'], DepTime1: convertDate(dataArr['data'][parseInt(row)]['dTime']), ArriveTime1: convertDate(dataArr['data'][parseInt(row)]['aTime']), Duration1: dataArr['data'][parseInt(row)]['duration']['total'], price: parseFloat(dataArr['data'][parseInt(row)]['price']), LegsNumber1: dataArr['data'][parseInt(row)]['route'].length }
             lastFromFlightLocation = dataArr['data'][parseInt(row)]['cityFrom']
             lastToFlightLocation = dataArr['data'][parseInt(row)]['cityTo']
-            lastPrice = dataArr['data'][parseInt(row)]['price'] +"$"
+            lastPrice = dataArr['data'][parseInt(row)]['price'] + "$"
             ajaxCall('POST', "../api/flight", JSON.stringify(flight), postSuccess, errFunc)
             for (i = 0; i < dataArr['data'][parseInt(row)]['route'].length; i++) {//Count how many legs in the flight
                 legs.push(dataArr['data'][parseInt(row)]['route'][i]['cityTo'])
@@ -437,7 +444,7 @@
 
 
 
-            
+
             return false;
         }
 
@@ -577,7 +584,7 @@
             }
             str += "</tbody></table>"
             document.getElementById('ph').innerHTML = str;
-            
+
         }
 
 
@@ -615,8 +622,8 @@
                         var end = endDate.getHours() * 60 + endDate.getMinutes();
                         flag = 0;
                         for (var k = 0; k < toursArr.length; k++) {
-                            
-                            if (toursArr[k].DurationInMinute <= connetionTime && toursArr[k].City == data['data'][i]['route'][j - 1]['flyTo']) {  
+
+                            if (toursArr[k].DurationInMinute <= connetionTime && toursArr[k].City == data['data'][i]['route'][j - 1]['flyTo']) {
                                 for (var y = 0; y < toursArr[k].Trips.length; y++) {
                                     if (toursArr[k].Trips[y]['OpeningHour'] != "null") {
                                         var openingHours = JSON.parse(toursArr[k].Trips[y]['OpeningHour'])
@@ -628,8 +635,8 @@
                                             havePackage[parseInt(i)] = packageArr;
                                             break;
                                         }
-                                        
-                                        
+
+
                                         else if (openingHours.days[daysOfTheWeek[startDate.getDay()]][0].start == null || openingHours.days[daysOfTheWeek[startDate.getDay()]][0].end == null) {
                                             //conection += "<b>" + connectionsArr[j - 1] + "&nbsp&nbsp<img class='sale-img' src='../images/travel.png'/></b> - " + timeConvert(connetionTime) + "</p> ";
                                             flag = 1;
@@ -641,7 +648,7 @@
                                         var attStart = openingHours.days[daysOfTheWeek[startDate.getDay()]][0].start.hour * 60 + openingHours.days[daysOfTheWeek[startDate.getDay()]][0].start.minute
                                         var attEnd = openingHours.days[daysOfTheWeek[startDate.getDay()]][0].end.hour * 60 + openingHours.days[daysOfTheWeek[startDate.getDay()]][0].end.minute
                                         if ((attStart < start && start < attEnd) && attEnd > end && end > attStart) {
-                                           // conection += "<b>" + connectionsArr[j - 1] + "&nbsp&nbsp<img class='sale-img' src='../images/travel.png'/></b> - " + timeConvert(connetionTime) + "</p> ";
+                                            // conection += "<b>" + connectionsArr[j - 1] + "&nbsp&nbsp<img class='sale-img' src='../images/travel.png'/></b> - " + timeConvert(connetionTime) + "</p> ";
                                             flag = 1;
                                             package = 1;
                                             packageArr.push(toursArr[k].TourID)
@@ -651,7 +658,7 @@
 
                                     }
                                     else {
-                                       // conection += "<b>" + connectionsArr[j - 1] + "&nbsp&nbsp<img class='sale-img' src='../images/travel.png'/></b> - " + timeConvert(connetionTime) + "</p> ";
+                                        // conection += "<b>" + connectionsArr[j - 1] + "&nbsp&nbsp<img class='sale-img' src='../images/travel.png'/></b> - " + timeConvert(connetionTime) + "</p> ";
                                         flag = 1;
                                         package = 1;
                                         packageArr.push(toursArr[k].TourID)
@@ -668,15 +675,15 @@
                         }
 
                         if (flag == 0) {
-                            conection += "<b>" + connectionsArr[j - 1] + "</b> - " + timeConvert(connetionTime) + "&nbsp" + conectionHour+"</p> ";
+                            conection += "<b>" + connectionsArr[j - 1] + "</b> - " + timeConvert(connetionTime) + "&nbsp" + conectionHour + "</p> ";
 
                         }
                         else {
-                            conection += "<b>" + connectionsArr[j - 1] + "&nbsp&nbsp<img class='sale-img' src='../images/travel.png'/></b> - " + timeConvert(connetionTime) +  "&nbsp" + conectionHour+  "</p> ";
+                            conection += "<b>" + connectionsArr[j - 1] + "&nbsp&nbsp<img class='sale-img' src='../images/travel.png'/></b> - " + timeConvert(connetionTime) + "&nbsp" + conectionHour + "</p> ";
 
                         }
-                        
-                        
+
+
                     }
 
                 }
@@ -769,7 +776,7 @@
         function getCalcTime(d, a) {
             a = convertDate(a)
             d = convertDate(d)
-            return a.toTimeString().slice(0,9) + " - " + d.toTimeString().slice(0,9);
+            return a.toTimeString().slice(0, 9) + " - " + d.toTimeString().slice(0, 9);
         }
 
 
@@ -786,25 +793,25 @@
         function postSuccess(data) {
             flightId = dataArr['data'][parseInt(row)]['id']
             console.log(data)
-            console.log('Flight added') 
+            console.log('Flight added')
             passengersNames = $("#Passengers").val()
             useremail = $("#email").val()
             orderDate = new Date()
-            cartTours=JSON.parse(localStorage.getItem('incart'))
-            var date = orderDate.getFullYear() + '-' + (orderDate.getDate() - 2) + '-' + (orderDate.getMonth() + 1);
+            cartTours = JSON.parse(localStorage.getItem('incart'))
+            var date = orderDate.getFullYear() + '-' + (orderDate.getDate() - 5) + '-' + (orderDate.getMonth() + 1);
             if (localStorage.getItem('incart'))
                 ajaxCall("POST", "../api/order", JSON.stringify([flightId, passengersNames, useremail, date, JSON.stringify(cartTours)]), addNotification(dataArr['data'][parseInt(row)], cartTours), errFunc)
             else
                 ajaxCall("POST", "../api/order", JSON.stringify([flightId, passengersNames, useremail, date, "No Package"]), addNotification(dataArr['data'][parseInt(row)], null), errFunc)
 
         }
-        function addNotification(flightData,currentTours) {
-            
+        function addNotification(flightData, currentTours) {
+
             passengersNames = $("#Passengers").val()
             useremail = $("#email").val()
             orderDate = new Date()
-            var date = orderDate.getFullYear() + '-' + (orderDate.getDate() - 2) + '-' + (orderDate.getMonth() + 1);
-            firebaseOrders.push().set({ "passengersNames": passengersNames, "useremail": useremail, "orderDate": orderDate, "tours": currentTours, "from": lastFromFlightLocation, "to": lastToFlightLocation, "price": lastPrice, "flightData": flightData});
+            var date = orderDate.getFullYear() + '-' + (orderDate.getDate()) + '-' + (orderDate.getMonth() + 1);
+            firebaseOrders.push().set({ "passengersNames": passengersNames, "useremail": useremail, "orderDate": date, "tours": currentTours, "from": lastFromFlightLocation, "to": lastToFlightLocation, "price": lastPrice, "flightData": flightData });
         }
         // end success functions -----------------------------------
 
@@ -945,7 +952,7 @@ These Terms will be governed by and interpreted in accordance with the laws of t
         </div>
 
         <div id="tourDiv">
-            
+
         </div>
 
         <table id="flightTable" class="display nowrap" style="width:100%">
@@ -963,7 +970,29 @@ These Terms will be governed by and interpreted in accordance with the laws of t
             </thead>
         </table>
 
+        <!--Same deal modal-->
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">View Deal</button>
 
+        <div class="modal fade bd-example-modal-lg" id="showDeal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">HOT DEAL!</h5>
+                    </div>
+                    <div class="modal-body">
+                        <p><b>Flight From:</b></p><input type="text" class="form-control" id="flightFromDeal" readonly>
+                        <p><b>To From:</b></p><input type="text" class="form-control" id="flightToDeal" readonly>
+                        <p><b>Departure Time:</b></p><input type="text" class="form-control" id="depTimeDeal" readonly>
+                        <p><b>Arrival Time:</b></p><input type="text" class="form-control" id="arrTimeDeal" readonly>
+                        <p><b>Stops:</b></p><input type="text" class="form-control" id="stopsDeal" readonly>
+                        <p><b>Airline Name:</b></p><input type="text" class="form-control" id="airlineDeal" readonly>
+                        <p><b>Price:</b></p><input type="text" class="form-control" id="priceDeal" readonly>
+                    </div>
+                    <button type="button" class="btn btn-primary">Buy Deal!</button>
+                </div>
+                </div>
+        </div>
 
         <div class="row justify-content-md-center ">
             <div class="col col-md-auto" id="searchdiv">
