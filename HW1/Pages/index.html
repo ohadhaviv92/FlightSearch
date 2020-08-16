@@ -81,6 +81,7 @@
         var airlines = new Array();
         airlinesList = {};
         var lastDealId;
+        var hotDeal
 
         flag = 0; // 0 =>  there are already airports table on db
         dataArr = {} //Store the current search arr
@@ -214,12 +215,12 @@
             document.getElementById('arrTimeDeal').value = convertDate(flight.flightDeal['aTime'])
             document.getElementById('airlineDeal').value = flight.flightDeal['route'][0]['airline']
             document.getElementById('priceDeal').value = flight.flightDeal['price'] + "$"
-            jQuery.noConflict();
+           
 
 
 
             $('#showDeal').modal('show');
-            jQuery.noConflict();
+          
         }
 
 
@@ -449,9 +450,9 @@
 
             if (hotDeal == 1) {
                 hotDeal = 0;
-                jQuery.noConflict();
-                $.noConflict();
-                            useremail = $("#email").val()
+               
+                
+            useremail = $("#email").val()
             orderDate = new Date()
             //cartTours = JSON.parse(localStorage.getItem('incart'))
                 var date = orderDate.getFullYear() + '-' + (orderDate.getDate() - 5) + '-' + (orderDate.getMonth() + 1);
