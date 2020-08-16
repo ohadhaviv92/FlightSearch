@@ -55,13 +55,23 @@
 
 
     <!--CSS-->
+
     <link href="Style.css" rel="stylesheet" />
-
-
+    <link href="../guide/demo/guides.css" rel="stylesheet" />
+    <script src="../guide/dist/guides.js"></script>
 
 
 
     <script>
+
+        $('#logo').guides({
+            guides: [{
+                element: $('#flightFromDeal'),
+                html: 'Welcome to Guides.js'
+            },]
+        });
+
+
         var firebaseOrders
         daysOfTheWeek = { 0: "sun", 1: "mon", 2: "tue", 3: "wed", 4: "thu", 5: "fri", 6: "sat" }
         var table = null;
@@ -885,8 +895,8 @@
 <body onload="init()">
 
     <div class="header">
-        <img src="../images/—Pngtree—blue and red airplane vector_4235031.png" />
-        <h1 >Flight.com</h1>
+        <img  src="../images/—Pngtree—blue and red airplane vector_4235031.png" />
+        <h1>Flight.com</h1>
     </div>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand"  href="#">Home</a>
