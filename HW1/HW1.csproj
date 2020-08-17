@@ -247,7 +247,6 @@
     <Content Include="Notiflix-2.3.3\src\notiflix.js" />
     <Content Include="Pages\admin.html" />
     <Content Include="Pages\Agency.html" />
-    <Content Include="Pages\AgencyLogin.html" />
     <Content Include="Pages\AgencyRegister.html" />
     <Content Include="Pages\index.html" />
     <Content Include="Pages\login.html" />
