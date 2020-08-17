@@ -220,15 +220,64 @@
         }
 
         function updateDealsModal(flight) {
+            connectionsArr = []
+            getConnections(flight.flightDeal.route)
+            connectionsArr[connectionsArr.length - 1] = null;
             document.getElementById('flightFromDeal').value = flight.from
             document.getElementById('flightToDeal').value = flight.to
             document.getElementById('depTimeDeal').value = convertDate(flight.flightDeal['dTime'])
             document.getElementById('arrTimeDeal').value = convertDate(flight.flightDeal['aTime'])
             document.getElementById('airlineDeal').value = flight.flightDeal['route'][0]['airline']
             document.getElementById('priceDeal').value = flight.flightDeal['price'] + "$"
-           
+            document.getElementById('stopsDeal').value = connectionsArr.toString();
+          
+            //str = "";
+            //str += " <div class='accordion' id='accordionExample'>"
+            //for (var k = 0; k < TourID.length; k++) {
+
+            //    for (var i = 0; i < toursArr.length; i++) {
+            //        if (toursArr[i].TourID == TourID[k])
+            //            break;
+            //    }
+
+            //    str += " <div class='card'> <div class='card-header' id='heading" + i + "'><h6 class='mb-0'>Tour name: " + toursArr[i].TourName + ",Tour destinetion: " + toursArr[i].City + ", Tour Duration: " + timeConvert(toursArr[i].DurationInMinute) + "&nbsp&nbsp&nbsp&nbsp&nbsp&nbspAdd To Cart: <input tour=" + toursArr[i].TourID + " onclick='addToCart(this)' type='checkbox' aria-label='Checkbox for following text input'><button class='btn btn-link btn-block text-left' type='button' data-toggle='collapse' data-target='#collapse" + i + "' aria-expanded='true' aria-controls='collapse" + i + "'>More info</button></h6></div>"
 
 
+            //    //str += " <div class='card'> <div class='card-header' id='heading" + i + "'><h2 class='mb-0'><button class='btn btn-link btn-block text-left' type='button' data-toggle='collapse' data-target='#collapse" + i + "' aria-expanded='true' aria-controls='collapse" + i + "'>Tour name: " + toursArr[i].TourName + ", Tour Duration: " + timeConvert(toursArr[i].DurationInMinute) + "&nbsp&nbsp&nbsp&nbsp&nbsp&nbspAdd To Cart: <input tour=" + toursArr[i].TourID + " onclick='addToCart(this)' type='checkbox' aria-label='Checkbox for following text input'></button></h2></div>"
+            //    if (i == 0) {
+            //        str += " <div id='collapse" + i + "' class='collapse show' aria-labelledby='heading" + i + "' data-parent='#accordionExample'>"
+            //    }
+            //    else {
+            //        str += " <div id='collapse" + i + "' class='collapse' aria-labelledby='heading" + i + "' data-parent='#accordionExample'>"
+
+            //    }
+            //    for (var j = 0; j < toursArr[i].Trips.length; j++) {
+
+            //        str += "<div class='container'><div class='row'>"
+
+            //        str += "<div class='col-sm'>"
+            //        str += "<h2> " + toursArr[i].Trips[j].Title + "</h2> <h5 class='card-title'>" + toursArr[i].Trips[j].Intro + "</h5> "
+            //        str += " <p class='card-text'>Score: " + toursArr[i].Trips[j].Score + "</p>"
+            //        str += " <p class='card-text'>Trip Duration: " + timeConvert(toursArr[i].Trips[j].DurationInMinute) + "</p>"
+            //        str += "</div>"
+
+            //        if (toursArr[i].Trips[j].Image != "") {
+            //            str += "<div class='col-sm'>"
+            //            str += "<img style='width:215px;height:215px;' src='" + toursArr[i].Trips[j].Image + "' class='rounded mx-auto d-block'> "
+            //            str += "</div>"
+            //        }
+            //        else {
+            //            str += "<div class='col-sm'>"
+            //            str += "<img style='width:215px;height:215px;' src='https://dilavr.com.ua/image/catalog/empty-img.png' " + toursArr[i].Trips[j].Image + "' class='rounded mx-auto d-block'> "
+            //            str += "</div>"
+            //        }
+            //        str += "</hr></br></div></br>"
+
+            //    }
+            //    str += "</div></div>";
+
+            //}
+            //str += "</div>";
 
             $('#showDeal').modal('show');
           
