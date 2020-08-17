@@ -516,9 +516,9 @@
                 
             useremail = $("#email").val()
             orderDate = new Date()
-            //cartTours = JSON.parse(localStorage.getItem('incart'))
+            cartTours = JSON.parse(localStorage.getItem('incart'))
                 var date = orderDate.getFullYear() + '-' + (orderDate.getDate() - 5) + '-' + (orderDate.getMonth() + 1);
-                ajaxCall("POST", "../api/order", JSON.stringify([lastDealId, passengersNames, useremail, date, JSON.stringify(cartTours)]), addNotification(order.flightDeal, null), errFunc)
+                ajaxCall("POST", "../api/order", JSON.stringify([lastDealId, passengersNames, useremail, date, JSON.stringify(cartTours)]), addNotification(order.flightDeal, cartTours), errFunc)
 
             }
             else {
