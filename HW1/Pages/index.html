@@ -62,7 +62,7 @@
 
 
     <script>
-
+        Notiflix.Notify.Init({ fontFamily: "Quicksand", useGoogleFont: true, useFontAwesome: true, closeButton: true });
 
 
         var firebaseOrders
@@ -94,7 +94,8 @@
             console.log(data)
             toursArr = data;
         }
-
+        
+        
         ajaxCall("GET", "../api/tour", "", getAllTours, errFunc)
         $(document).ready(function () {
             notifyCount = 0;
@@ -195,7 +196,6 @@
                     console.log(order.passengersNames + " Just booked a flight from: " + order.from + " To: " + order.to + " For ONLY " + order.price)
                     Notiflix.Notify.Success(order.passengersNames + " Just booked a flight from: " + order.from + " To: " + order.to + " For ONLY " + order.price + " CLICK HERE TO VIEW THE DEAL!", function () {
                         updateDealsModal(order)
-                        
                         lastDealId = order.flightDeal['id'];
                     });
                     notifyCount++;
