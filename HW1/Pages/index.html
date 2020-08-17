@@ -60,8 +60,8 @@
 
 
 
-    <script>
 
+    <script>
 
 
 
@@ -252,9 +252,10 @@
                         break;
                 }
 
+                str += " <div class='card'> <div class='card-header' id='heading" + i + "'><h6 class='mb-0'>Tour name: " + toursArr[i].TourName + ",Tour destinetion: " + toursArr[i].City + ", Tour Duration: " + timeConvert(toursArr[i].DurationInMinute) + "&nbsp&nbsp&nbsp&nbsp&nbsp&nbspAdd To Cart: <input tour=" + toursArr[i].TourID + " onclick='addToCart(this)' type='checkbox' aria-label='Checkbox for following text input'><button class='btn btn-link btn-block text-left' type='button' data-toggle='collapse' data-target='#collapse" + i + "' aria-expanded='true' aria-controls='collapse" + i + "'>more info</button></h6></div>"
 
 
-                str += " <div class='card'> <div class='card-header' id='heading" + i + "'><h2 class='mb-0'><button class='btn btn-link btn-block text-left' type='button' data-toggle='collapse' data-target='#collapse" + i + "' aria-expanded='true' aria-controls='collapse" + i + "'>Tour name: " + toursArr[i].TourName + "   Add To Cart: <input tour=" + toursArr[i].TourID + " onclick='addToCart(this)' type='checkbox' aria-label='Checkbox for following text input'></button></h2></div>"
+                //str += " <div class='card'> <div class='card-header' id='heading" + i + "'><h2 class='mb-0'><button class='btn btn-link btn-block text-left' type='button' data-toggle='collapse' data-target='#collapse" + i + "' aria-expanded='true' aria-controls='collapse" + i + "'>Tour name: " + toursArr[i].TourName + ", Tour Duration: " + timeConvert(toursArr[i].DurationInMinute) + "&nbsp&nbsp&nbsp&nbsp&nbsp&nbspAdd To Cart: <input tour=" + toursArr[i].TourID + " onclick='addToCart(this)' type='checkbox' aria-label='Checkbox for following text input'></button></h2></div>"
                 if (i == 0) {
                     str += " <div id='collapse" + i + "' class='collapse show' aria-labelledby='heading" + i + "' data-parent='#accordionExample'>"
                 }
@@ -316,8 +317,9 @@
                         break;
                 }
 
+                str += " <div class='card'> <div class='card-header' id='heading" + i + "'><h6 class='mb-0'>Tour name: " + toursArr[i].TourName + ",Tour destinetion: " + toursArr[i].City + ", Tour Duration: " + timeConvert(toursArr[i].DurationInMinute) + "&nbsp&nbsp&nbsp&nbsp&nbsp&nbspAdd To Cart: <input tour=" + toursArr[i].TourID + " onclick='addToCart(this)' type='checkbox' aria-label='Checkbox for following text input'><button class='btn btn-link btn-block text-left' type='button' data-toggle='collapse' data-target='#collapse" + i + "' aria-expanded='true' aria-controls='collapse" + i + "'>more info</button></h6></div>"
 
-                str += " <div class='card'> <div class='card-header' id='heading" + i + "'><h2 class='mb-0'><button class='btn btn-link btn-block text-left' type='button' data-toggle='collapse' data-target='#collapse" + i + "' aria-expanded='true' aria-controls='collapse" + i + "'>Tour name: " + toursArr[i].TourName + ", Tour Duration: " + timeConvert(toursArr[i].DurationInMinute) + "&nbsp&nbsp&nbsp&nbsp&nbsp&nbspAdd To Cart: <input tour=" + toursArr[i].TourID + " onclick='addToCart(this)' type='checkbox' aria-label='Checkbox for following text input'></button></h2></div>"
+                //str += " <div class='card'> <div class='card-header' id='heading" + i + "'><h2 class='mb-0'><button class='btn btn-link btn-block text-left' type='button' data-toggle='collapse' data-target='#collapse" + i + "' aria-expanded='true' aria-controls='collapse" + i + "'>Tour name: " + toursArr[i].TourName + ", Tour Duration: " + timeConvert(toursArr[i].DurationInMinute) + "&nbsp&nbsp&nbsp&nbsp&nbsp&nbspAdd To Cart: <input tour=" + toursArr[i].TourID + " onclick='addToCart(this)' type='checkbox' aria-label='Checkbox for following text input'></button></h2></div>"
                 if (i == 0) {
                     str += " <div id='collapse" + i + "' class='collapse show' aria-labelledby='heading" + i + "' data-parent='#accordionExample'>"
                 }
