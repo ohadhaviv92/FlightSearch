@@ -45,6 +45,10 @@ namespace HW1.Models
             
         }
 
-
+        public static string deleteTour(int id)
+        {
+            DBservices db = new DBservices();
+            return db.deleteTour(id);
+        }
     }
 }

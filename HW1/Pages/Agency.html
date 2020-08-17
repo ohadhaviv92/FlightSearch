@@ -362,16 +362,26 @@
 
                     pageLength: 5,
                     columns: [
-                        { data: "TourID" },
+                        { data: "TourName" },
+                       
                         { data: "City" },
                         { data: "Price" },
-                        { data: "TourName" },
+                        
                         {
                             render: function (data, type, row, meta) {
                                 return timeConvert(row.Duration)
                             }
                         },
+                        {
 
+
+
+                            render: function (data, type, row, meta) {
+                                let dataTour = "data-dealId='" + row.TourID+ "'";
+                                deleteBtn = "<button type='button' class = 'deleteBtn btn btn-danger deleteBTN' " + dataTour + "> Delete </button>";
+                                return deleteBtn;
+                            }
+                        },
                     ],
                 });
 
@@ -402,6 +412,21 @@
             if (rhours == 0)
                 return rminutes + " minute(s)."
             return rhours + " hour(s) and " + rminutes + " minute(s).";
+        }
+
+        $(document).on("click", ".deleteBTN", function () {
+            console.log($(this).attr('data-dealId'));
+            deleteTour($(this).attr('data-dealId'))
+
+        });
+
+        function deleteTour(row) {
+            ajaxCall('DELETE', "../api/Tour", row, deleteSuccess, errFunc)
+            //window.location.pathname += 'Pages/Agency.html'
+
+        }
+        function deleteSuccess() {
+            Notiflix.Report.Success('The tour has been removed!', "", 'Ok');
         }
 
     </script>
@@ -494,11 +519,13 @@
             <thead>
 
                 <tr>
-                    <th>TourID</th>
+                    <th>TourName</th>
+
                     <th>City</th>
                     <th>TourPrice</th>
-                    <th>TourName</th>
+
                     <th>Duration</th>
+                    <th>Delete Tour?</th>
 
                 </tr>
 

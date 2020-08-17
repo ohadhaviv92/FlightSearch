@@ -31,8 +31,9 @@ namespace HW1.Controllers
         }
 
         // DELETE: api/Tour/5
-        public void Delete(int id)
+        public void Delete([FromBody] int tourId)
         {
+            Tour.deleteTour(tourId);
         }
     }
 }
