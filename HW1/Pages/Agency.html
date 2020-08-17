@@ -72,7 +72,7 @@
             $("#buildForm").submit(finishBuildDeal);
             $('#cartBtn').prop('disabled', true);
             if (localStorage.getItem("agency") == undefined) {
-                window.location.pathname = window.location.pathname.replace('Agency.html', 'AgencyLogin.html');
+                window.location.pathname = window.location.pathname.replace('Agency.html', 'login.html');
             }
             else {
                 document.getElementById('menu').innerHTML += "<a onclick='logout()' href='#' class='navbar-brand'>Logout</a>"
@@ -83,7 +83,7 @@
         
         function logout() {
             localStorage.removeItem('agency')
-            window.location.pathname = window.location.pathname.replace('Agency.html', 'AgencyLogin.html');
+            window.location.pathname = window.location.pathname.replace('Agency.html', 'login.html');
         }
 
 
