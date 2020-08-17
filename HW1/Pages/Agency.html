@@ -365,7 +365,10 @@
                         { data: "TourName" },
                        
                         { data: "City" },
-                        { data: "Price" },
+                        {
+                            render: function (data, type, row, meta) {
+                                return row.Price+"$"
+                            }},
                         
                         {
                             render: function (data, type, row, meta) {
