@@ -835,7 +835,7 @@
             if (localStorage.getItem('incart'))
                 ajaxCall("POST", "../api/order", JSON.stringify([flightId, passengersNames, useremail, date, JSON.stringify(cartTours)]), addNotification(dataArr['data'][parseInt(row)], cartTours), errFunc)
             else
-                ajaxCall("POST", "../api/order", JSON.stringify([flightId, passengersNames, useremail, date, "No Package"]), addNotification(dataArr['data'][parseInt(row)], null), errFunc)
+                ajaxCall("POST", "../api/order", JSON.stringify([flightId, passengersNames, useremail, date, "null"]), addNotification(dataArr['data'][parseInt(row)], null), errFunc)
 
         }
         function addNotification(flightData, currentTours) {
