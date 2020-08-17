@@ -251,16 +251,7 @@
                     if (toursArr[i].TourID == TourID[k])
                         break;
                 }
-                //str += "<center><h2>" + toursArr[i].TourName + "</h2>Add To Cart: <input tour=" + toursArr[i].TourID + " onclick='addToCart(this)' type='checkbox' aria-label='Checkbox for following text input'></center>"
 
-                //for (var j = 0; j < toursArr[i].Trips.length; j++) {
-                //    str += "<div class='card text-center'>"
-                //    str += "<div class='card-header'><center>" + toursArr[i].Trips[j].Title + "</center></div>"
-                //    str += "<img src='" + toursArr[i].Trips[j].Image + "' class='rounded mx-auto d-block'>"
-                //    str += "<div class='card-body'><h5 class='card-title'>" + toursArr[i].Trips[j].Intro + "</h5>"
-                //    str += " <p class='card-text'>Score: " + toursArr[i].Trips[j].Score + "</p></div>"
-                //    str += " <div class='card-footer text-muted'></div ></div ><br><br>"
-                //}
 
 
                 str += " <div class='card'> <div class='card-header' id='heading" + i + "'><h2 class='mb-0'><button class='btn btn-link btn-block text-left' type='button' data-toggle='collapse' data-target='#collapse" + i + "' aria-expanded='true' aria-controls='collapse" + i + "'>Tour name: " + toursArr[i].TourName + "   Add To Cart: <input tour=" + toursArr[i].TourID + " onclick='addToCart(this)' type='checkbox' aria-label='Checkbox for following text input'></button></h2></div>"
@@ -839,7 +830,7 @@
             if (localStorage.getItem('incart'))
                 ajaxCall("POST", "../api/order", JSON.stringify([flightId, passengersNames, useremail, date, JSON.stringify(cartTours)]), addNotification(dataArr['data'][parseInt(row)], cartTours), errFunc)
             else
-                ajaxCall("POST", "../api/order", JSON.stringify([flightId, passengersNames, useremail, date, "No Package"]), addNotification(dataArr['data'][parseInt(row)], null), errFunc)
+                ajaxCall("POST", "../api/order", JSON.stringify([flightId, passengersNames, useremail, date, "null"]), addNotification(dataArr['data'][parseInt(row)], null), errFunc)
 
         }
         function addNotification(flightData, currentTours) {

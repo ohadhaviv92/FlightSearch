@@ -290,7 +290,7 @@
             $("#toursTable").parents('div.dataTables_wrapper').first().hide() // Hide the table
             currentTrips = []
             Notiflix.Loading.Standard('Getting Data...');
-            let url = "https://www.triposo.com/api/20200405/poi.json?account=GHJA9MHT&token=hirq8t8e96qfgwt9p6vxx8i0nfhhicjj&tag_labels=!hotels&distance=<" + $("#distance").val() + "&count=100&fields=id,name,score,intro,tag_labels,images,opening_hours,snippet&order_by=distance&tag_labels=!lunch&tag_labels=architectural_style|do|nightlife&tag_labels=!shopping&annotate=distance:" + airportArr[$(".airportFrom").val()][1] + "," + airportArr[$(".airportFrom").val()][0]
+            let url = "https://www.triposo.com/api/20200405/poi.json?account=GHJA9MHT&token=hirq8t8e96qfgwt9p6vxx8i0nfhhicjj&tag_labels=!hotels&distance=<" + $("#distance").val() + "&count=100&fields=id,name,score,intro,tag_labels,images,opening_hours,snippet&order_by=distance&tag_labels=!lunch&tag_labels=architectural_style|do|person|nightlife&tag_labels=!shopping&annotate=distance:" + airportArr[$(".airportFrom").val()][1] + "," + airportArr[$(".airportFrom").val()][0]
             console.log(url);
 
             $.get(url).done(successAPICB);
