@@ -422,11 +422,21 @@
 
         function deleteTour(row) {
             ajaxCall('DELETE', "../api/Tour", row, deleteSuccess, errFunc)
-            //window.location.pathname += 'Pages/Agency.html'
+            
 
         }
         function deleteSuccess() {
-            Notiflix.Report.Success('The tour has been removed!', "", 'Ok');
+            
+            
+            Notiflix.Report.Success(
+                'The tour has been removed!',
+                '',
+                'Ok',
+                function () {
+                    window.location.pathname = window.location.pathname
+                },
+            );
+           
         }
 
     </script>
