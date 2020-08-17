@@ -85,7 +85,7 @@
         airlinesList = {};
         var lastDealId;
         var hotDeal
-
+        var notifyCount;
         flag = 0; // 0 =>  there are already airports table on db
         dataArr = {} //Store the current search arr
         ajaxCall("GET", "../api/discount", "", saveDiscounts, errFunc);
@@ -98,7 +98,8 @@
         
         ajaxCall("GET", "../api/tour", "", getAllTours, errFunc)
         $(document).ready(function () {
-            
+            notifyCount = 0;
+            Notiflix.Notify.Init({ closeButton: true, fontFamily: "Quicksand", useGoogleFont: true, useFontAwesome: true, });
             localStorage.removeItem('incart')
             $("#srcBTN").submit(loadFlights);
             $("#MyFlights").click(MyFlights)
@@ -152,7 +153,7 @@
 
                 $('#Agency').click(function () {
 
-                    window.location.pathname = window.location.pathname.replace('index.html', 'Agency.html')
+                    window.location.pathname = window.location.pathname.replace('index.html', 'login.html')
 
                 });
 
@@ -182,6 +183,7 @@
             // child_added will be evoked for every child that was added
             // on the first entry, it will bring all the childs
             firebaseOrders.limitToLast(1).on("child_added", snapshot => {
+                
                 if (!ignoreItems) {
                     order = {
                         passengersNames: snapshot.val().passengersNames,
@@ -196,6 +198,10 @@
                         updateDealsModal(order)
                         lastDealId = order.flightDeal['id'];
                     });
+                    notifyCount++;
+                    setTimeout(function () {
+                        $('#NotiflixNotify-' + notifyCount+'').hide()
+                    }, 2000);
 
 
                 }
