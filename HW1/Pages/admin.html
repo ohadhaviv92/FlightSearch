@@ -139,10 +139,18 @@
 
 
                 $("#cancelSaveBTN").click(function () {
-                    $("#editDiv").hide();
-
+              
+                    clearAll()
                 })
 
+                function clearAll() {
+                    $("#Airline").val("")
+                    $("#fromairport").val("")
+                    $("#toairport").val("")
+                    $("#fromdate").val("")
+                    $("#todate").val("")
+                    $("#discount").val("")
+                }
 
                 /*  $("#discountsTable").hide() */// Hide the discounts table on first load
                 $("#ordersTab").click(hideDiscountTable)
@@ -298,9 +306,11 @@
             if (mode == "add")
                 ajaxCall('POST', "../api/discount", JSON.stringify(newDiscount), addSuccess, errFunc)
             else (mode == "edit")
-            ajaxCall('PUT', "../api/discount", JSON.stringify(newDiscount), addSuccess, errFunc)
+            ajaxCall('PUT', "../api/discount", JSON.stringify(newDiscount), editSuccess, errFunc)
+           
             return false;
         }
+
 
 
         function findDiscountById(row) {
@@ -328,6 +338,18 @@
         function addSuccess(data) {
             Notiflix.Report.Success(
                 'Add success!',
+                '',
+                'Ok',
+                function () {
+                    window.location.pathname = window.location.pathname
+                },
+            );
+
+        }
+
+        function editSuccess(data) {
+            Notiflix.Report.Success(
+                'Edit success!',
                 '',
                 'Ok',
                 function () {
