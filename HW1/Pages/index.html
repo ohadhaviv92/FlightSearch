@@ -219,14 +219,17 @@
         }
 
         function updateDealsModal(flight) {
+            connectionsArr = []
+            getConnections(flight.flightDeal.route)
+            connectionsArr[connectionsArr.length - 1] = null;
             document.getElementById('flightFromDeal').value = flight.from
             document.getElementById('flightToDeal').value = flight.to
             document.getElementById('depTimeDeal').value = convertDate(flight.flightDeal['dTime'])
             document.getElementById('arrTimeDeal').value = convertDate(flight.flightDeal['aTime'])
             document.getElementById('airlineDeal').value = flight.flightDeal['route'][0]['airline']
             document.getElementById('priceDeal').value = flight.flightDeal['price'] + "$"
-           
-
+            document.getElementById('stopsDeal').value = connectionsArr.toString();
+          
 
 
             $('#showDeal').modal('show');
