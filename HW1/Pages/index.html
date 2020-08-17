@@ -193,6 +193,7 @@
                     console.log(order.passengersNames + " Just booked a flight from: " + order.from + " To: " + order.to + " For ONLY " + order.price)
                     Notiflix.Notify.Success(order.passengersNames + " Just booked a flight from: " + order.from + " To: " + order.to + " For ONLY " + order.price + " CLICK HERE TO VIEW THE DEAL!", function () {
                         updateDealsModal(order)
+                        
                         lastDealId = order.flightDeal['id'];
                     });
 
@@ -205,8 +206,10 @@
         }
 
         function buyHotDeal() {
+            
             $('#showDeal').modal('hide');
             hotDeal = 1;
+            localStorage.setItem('incart', $('#Hotdealbtn').attr("toursDeals"))
             $('#exampleModal').modal('show');
 
 
@@ -231,7 +234,7 @@
             document.getElementById('priceDeal').value = flight.flightDeal['price'] + "$"
             document.getElementById('stopsDeal').value = connectionsArr.toString();
             str = "";
-
+            toursIndealarr=[]
             if (flight.tours != undefined) {
                 
                 str += " <div class='accordion' id='accordionExample'>"
@@ -242,7 +245,7 @@
                             break;
                     }
 
-
+                    toursIndealarr.push(toursArr[i].TourID )
                     str += " <div class='card'> <div class='card-header' id='heading" + i + "'><h6 class='mb-0'>Tour name: " + toursArr[i].TourName + ",Tour destinetion: " + toursArr[i].City + ", Tour Duration: " + timeConvert(toursArr[i].DurationInMinute) + "&nbsp<button class='btn btn-link btn-block text-left' type='button' data-toggle='collapse' data-target='#collapse" + i + "' aria-expanded='true' aria-controls='collapse" + i + "'>More info</button></h6></div>"
 
 
@@ -285,8 +288,8 @@
                 str += "no package";
             }
             document.getElementById("packDeal").innerHTML = str;
-            
 
+            document.getElementById('btnDealBuy').innerHTML = "<button id='Hotdealbtn' toursDeals=[" + toursIndealarr+"] onclick='buyHotDeal()' type='button' class='btn btn-primary''>Buy Deal!</button>"
             $('#showDeal').modal('show');
           
         }
@@ -1113,8 +1116,8 @@ These Terms will be governed by and interpreted in accordance with the laws of t
                         <p><b>Price:</b></p><input type="text" class="form-control" id="priceDeal" readonly>
                         <p><b>Packeges:</b></p><div id="packDeal"> </div>
                     </div>
-                    <div id="packageHotDeal"></div>
-                    <button onclick="buyHotDeal()" type="button" class="btn btn-primary">Buy Deal!</button>
+
+                    <div id="btnDealBuy"> </div>
                 </div>
                 </div>
         </div>
