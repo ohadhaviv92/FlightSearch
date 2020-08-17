@@ -66,7 +66,12 @@
         function getOrders() {
             $(document).ready(function () {
 
+                user = localStorage.getItem('user');
+                if (user != "admin") {
 
+                    window.location.pathname = window.location.pathname.replace('admin.html', 'login.html');
+
+                }
 
 
 
@@ -342,7 +347,7 @@
 
 </head>
 <body>
-    <div class="container-fluid">
+    <div class="container-fluid" style="padding-left:0px;">
         <div class="row">
             <div class="col header">
                 <img src="../images/—Pngtree—blue and red airplane vector_4235031.png" />
@@ -444,50 +449,6 @@
         <div class="container-fluid">
 
 
-
-
-            <!--<div class="row" id="editDiv">
-
-                <form id="addDiscountForm">
-                    <div class="form-group row">
-                        <div class="form-group col-sm-3">
-                            <label for="Passengers"><span class="red-star"></span>Airline Code</label>
-                            <input type="text" class="airlineList form-control" list="airlineList" id="Airline" placeholder="Enter the Airline Code:" required>
-                            <datalist id="airlineList"></datalist>
-
-                        </div>
-
-
-                        <div class="form-group col-sm-3">
-                            <label for="Email"><span class="red-star"></span>From Airport</label>
-                            <input type="text" class="fromairport form-control" list="fromairportList" id="fromairport" placeholder="Enter The From Airport" required>
-                            <datalist id="fromairportList"></datalist>
-                        </div>
-                        <div class="form-group col-sm-3">
-                            <label for="Email"><span class="red-star"></span>To Airport</label>
-                            <input type="text" class="toairport form-control" list="toairportList" id="toairport" placeholder="Enter The To Airport" required>
-                            <datalist id="toairportList"></datalist>
-                        </div>
-                        <div class="form-group col-sm-3">
-                            <label for="Email"><span class="red-star"></span>From date</label>
-                            <input type="date" class="form-control" id="fromdate" placeholder="Insert date DD/MM/YYYY" required>
-                        </div>
-                        <div class="form-group col-sm-3">
-                            <label for="Email"><span class="red-star"></span>To date</label>
-                            <input type="date" class="form-control" id="todate" placeholder="Insert date DD/MM/YYYY" required>
-                        </div>
-                        <div class="form-group col-sm-3">
-                            <label for="Email"><span class="red-star"></span>Discount</label>
-                            <input type="number" max="100" min="0" class="form-control" id="discount" placeholder="Enter discount in % (without %)" required>
-                        </div>
-
-                    </div>
-
-                    <button type="submit" class="btn btn-primary btn-lg" id="saveBTN">Save</button>
-                    <input type="button" class="btn btn-warning btn-lg" id="cancelSaveBTN" value="Cancel" />
-                </form>
-
-            </div>-->
             <hr />
             <table id="flightTable" class="display nowrap" style="width:100%">
                 <thead>

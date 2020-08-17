@@ -122,27 +122,29 @@
 
             ajaxCall("GET", "../api/user?username=" + localStorage.getItem('user'), "", function (user) {
 
-
+                 user = localStorage.getItem('user');
 
                 str = "";
 
-                if (user.IsAdmin == "1") {
-
-                    str += "<li class='nav-item'>"
-                    str += "<a class='navbar-brand' href='admin.html' style=color:red>Admin</a></li>"
-
-                }
 
 
+                str += "<li class='nav-item'>"
+                str += "<a class='navbar-brand' href='admin.html' >Admin</a></li>"
 
                 str += " <li class='nav-item'>"
                 str += "<a class='navbar-brand' id='search' href='#'>Search</a> </li>"
 
-                str += " <li class='nav-item'>"
-                str += "<a class='navbar-brand' id='logout' href='#'>Logout</a> </li>"
+                
 
                 str += " <li class='nav-item'>"
                 str += "<a class='navbar-brand' id='Agency' href='#'>Agency</a> </li>"
+
+                if (user == "admin") {
+
+                    str += " <li class='nav-item'>"
+                    str += "<a class='navbar-brand' id='logout' href='#'>Logout</a> </li>"
+
+                }
 
                 document.getElementById("menu").innerHTML += str;
                 $('#logout').click(function () {
