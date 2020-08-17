@@ -33,7 +33,8 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link href="Style.css" rel="stylesheet" />
 
-
+    <link href="../Notiflix-2.3.3/dist/notiflix-2.3.3.min.css" rel="stylesheet" />
+    <script src="../Notiflix-2.3.3/dist/notiflix-2.3.3.min.js"></script>
     <!--//data table-->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css">
@@ -56,12 +57,12 @@
 
     <script>
         mode = ""
-        currentRow=0
+        currentRow = 0
         discounts = []
         getOrders()
         getDiscounts()
         hideDiscountTable()
-        
+
 
         function getOrders() {
             $(document).ready(function () {
@@ -79,7 +80,7 @@
                 url = "https://api.skypicker.com/airlines";
                 $.get(url).done(function (data) {
 
-                     var options = "";
+                    var options = "";
                     for (i in data) {
                         if (data[i]['type'] == "airline") {
 
@@ -87,105 +88,105 @@
 
                         }
                     }
-                                              document.getElementById('airlineList').innerHTML = options;
+                    document.getElementById('airlineList').innerHTML = options;
 
 
                 });
-                    $.get(url).fail(errFunc);
-
-
-   
+                $.get(url).fail(errFunc);
 
 
 
-                                  url = "https://api.skypicker.com/locations?type=dump&locale=en-US&location_types=airport&limit=4000&active_only=true&sort=name";
-
-                    $.get(url).done(function (data) {
-                            var options = "";
-                        for (i in data['locations']) {
-                            options += '<option value="' + data['locations'][i]['id'] + '" >' + data['locations'][i]['name'] + '</option>';
-                        }
 
 
-                          document.getElementById('fromairportList').innerHTML = options;
-                          document.getElementById('toairportList').innerHTML = options;
-                    });
-                    $.get(url).fail(errFunc);
-           
+
+                url = "https://api.skypicker.com/locations?type=dump&locale=en-US&location_types=airport&limit=4000&active_only=true&sort=name";
+
+                $.get(url).done(function (data) {
+                    var options = "";
+                    for (i in data['locations']) {
+                        options += '<option value="' + data['locations'][i]['id'] + '" >' + data['locations'][i]['name'] + '</option>';
+                    }
 
 
-                                url = "https://api.skypicker.com/locations?type=dump&locale=en-US&location_types=airport&limit=4000&active_only=true&sort=name";
-
-                    $.get(url).done(function (data) {
-                            var options = "";
-                        for (i in data['locations']) {
-                            options += '<option value="' + data['locations'][i]['id'] + '" >' + data['locations'][i]['name'] + '</option>';
-                        }
+                    document.getElementById('fromairportList').innerHTML = options;
+                    document.getElementById('toairportList').innerHTML = options;
+                });
+                $.get(url).fail(errFunc);
 
 
-                          document.getElementById('fromairport').innerHTML = options;
-                          document.getElementById('toairport').innerHTML = options;
-                    });
-                    $.get(url).fail(function () {
 
-                        alert("error load airport list");
+                url = "https://api.skypicker.com/locations?type=dump&locale=en-US&location_types=airport&limit=4000&active_only=true&sort=name";
 
-                    });
+                $.get(url).done(function (data) {
+                    var options = "";
+                    for (i in data['locations']) {
+                        options += '<option value="' + data['locations'][i]['id'] + '" >' + data['locations'][i]['name'] + '</option>';
+                    }
+
+
+                    document.getElementById('fromairport').innerHTML = options;
+                    document.getElementById('toairport').innerHTML = options;
+                });
+                $.get(url).fail(function () {
+
+                    alert("error load airport list");
+
+                });
 
 
 
                 $("#cancelSaveBTN").click(function () {
                     $("#editDiv").hide();
-                   
-                }) 
+
+                })
 
 
-          /*  $("#discountsTable").hide() */// Hide the discounts table on first load
-            $("#ordersTab").click(hideDiscountTable)
-            $("#discountsTab").click(hideOrdersTable)
-            $("#addDiscountForm").submit(chooseAddOrUpdate)
-            $("#newDiscountBTN").click(function () {
-              
-                mode="add"
-            });
-            $("#editDiv").hide();
-            
-            ajaxCall("GET", "../api/order", "", function (orders) {
+                /*  $("#discountsTable").hide() */// Hide the discounts table on first load
+                $("#ordersTab").click(hideDiscountTable)
+                $("#discountsTab").click(hideOrdersTable)
+                $("#addDiscountForm").submit(chooseAddOrUpdate)
+                $("#newDiscountBTN").click(function () {
 
-                console.log(orders)
-                orsders2 = [];
-                for (var i in orders) {
-                    orsders2.push({ Email: orders[i]["Email"], PassengersNames: orders[i]["PassengersNames"], From: orders[i]["Flight"]["AirportFrom1"], To: orders[i]["Flight"]["AirportTo1"], Departuretime: orders[i]["Flight"]["DepTime1"].split('T')[0] + " " + orders[i]["Flight"]["DepTime1"].split('T')[1], Arrivaltime: orders[i]["Flight"]["ArriveTime1"].split('T')[0] + " " + orders[i]["Flight"]["ArriveTime1"].split('T')[1], Duartion: calculateDuartion(orders[i]["Flight"]["Duration1"]), StopsNumbers: orders[i]["Flight"]["LegsNumber1"], Price: orders[i]["Flight"]["Price"] + " $", OrderDate: orders[i]["OrderDate"].split('T')[0] + "  " + orders[i]["OrderDate"].split('T')[1] });
-                }
-                
-                 try {
-                
-                ordersTable = $('#flightTable').DataTable({
-                    data: orsders2,
-                    pageLength: 5,
-                    columns: [
-                        { data: "Email" },
-                        { data: "PassengersNames" },
-                        { data: "From" },
-                        { data: "To" },
-                        { data: "Departuretime" },
-                        { data: "Arrivaltime" },
-                        { data: "Duartion" },
-                        { data: "StopsNumbers" },
-                        { data: "Price" },
-                        { data: "OrderDate" },
-
-                    ],
+                    mode = "add"
                 });
+                
 
-            }
+                ajaxCall("GET", "../api/order", "", function (orders) {
 
-            catch (err) {
-                alert(err);
-            }
+                    console.log(orders)
+                    orsders2 = [];
+                    for (var i in orders) {
+                        orsders2.push({ Email: orders[i]["Email"], PassengersNames: orders[i]["PassengersNames"], From: orders[i]["Flight"]["AirportFrom1"], To: orders[i]["Flight"]["AirportTo1"], Departuretime: orders[i]["Flight"]["DepTime1"].split('T')[0] + " " + orders[i]["Flight"]["DepTime1"].split('T')[1], Arrivaltime: orders[i]["Flight"]["ArriveTime1"].split('T')[0] + " " + orders[i]["Flight"]["ArriveTime1"].split('T')[1], Duartion: calculateDuartion(orders[i]["Flight"]["Duration1"]), StopsNumbers: orders[i]["Flight"]["LegsNumber1"], Price: orders[i]["Flight"]["Price"] + " $", OrderDate: orders[i]["OrderDate"].split('T')[0] + "  " + orders[i]["OrderDate"].split('T')[1] });
+                    }
 
-            }, errFunc);
-        })
+                    try {
+
+                        ordersTable = $('#flightTable').DataTable({
+                            data: orsders2,
+                            pageLength: 5,
+                            columns: [
+                                { data: "Email" },
+                                { data: "PassengersNames" },
+                                { data: "From" },
+                                { data: "To" },
+                                { data: "Departuretime" },
+                                { data: "Arrivaltime" },
+                                { data: "Duartion" },
+                                { data: "StopsNumbers" },
+                                { data: "Price" },
+                                { data: "OrderDate" },
+
+                            ],
+                        });
+
+                    }
+
+                    catch (err) {
+                        alert(err);
+                    }
+
+                }, errFunc);
+            })
         }
 
         function getDiscounts() {
@@ -194,7 +195,7 @@
                 console.log(discountsData)
 
                 for (var i in discountsData) {
-                    discounts.push({ id: discountsData[i]["Id"],AirlineCompany: discountsData[i]["AirlineCode"], From: discountsData[i]["AirportCodeFrom"], To: discountsData[i]["AirportCodeTo"], FromDate: discountsData[i]["DateFrom"].split('T')[0], ToDate: discountsData[i]["DateTo"].split('T')[0], Discount: discountsData[i]["DiscountAmount"] });
+                    discounts.push({ id: discountsData[i]["Id"], AirlineCompany: discountsData[i]["AirlineCode"], From: discountsData[i]["AirportCodeFrom"], To: discountsData[i]["AirportCodeTo"], FromDate: discountsData[i]["DateFrom"].split('T')[0], ToDate: discountsData[i]["DateTo"].split('T')[0], Discount: discountsData[i]["DiscountAmount"] });
                 }
 
                 try {
@@ -213,12 +214,12 @@
                             { data: "Discount" },
 
                             {
-                            
 
-                                
+
+
                                 render: function (data, type, row, meta) {
                                     let dataDiscount = "data-discountId='" + row.id + "'";
-                                    editBtn = "<button type='button' class = 'editBtn btn btn-success editBTN' " + dataDiscount + "> Edit </button>";
+                                    editBtn = "<button type='button' class = 'editBtn btn btn-success editBTN' " + dataDiscount + "> Edit </button>&nbsp";
                                     deleteBtn = "<button type='button' class = 'deleteBtn btn btn-danger deleteBTN' " + dataDiscount + "> Delete </button>";
                                     return editBtn + deleteBtn;
                                 }
@@ -235,11 +236,11 @@
 
             }, errFunc);
         }
-        
 
 
-           function errFunc(err) {
-                swal("Error: " + err);
+
+        function errFunc(err) {
+            swal("Error: " + err);
         }
 
         function hideDiscountTable() {
@@ -258,11 +259,11 @@
 
         function deleteDiscount(row) {
             ajaxCall('DELETE', "../api/discount", row, deleteSuccess, errFunc)
-            window.location.pathname += 'Pages/admin.html'
+            
 
         }
 
-        $(document).on("click", ".deleteBTN", function () { 
+        $(document).on("click", ".deleteBTN", function () {
             console.log($(this).attr('data-discountId'));
             deleteDiscount($(this).attr('data-discountId'))
 
@@ -293,9 +294,9 @@
             }
             if (mode == "add")
                 ajaxCall('POST', "../api/discount", JSON.stringify(newDiscount), addSuccess, errFunc)
-            else if (mode == "edit")
+            else (mode == "edit")
                 ajaxCall('PUT', "../api/discount", JSON.stringify(newDiscount), addSuccess, errFunc)
-            
+            return false;
         }
 
 
@@ -308,7 +309,7 @@
 
         function editDiscount(row) {
             mode = "edit"
-            currentRow=row
+            currentRow = row
             let disocunt = findDiscountById(row)
             $("#editDiv").show();
             $("#Airline").val(disocunt.AirlineCompany)
@@ -317,20 +318,34 @@
             $("#fromdate").val(disocunt.FromDate.split('T')[0])
             $("#todate").val(disocunt.ToDate.split('T')[0])
             $("#discount").val(disocunt.Discount)
-            
+
 
         }
 
-        function addSuccess(data){
-            console.log("added")
-            
+        function addSuccess(data) {
+            Notiflix.Report.Success(
+                'Add success!',
+                '',
+                'Ok',
+                function () {
+                    window.location.pathname = window.location.pathname
+                },
+            );
+
         }
 
         function deleteSuccess(data) {
-            console.log('good')
-            window.location.pathname = window.location.pathname
+            Notiflix.Report.Success(
+                'Delete success!',
+                '',
+                'Ok',
+                function () {
+                    window.location.pathname = window.location.pathname
+                },
+            );
 
-            
+
+
 
         }
 
