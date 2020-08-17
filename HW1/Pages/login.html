@@ -1,115 +1,129 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Flight.com</title>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<!--===============================================================================================-->
-	<link rel="icon" type="image/png" href="../images/icons/favicon.ico" />
-	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="../vendor/bootstrap/css/bootstrap.min.css">
-	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="../fonts/font-awesome-4.7.0/css/font-awesome.min.css">
-	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="../fonts/iconic/css/material-design-iconic-font.min.css">
-	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="../vendor/animate/animate.css">
-	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="../vendor/css-hamburgers/hamburgers.min.css">
-	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="../vendor/animsition/css/animsition.min.css">
-	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="../vendor/select2/select2.min.css">
-	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="../vendor/daterangepicker/daterangepicker.css">
-	<!--===============================================================================================-->
-	<link rel="stylesheet" type="text/css" href="../css/util.css">
-	<link rel="stylesheet" type="text/css" href="../css/main.css">
-	<!--===============================================================================================-->
-	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-	<script src="../Scripts/ajaxCalls.js"></script>
-	<script>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
 
-		$(document).ready(function () {
-			$("#login").submit(login)
-		});
+    <title>Sign Up Form by Colorlib</title>
 
-		function loginError(err) {
-			console.log(err);
-		}
 
-		function login() {
-			let username = $("#username").val();
-			let password = $("#password").val();
-            ajaxCall("POST", "../api/login", JSON.stringify([username, password]), loggedIn, loginError)
-			return false;
-		}
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
-		function loggedIn(data) {
-			if (data != null) {
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+
+    <link href="../Notiflix-2.3.3/dist/notiflix-2.3.3.min.css" rel="stylesheet" />
+    <script src="../Notiflix-2.3.3/dist/notiflix-2.3.3.min.js"></script>
+
+    <!-- Font Icon -->
+
+    <link href="../fonts/material-icon/css/material-design-iconic-font.min.css" rel="stylesheet" />
+    <!-- Main css -->
+    <script src="../Scripts/ajaxCalls.js"></script>
+    <link href="../css/style.css" rel="stylesheet" />
+
+    <script>
+        agency = ""
+        $(document).ready(function () {
+            $("#login-form").submit(login);
+
+            $("#travelSignIn").click(login2);
+        });
+
+
+
+
+        function login2() {
+            let username = $("#your_name").val();
+            let password = $("#your_pass").val();
+            ajaxCall("POST", "../api/login", JSON.stringify([username, password]), loggedIn2, loginError)
+            return false;
+        }
+
+        function loggedIn2(data) {
+            if (data != null) {
                 console.log("user");
-				localStorage.setItem('user', data);
-				window.location.pathname = window.location.pathname.replace('login.html','index.html')
-			}
-			else
-				console.log("no user")
-		}
-	</script>
+                localStorage.setItem('user', data);
+                
+            }
+            else {
+                console.log("no user")
+
+            }
+            window.location.pathname = window.location.pathname.replace('login.html', 'index.html')
+        }
+
+        function login() {
+            agency = $("#your_name").val();
+            password = $("#your_pass").val();
+            ajaxCall("POST", "../api/AgentLogin", JSON.stringify([agency, password]), loggedIn, loginError)
+            return false
+        }
+
+
+        function loginError(err) {
+            console.log("Error: " + err);
+        }
+
+        function loggedIn(data) {
+            if (data != null) {
+                console.log(data);
+                localStorage.setItem('agency', agency);
+                window.location.pathname = window.location.pathname.replace('login.html', 'Agency.html')
+
+            }
+            else {
+                localStorage.setItem('agency', "")
+                Notiflix.Report.Failure('Login Failed', 'Check your login details!', 'Try again');
+            };
+        }
+    </script>
 </head>
 <body>
-	
-	<div class="limiter">
-		<div class="container-login100" style="background-image: url('../images/bg-01.jpg');">
-			<div class="wrap-login100">
-				<form id="login" action="" class="login100-form validate-form">
-					<span class="login100-form-logo">
-						<i class="zmdi zmdi-landscape"></i>
-					</span>
 
-					<span class="login100-form-title p-b-34 p-t-27">
-						Log in
-					</span>
-					<div class="wrap-input100 validate-input" >
-						<input id="username" class="input100" type="text" name="username" placeholder="Username">
-						<span class="focus-input100" data-placeholder="&#xf207;"></span>
-					</div>
+    <div class="main">
+        <section class="sign-in">
+            <div class="container">
+                <div class="signin-content">
+                    <div class="signin-image">
+                        <figure><img src="../images/signin-image.png" alt="sing up image"></figure>
+                        <a href="AgencyRegister.html" class="signup-image-link">Create an account</a>
+                    </div>
 
-					<div class="wrap-input100 validate-input" >
-						<input id="password" class="input100" type="password" name="pass" placeholder="Password">
-						<span class="focus-input100" data-placeholder="&#xf191;"></span>
-					</div>
-					
-					<div class="container-login100-form-btn">
-						<button  type="submit" class="login100-form-btn">
-							Login
-						</button>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
-	
+                    <div class="signin-form">
+                        <h2 class="form-title">Login</h2>
+                        <form class="register-form" id="login-form">
+                            <div class="form-group">
+                                <label for="your_name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                <input type="text" name="your_name" id="your_name" placeholder="Agency Name" />
+                            </div>
+                            <div class="form-group">
+                                <label for="your_pass"><i class="zmdi zmdi-lock"></i></label>
+                                <input type="password" name="your_pass" id="your_pass" placeholder="Password" />
+                            </div>
 
-	<div id="dropDownSelect1"></div>
-	
-<!--===============================================================================================-->
-	<script src="../vendor/jquery/jquery-3.2.1.min.js"></script>
-<!--===============================================================================================-->
-	<script src="../vendor/animsition/js/animsition.min.js"></script>
-<!--===============================================================================================-->
-	<script src="../vendor/bootstrap/js/popper.js"></script>
-	<script src="../vendor/bootstrap/js/bootstrap.min.js"></script>
-<!--===============================================================================================-->
-	<script src="../vendor/select2/select2.min.js"></script>
-<!--===============================================================================================-->
-	<script src="../vendor/daterangepicker/moment.min.js"></script>
-	<script src="../vendor/daterangepicker/daterangepicker.js"></script>
-<!--===============================================================================================-->
-	<script src="../vendor/countdowntime/countdowntime.js"></script>
-<!--===============================================================================================-->
-	<script src="../Scripts/main.js"></script>
-	<script src="../vendor/jquery/jquery-3.2.1.min.js"></script>
-	
+                            <div class="form-group form-button">
+                                <input type="button" name="signin" id="travelSignIn" class="form-submit" value="Travel Log in" />
+                                <input type="submit" name="signin" id="signin" class="form-submit" value="Agency Log in" />
+                            </div>
+                        </form>
 
-</body>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- JS -->
+    <!--<script src="../js/main.js"></script>-->
+</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
 </html>

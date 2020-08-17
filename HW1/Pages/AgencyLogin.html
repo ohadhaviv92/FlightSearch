@@ -34,7 +34,29 @@
         agency=""
         $(document).ready(function () {
             $("#login-form").submit(login);
+
+            $("#travelSignIn").click(login2);
         });
+
+
+  
+
+        function login2() {
+            let username = $("#your_name").val();
+            let password = $("#your_pass").val();
+            ajaxCall("POST", "../api/login", JSON.stringify([username, password]), loggedIn2, loginError)
+            return false;
+        }
+
+        function loggedIn2(data) {
+            if (data != null) {
+                console.log("user");
+                localStorage.setItem('user', data);
+                window.location.pathname = window.location.pathname.replace('login.html', 'index.html')
+            }
+            else
+                console.log("no user")
+        }
 
         function login() {
             agency = $("#your_name").val();
@@ -52,7 +74,7 @@
             if (data != null) {
                 console.log(data);
                 localStorage.setItem('agency', agency);
-                window.location.pathname = window.location.pathname.replace('AgencyLogin.html', 'Agency.html')
+                window.location.pathname = window.location.pathname.replace('login.html', 'Agency.html')
             
             }
             else {
@@ -86,7 +108,8 @@
                             </div>
 
                             <div class="form-group form-button">
-                                <input type="submit" name="signin" id="signin" class="form-submit" value="Log in" />
+                                <input type="button" name="signin" id="travelSignIn" class="form-submit" value="Travel Log in" />
+                                <input type="submit" name="signin" id="signin" class="form-submit" value="Agency Log in" />
                             </div>
                         </form>
 
