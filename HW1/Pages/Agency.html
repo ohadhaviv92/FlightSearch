@@ -74,11 +74,17 @@
             if (localStorage.getItem("agency") == undefined) {
                 window.location.pathname = window.location.pathname.replace('Agency.html', 'AgencyLogin.html');
             }
+            else {
+                document.getElementById('menu').innerHTML += "<a onclick='logout()' href='#' class='navbar-brand'>Logout</a>"
+            }
         });
 
 
-
-
+        
+        function logout() {
+            localStorage.removeItem('agency')
+            window.location.pathname = window.location.pathname.replace('Agency.html', 'AgencyLogin.html');
+        }
 
 
         function loadAirports() { // Load the airports list from API
@@ -351,8 +357,10 @@
 
             console.log(tours)
             toursArr = [];
+
             for (var i in tours) {
-                toursArr.push({ TourID: tours[i]["TourID"], City: tours[i]["City"], Price: tours[i]["TourPrice"], TourName: tours[i]["TourName"], Duration: tours[i]["DurationInMinute"] });
+                if (tours[i]["AgencyName"] == localStorage.getItem('agency'))
+                 toursArr.push({ TourID: tours[i]["TourID"], City: tours[i]["City"], Price: tours[i]["TourPrice"], TourName: tours[i]["TourName"], Duration: tours[i]["DurationInMinute"] });
             }
 
             try {
@@ -460,7 +468,9 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav" id="menu">
-                    <a class="navbar-brand" href="./index.html">Home</a>
+                    <div id="menu">
+                        <a class="navbar-brand" href="./index.html">Home</a>
+                    </div>
                 
                 </ul>
             </div>

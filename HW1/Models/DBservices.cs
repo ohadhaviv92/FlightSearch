@@ -428,7 +428,7 @@ namespace HW1.Models
             return null;
         }
 
-        public List<Tour> getAllTours()
+        public List<Tour> getAllTours(string agencyName)
         {
             SqlConnection con = null;
 
