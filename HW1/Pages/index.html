@@ -188,6 +188,7 @@
                         to: snapshot.val().to,
                         price: snapshot.val().price,
                         flightDeal: snapshot.val().flightData,
+                        tours: snapshot.val().tours
                     }
                     console.log(order.passengersNames + " Just booked a flight from: " + order.from + " To: " + order.to + " For ONLY " + order.price)
                     Notiflix.Notify.Success(order.passengersNames + " Just booked a flight from: " + order.from + " To: " + order.to + " For ONLY " + order.price + " CLICK HERE TO VIEW THE DEAL!", function () {
