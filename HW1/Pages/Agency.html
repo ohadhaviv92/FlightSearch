@@ -293,6 +293,7 @@
 
 
         function loadTrips() {
+            $('#dealTrips').hide()
             $("#toursTable").parents('div.dataTables_wrapper').first().hide() // Hide the table
             currentTrips = []
             Notiflix.Loading.Standard('Getting Data...');
@@ -412,6 +413,7 @@
             document.getElementById('tripName').value = ""
             updateCartNumber()
             document.getElementById('ph2').innerHTML = "Cart Is Empty";
+            $('#dealTrips').show()
         }
 
         function timeConvert(n) {
@@ -509,11 +511,14 @@
         </form>
         <br />
         <hr />
-        <h2>Deals & Trips </h2>
-        <hr />
-        <button class="btn btn-primary" onclick="showTable()">Show Deals</button>
-
-        <div id="ph"></div>
+        <div id="dealTrips">
+            <h2>Deals & Trips </h2>
+            <hr />
+        </div>
+            <button class="btn btn-primary" onclick="showTable()">Show Deals</button>
+        
+            <div id="ph"></div>
+        
         <div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
