@@ -70,12 +70,18 @@
         function getOrders() {
             $(document).ready(function () {
 
-                user = localStorage.getItem('user');
-                if (user != "admin") {
 
-                    window.location.pathname = window.location.pathname.replace('admin.html', 'login.html');
+                ajaxCall("GET", "../api/user?username=" + localStorage.getItem('user'), "", function (user) {
 
-                }
+                    if (user.IsAdmin != "1") {
+
+                        window.location.pathname = window.location.pathname.replace('admin.html', 'login.html');
+
+                    }
+
+                }, errFunc);
+
+
 
 
 

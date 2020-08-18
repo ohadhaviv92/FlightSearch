@@ -122,7 +122,6 @@
 
             ajaxCall("GET", "../api/user?username=" + localStorage.getItem('user'), "", function (user) {
 
-                 user = localStorage.getItem('user');
 
                 str = "";
 
@@ -138,7 +137,7 @@
                 str += " <li class='nav-item'>"
                 str += "<a class='navbar-brand' id='Agency' href='#'>Agency</a> </li>"
 
-                if (user == "admin") {
+                if (user.IsAdmin == "1") {
 
                     str += " <li class='nav-item'>"
                     str += "<a class='navbar-brand' id='logout' href='#'>Logout</a> </li>"
