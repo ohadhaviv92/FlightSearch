@@ -44,7 +44,7 @@ Create Table users
 Create Table orders
 (
 
-
+id int identity (1,1),
 flightId nvarchar(500),
 passengersNames nvarchar(100),
 userEmail nvarchar(70),
@@ -52,7 +52,7 @@ orderDate datetime,
 packages nvarchar(100),
 
 FOREIGN KEY (flightId) REFERENCES MyFlights_CS(FlightPath),
-primary key(userEmail,flightId)
+primary key(userEmail,flightId,id)
 )
 
 select *
