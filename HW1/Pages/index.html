@@ -68,7 +68,7 @@
         var firebaseOrders
         daysOfTheWeek = { 0: "sun", 1: "mon", 2: "tue", 3: "wed", 4: "thu", 5: "fri", 6: "sat" }
         var table = null;
-
+        var order
         countryCodes = [];
         inCart = []
         var lastFromFlightLocation;
@@ -84,7 +84,7 @@
         var airlines = new Array();
         airlinesList = {};
         var lastDealId;
-        var hotDeal
+        var hotDeal=0
         var notifyCount;
         flag = 0; // 0 =>  there are already airports table on db
         dataArr = {} //Store the current search arr
@@ -201,7 +201,7 @@
                     notifyCount++;
                     setTimeout(function () {
                         $('#NotiflixNotify-' + notifyCount+'').hide()
-                    }, 3000);
+                    }, 4000);
 
 
                 }
@@ -433,6 +433,7 @@
 
         function backToFlightSearch() {
             localStorage.removeItem('incart')
+            inCart=[]
             $('#flightTable').parents('div.dataTables_wrapper').first().show();
             $("#tourDiv").hide();
         }
@@ -522,9 +523,10 @@
                 
             useremail = $("#email").val()
             orderDate = new Date()
-            cartTours = JSON.parse(localStorage.getItem('incart'))
+                cartTours = JSON.parse(localStorage.getItem('incart'))
+                
                 var date = orderDate.getFullYear() + '-' + (orderDate.getDate()) + '-' + (orderDate.getMonth() + 1);
-                ajaxCall("POST", "../api/order", JSON.stringify([lastDealId, passengersNames, useremail, date, JSON.stringify(cartTours)]), addNotification(order.flightDeal, cartTours), errFunc)
+                ajaxCall("POST", "../api/order", JSON.stringify([lastDealId, passengersNames, useremail, orderDate, JSON.stringify(cartTours)]), addNotification(order.flightDeal, cartTours), errFunc)
 
             }
             else {
@@ -897,9 +899,9 @@
             cartTours = JSON.parse(localStorage.getItem('incart'))
             var date = orderDate.getFullYear() + '-' + (orderDate.getDate()) + '-' + (orderDate.getMonth() + 1);
             if (localStorage.getItem('incart'))
-                ajaxCall("POST", "../api/order", JSON.stringify([flightId, passengersNames, useremail, date, JSON.stringify(cartTours)]), addNotification(dataArr['data'][parseInt(row)], cartTours), errFunc)
+                ajaxCall("POST", "../api/order", JSON.stringify([flightId, passengersNames, useremail, orderDate, JSON.stringify(cartTours)]), addNotification(dataArr['data'][parseInt(row)], cartTours), errFunc)
             else
-                ajaxCall("POST", "../api/order", JSON.stringify([flightId, passengersNames, useremail, date, "null"]), addNotification(dataArr['data'][parseInt(row)], null), errFunc)
+                ajaxCall("POST", "../api/order", JSON.stringify([flightId, passengersNames, useremail, orderDate, "null"]), addNotification(dataArr['data'][parseInt(row)], null), errFunc)
 
         }
         function addNotification(flightData, currentTours) {
@@ -910,6 +912,7 @@
             var date = orderDate.getFullYear() + '-' + (orderDate.getDate()) + '-' + (orderDate.getMonth() + 1);
             firebaseOrders.push().set({ "passengersNames": passengersNames, "useremail": useremail, "orderDate": date, "tours": currentTours, "from": lastFromFlightLocation, "to": lastToFlightLocation, "price": lastPrice, "flightData": flightData });
             localStorage.removeItem('incart')
+            inCart=[]
             Notiflix.Report.Success('Flight Has Been ordered!', "", 'Ok');
             $('#exampleModal').modal('hide');
             clearOrderFormData() 
