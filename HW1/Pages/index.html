@@ -228,26 +228,31 @@
 
         }
 
-        function updateDealsModal(flight) {
+        function updateDealsModal(flight1) {
             connectionsArr = []
-            getConnections(flight.flightDeal.route)
+            getConnections(flight1.flightDeal.route)
             connectionsArr[connectionsArr.length - 1] = null;
-            document.getElementById('flightFromDeal').value = flight.from
-            document.getElementById('flightToDeal').value = flight.to
-            document.getElementById('depTimeDeal').value = convertDate(flight.flightDeal['dTime'])
-            document.getElementById('arrTimeDeal').value = convertDate(flight.flightDeal['aTime'])
-            document.getElementById('airlineDeal').value = flight.flightDeal['route'][0]['airline']
-            document.getElementById('priceDeal').value = flight.flightDeal['price'] + "$"
+
+            flight = flight1.flightDeal
+            lastFromFlightLocation = flight1.from
+            lastToFlightLocation = flight1.to
+            lastPrice = flight1.flightDeal['price'] + "$"
+            document.getElementById('flightFromDeal').value = flight1.from
+            document.getElementById('flightToDeal').value = flight1.to
+            document.getElementById('depTimeDeal').value = convertDate(flight1.flightDeal['dTime'])
+            document.getElementById('arrTimeDeal').value = convertDate(flight1.flightDeal['aTime'])
+            document.getElementById('airlineDeal').value = flight1.flightDeal['route'][0]['airline']
+            document.getElementById('priceDeal').value = flight1.flightDeal['price'] + "$"
             document.getElementById('stopsDeal').value = connectionsArr.toString();
             str = "";
             toursIndealarr=[]
-            if (flight.tours != undefined) {
+            if (flight1.tours != undefined) {
                 
                 str += " <div class='accordion' id='accordionExample'>"
-                for (var k = 0; k < flight.tours.length; k++) {
+                for (var k = 0; k < flight1.tours.length; k++) {
                     var i;
                     for (i = 0; i < toursArr.length; i++) {
-                        if (toursArr[i].TourID == flight.tours[k])
+                        if (toursArr[i].TourID == flight1.tours[k])
                             break;
                     }
 
@@ -524,7 +529,8 @@
             useremail = $("#email").val()
             orderDate = new Date()
                 cartTours = JSON.parse(localStorage.getItem('incart'))
-                
+                passengersNames = $("#Passengers").val();
+
                 var date = orderDate.getFullYear() + '-' + (orderDate.getDate()) + '-' + (orderDate.getMonth() + 1);
                 ajaxCall("POST", "../api/order", JSON.stringify([lastDealId, passengersNames, useremail, orderDate, JSON.stringify(cartTours)]), addNotification(order.flightDeal, cartTours), errFunc)
 
@@ -559,6 +565,44 @@
 
             return false;
         }
+
+
+        function postSuccess(data) {
+            flightId = dataArr['data'][parseInt(row)]['id']
+            console.log(data)
+            console.log('Flight added')
+            passengersNames = $("#Passengers").val()
+            useremail = $("#email").val()
+            orderDate = new Date()
+            cartTours = JSON.parse(localStorage.getItem('incart'))
+            var date = orderDate.getFullYear() + '-' + (orderDate.getDate()) + '-' + (orderDate.getMonth() + 1);
+            if (localStorage.getItem('incart'))
+                ajaxCall("POST", "../api/order", JSON.stringify([flightId, passengersNames, useremail, orderDate, JSON.stringify(cartTours)]), addNotification(dataArr['data'][parseInt(row)], cartTours), errFunc)
+            else
+                ajaxCall("POST", "../api/order", JSON.stringify([flightId, passengersNames, useremail, orderDate, "null"]), addNotification(dataArr['data'][parseInt(row)], null), errFunc)
+
+        }
+        function addNotification(flightData, currentTours) {
+
+            passengersNames = $("#Passengers").val()
+            useremail = $("#email").val()
+            orderDate = new Date()
+            var date = orderDate.getFullYear() + '-' + (orderDate.getDate()) + '-' + (orderDate.getMonth() + 1);
+            firebaseOrders.push().set({ "passengersNames": passengersNames, "useremail": useremail, "orderDate": date, "tours": currentTours, "from": lastFromFlightLocation, "to": lastToFlightLocation, "price": lastPrice, "flightData": flightData });
+            localStorage.removeItem('incart')
+            inCart = []
+            Notiflix.Report.Success('Flight Has Been ordered!', "", 'Ok');
+            $('#exampleModal').modal('hide');
+            clearOrderFormData()
+            $("#tourDiv").hide();
+
+        }
+        function clearOrderFormData() {
+            $("#Passengers").val("")
+            $("#email").val("")
+            $("#terms").prop('checked', false);
+        }
+        // end success functions -----------------------------------
 
 
 
@@ -889,42 +933,7 @@
 
 
 
-        function postSuccess(data) {
-            flightId = dataArr['data'][parseInt(row)]['id']
-            console.log(data)
-            console.log('Flight added')
-            passengersNames = $("#Passengers").val()
-            useremail = $("#email").val()
-            orderDate = new Date()
-            cartTours = JSON.parse(localStorage.getItem('incart'))
-            var date = orderDate.getFullYear() + '-' + (orderDate.getDate()) + '-' + (orderDate.getMonth() + 1);
-            if (localStorage.getItem('incart'))
-                ajaxCall("POST", "../api/order", JSON.stringify([flightId, passengersNames, useremail, orderDate, JSON.stringify(cartTours)]), addNotification(dataArr['data'][parseInt(row)], cartTours), errFunc)
-            else
-                ajaxCall("POST", "../api/order", JSON.stringify([flightId, passengersNames, useremail, orderDate, "null"]), addNotification(dataArr['data'][parseInt(row)], null), errFunc)
-
-        }
-        function addNotification(flightData, currentTours) {
-
-            passengersNames = $("#Passengers").val()
-            useremail = $("#email").val()
-            orderDate = new Date()
-            var date = orderDate.getFullYear() + '-' + (orderDate.getDate()) + '-' + (orderDate.getMonth() + 1);
-            firebaseOrders.push().set({ "passengersNames": passengersNames, "useremail": useremail, "orderDate": date, "tours": currentTours, "from": lastFromFlightLocation, "to": lastToFlightLocation, "price": lastPrice, "flightData": flightData });
-            localStorage.removeItem('incart')
-            inCart=[]
-            Notiflix.Report.Success('Flight Has Been ordered!', "", 'Ok');
-            $('#exampleModal').modal('hide');
-            clearOrderFormData() 
-            $("#tourDiv").hide();
-
-        }
-        function clearOrderFormData() {
-            $("#Passengers").val("")
-            $("#email").val("")
-            $("#terms").prop('checked', false);
-        }
-        // end success functions -----------------------------------
+        
 
 
 
