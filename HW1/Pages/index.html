@@ -201,7 +201,7 @@
                     notifyCount++;
                     setTimeout(function () {
                         $('#NotiflixNotify-' + notifyCount+'').hide()
-                    }, 2000);
+                    }, 3000);
 
 
                 }
@@ -523,7 +523,7 @@
             useremail = $("#email").val()
             orderDate = new Date()
             cartTours = JSON.parse(localStorage.getItem('incart'))
-                var date = orderDate.getFullYear() + '-' + (orderDate.getDate() - 7) + '-' + (orderDate.getMonth() + 1);
+                var date = orderDate.getFullYear() + '-' + (orderDate.getDate()) + '-' + (orderDate.getMonth() + 1);
                 ajaxCall("POST", "../api/order", JSON.stringify([lastDealId, passengersNames, useremail, date, JSON.stringify(cartTours)]), addNotification(order.flightDeal, cartTours), errFunc)
 
             }
@@ -895,7 +895,7 @@
             useremail = $("#email").val()
             orderDate = new Date()
             cartTours = JSON.parse(localStorage.getItem('incart'))
-            var date = orderDate.getFullYear() + '-' + (orderDate.getDate() - 7) + '-' + (orderDate.getMonth() + 1);
+            var date = orderDate.getFullYear() + '-' + (orderDate.getDate()) + '-' + (orderDate.getMonth() + 1);
             if (localStorage.getItem('incart'))
                 ajaxCall("POST", "../api/order", JSON.stringify([flightId, passengersNames, useremail, date, JSON.stringify(cartTours)]), addNotification(dataArr['data'][parseInt(row)], cartTours), errFunc)
             else

@@ -226,8 +226,6 @@
     <Content Include="images\bg-01.jpg" />
     <Content Include="images\icons\favicon.ico" />
     <Content Include="images\Sale-icon.png" />
-    <Content Include="images\signin-image.jpg" />
-    <Content Include="images\signup-image.jpg" />
     <Content Include="images\—Pngtree—blue and red airplane vector_4235031.png" />
     <Content Include="images\—Pngtree—cartoon cartoon airplane aircraft aviation_3923153.png" />
     <Content Include="js\fireBaseConfig.js" />

@@ -71,7 +71,7 @@
             $("#flightForm").submit(loadTrips)
             $("#buildForm").submit(finishBuildDeal);
             $('#cartBtn').prop('disabled', true);
-            if (localStorage.getItem("agency") == undefined) {
+            if (localStorage.getItem("agency") == undefined || localStorage.getItem("agency")=="" ) {
                 window.location.pathname = window.location.pathname.replace('Agency.html', 'login.html');
             }
             else {
