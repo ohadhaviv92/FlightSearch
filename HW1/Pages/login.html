@@ -50,15 +50,15 @@
 
         function loggedIn2(data) {
             if (data != null) {
-                console.log("user");
                 localStorage.setItem('user', data);
-                
+                window.location.pathname = window.location.pathname.replace('login.html', 'admin.html')
+               
             }
             else {
-                console.log("no user")
+                Notiflix.Report.Failure('Login Failed', 'Check your login details!', 'Try again');
 
             }
-            window.location.pathname = window.location.pathname.replace('login.html', 'index.html')
+            
         }
 
         function login() {
@@ -81,7 +81,7 @@
 
             }
             else {
-                localStorage.setItem('agency', "")
+              
                 Notiflix.Report.Failure('Login Failed', 'Check your login details!', 'Try again');
             };
         }
