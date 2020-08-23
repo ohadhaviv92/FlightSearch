@@ -642,13 +642,14 @@
             // on the first entry, it will bring all the childs
             console.log("before")
             firebaseTours.limitToLast(1).on("child_added", snapshot => {
-                
+                console.log("after")
                 if (!ignoreItems) {
 
                     if (url2 != "") {
+                        console.log("after2")
                         Notiflix.Confirm.Show('New packages has been created', 'Would you like to refresh?', 'Yes', 'No', function () {
                             Notiflix.Loading.Standard('Refreshing and getting flights...');
-                            ajaxCall("GET", url2, "", successAPICB, errFunc)
+                            ajaxCall("GET", url2, "", successAPICB2, errFunc)
                             return false;
 
                         })
