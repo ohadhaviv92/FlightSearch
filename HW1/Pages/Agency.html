@@ -80,6 +80,30 @@
         });
 
 
+        function init() {
+            firebaseTours = firebase.database().ref("tours");
+            listenToNewTours()
+        }
+
+        function listenToNewTours() {
+            var ignoreItems = true;
+            // child_added will be evoked for every child that was added
+            // on the first entry, it will bring all the childs
+            firebaseTours.limitToLast(1).on("child_added", snapshot => {
+
+                if (!ignoreItems) {
+                    tour = {
+                        passengersNames: snapshot.val().city,
+                    }
+                    Notiflix.Confirm.Show('Notiflix Confirm', 'Do you agree with me?', 'Yes', 'No', function () { // Yes button callbackalert('Thank you.');},function(){ // No button callbackalert('If you say so...');});
+                    
+
+                }
+            })
+            firebaseOrders.once('value', function (snapshot) {
+                ignoreItems = false;
+            });
+        }
         
         function logout() {
             localStorage.removeItem('agency')
@@ -185,7 +209,7 @@
             return false;
         }
 
-        function successAddTour() {
+        function successAddTour(data) {
             Notiflix.Report.Success('The tour has been added!', "", 'Ok');
             itemsInCart = 0
             localStorage.setItem('trips', JSON.stringify([]))
@@ -193,6 +217,7 @@
             updateCartNumber()
             $('#exampleModal').modal('hide');
             document.getElementById('ph2').innerHTML = "Cart Is Empty";
+            firebaseOrders.push().set({ 'city': 'amsterdam' })
 
         }
 
