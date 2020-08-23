@@ -57,6 +57,7 @@
     <!--CSS-->
     <link href="Style.css" rel="stylesheet" />
     <script>
+        firebaseTours = firebase.database().ref("tours");
         currentTrips = []
         airportList = [];
         arrPrice = []
@@ -195,7 +196,7 @@
             updateCartNumber()
             $('#exampleModal').modal('hide');
             document.getElementById('ph2').innerHTML = "Cart Is Empty";
-            firebaseOrders.push().set({ 'city': 'amsterdam' })
+            firebaseTours.push().set({ 'city': 'amsterdam' })
 
         }
 
