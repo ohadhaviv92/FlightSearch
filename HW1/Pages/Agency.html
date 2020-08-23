@@ -80,8 +80,6 @@
         });
 
 
-
-
         
         function logout() {
             localStorage.removeItem('agency')
@@ -187,7 +185,7 @@
             return false;
         }
 
-        function successAddTour(data) {
+        function successAddTour() {
             Notiflix.Report.Success('The tour has been added!', "", 'Ok');
             itemsInCart = 0
             localStorage.setItem('trips', JSON.stringify([]))
@@ -195,7 +193,6 @@
             updateCartNumber()
             $('#exampleModal').modal('hide');
             document.getElementById('ph2').innerHTML = "Cart Is Empty";
-            firebaseOrders.push().set({ 'city': 'amsterdam' })
 
         }
 
