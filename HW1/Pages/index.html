@@ -792,7 +792,7 @@
             dataArr = data
             if (data['data'].length == 0) {
                 Notiflix.Report.Success('No Flights Founded!', "", 'Ok');
-
+                Notiflix.Loading.Remove();
 
                 return;
             }
