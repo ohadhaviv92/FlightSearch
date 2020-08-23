@@ -71,6 +71,7 @@
         var order
         countryCodes = [];
         inCart = []
+        var url2;
         var lastFromFlightLocation;
         var lastFromFlightLocation;
         var lastPack;
@@ -136,12 +137,12 @@
                 
 
                 str += " <li class='nav-item'>"
-                str += "<a class='navbar-brand' id='Agency' href='#'>Agency</a> </li>"
+                str += "<a class='navbar-brand' id='Agency' href='Agency.html'>Agency</a> </li>"
 
                 if (user.IsAdmin == "1") {
 
                     str += " <li class='nav-item'>"
-                    str += "<a class='navbar-brand' id='logout' href='#'>Logout</a> </li>"
+                    str += "<a class='navbar-brand' id='logout' >Logout</a> </li>"
 
                 }
 
@@ -485,7 +486,7 @@
             Notiflix.Loading.Standard('Getting Flights...');
             //let url = "https://api.skypicker.com/flights?flyFrom=TLV&to=LGW&dateFrom=1/09/2020&dateTo=11/09/2020&partner=picky"
 
-            let url = "https://api.skypicker.com/flights?flyFrom=" + $(".airportFrom").val() + "&to=" + $(".airportTo").val() + "&dateFrom=" + fixDate($("#fromDate").val()) + "&dateTo=" + fixDate($("#toDate").val()) + "&partner=picky"
+             url2 = "https://api.skypicker.com/flights?flyFrom=" + $(".airportFrom").val() + "&to=" + $(".airportTo").val() + "&dateFrom=" + fixDate($("#fromDate").val()) + "&dateTo=" + fixDate($("#toDate").val()) + "&partner=picky"
             ajaxCall("GET", url, "", successAPICB, errFunc)
             return false;
         }
