@@ -636,6 +636,11 @@
 
         });
 
+        function reLoadTours(data) {
+            toursArr = toursArr = data;
+            ajaxCall("GET", url2, "", successAPICB2, errFunc)
+        }
+
         function listenToNewTours() {
             var ignoreItems = true;
             // child_added will be evoked for every child that was added
@@ -649,7 +654,8 @@
                         console.log("after2")
                         Notiflix.Confirm.Show('New packages has been created', 'Would you like to refresh?', 'Yes', 'No', function () {
                             Notiflix.Loading.Standard('Refreshing and getting flights...');
-                            ajaxCall("GET", url2, "", successAPICB2, errFunc)
+                            ajaxCall("GET", "../api/tour", "", reLoadTours, errFunc)
+                            
                             return false;
 
                         })
