@@ -644,16 +644,15 @@
                     tour = {
                         passengersNames: snapshot.val().city,
                     }
-                    Notiflix.Confirm.Show('Notiflix Confirm', 'Do you agree with me?', 'Yes', 'No', function () { // Yes button callbackalert('Thank you.');},function(){ // No button callbackalert('If you say so...');});
+                    Notiflix.Confirm.Show('Notiflix Confirm', 'Do you agree with me?', 'Yes', 'No', function () { 
 
-
-                    }
+                    })
+            }
+                firebaseOrders.once('value', function (snapshot) {
+                    ignoreItems = false;
+                });
             })
-            firebaseOrders.once('value', function (snapshot) {
-                ignoreItems = false;
-            });
-        }
-
+}
 
         function MyFlights() {
             ajaxCall("GET", "../api/flight", "", successMyFlights, errFunc)
