@@ -489,7 +489,7 @@
             //let url = "https://api.skypicker.com/flights?flyFrom=TLV&to=LGW&dateFrom=1/09/2020&dateTo=11/09/2020&partner=picky"
 
              url2 = "https://api.skypicker.com/flights?flyFrom=" + $(".airportFrom").val() + "&to=" + $(".airportTo").val() + "&dateFrom=" + fixDate($("#fromDate").val()) + "&dateTo=" + fixDate($("#toDate").val()) + "&partner=picky"
-            ajaxCall("GET", url2, "", successAPICB, errFunc)
+            ajaxCall("GET", url2, "", successAPICB2, errFunc)
             return false;
         }
 
@@ -779,7 +779,7 @@
 
 
 
-        function successAPICB(data) {
+        function successAPICB2(data) {
             i = 0;
             console.log(data);
             dataArr = data
