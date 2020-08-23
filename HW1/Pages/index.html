@@ -71,7 +71,7 @@
         var order
         countryCodes = [];
         inCart = []
-        var url2;
+        var url2="";
         var lastFromFlightLocation;
         var lastFromFlightLocation;
         var lastPack;
@@ -489,9 +489,11 @@
             //let url = "https://api.skypicker.com/flights?flyFrom=TLV&to=LGW&dateFrom=1/09/2020&dateTo=11/09/2020&partner=picky"
 
              url2 = "https://api.skypicker.com/flights?flyFrom=" + $(".airportFrom").val() + "&to=" + $(".airportTo").val() + "&dateFrom=" + fixDate($("#fromDate").val()) + "&dateTo=" + fixDate($("#toDate").val()) + "&partner=picky"
-            ajaxCall("GET", url, "", successAPICB, errFunc)
+            ajaxCall("GET", url2, "", successAPICB, errFunc)
             return false;
         }
+
+
 
 
 
@@ -638,17 +640,21 @@
             var ignoreItems = true;
             // child_added will be evoked for every child that was added
             // on the first entry, it will bring all the childs
+            console.log("before")
             firebaseTours.limitToLast(1).on("child_added", snapshot => {
-
+                
                 if (!ignoreItems) {
-                    tour = {
-                        passengersNames: snapshot.val().city,
-                    }
-                    Notiflix.Confirm.Show('Notiflix Confirm', 'Do you agree with me?', 'Yes', 'No', function () { 
 
-                    })
+                    if (url2 != "") {
+                        Notiflix.Confirm.Show('New packages has been created', 'Would you like to refresh?', 'Yes', 'No', function () {
+                            Notiflix.Loading.Standard('Refreshing and getting flights...');
+                            ajaxCall("GET", url2, "", successAPICB, errFunc)
+                            return false;
+
+                        })
+                    }
             }
-                firebaseOrders.once('value', function (snapshot) {
+                firebaseTours.once('value', function (snapshot) {
                     ignoreItems = false;
                 });
             })
