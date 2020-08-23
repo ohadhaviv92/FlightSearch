@@ -690,7 +690,8 @@
 
             }
             ajaxCall("POST", "../api/Airline", JSON.stringify(airlines), airLinesAdded, errFunc);
-            swal("All Airline has been loaded!", "", "success");
+           
+            Notiflix.Report.Success('All Airline has been loaded!', "", 'Ok');
 
 
         }
@@ -783,7 +784,7 @@
             console.log(data);
             dataArr = data
             if (data['data'].length == 0) {
-                swal("no flight!", "", "error");
+                Notiflix.Report.Success('No Flights Founded!', "", 'Ok');
 
 
                 return;
