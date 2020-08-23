@@ -81,8 +81,6 @@
         });
 
 
-
-
         
         function logout() {
             localStorage.removeItem('agency')
@@ -188,7 +186,7 @@
             return false;
         }
 
-        function successAddTour(data) {
+        function successAddTour() {
             Notiflix.Report.Success('The tour has been added!', "", 'Ok');
             itemsInCart = 0
             localStorage.setItem('trips', JSON.stringify([]))
